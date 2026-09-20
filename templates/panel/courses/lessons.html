@@ -1,0 +1,59 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Barcha darslar" %}</h2>
+    <p class="page__sub">{% blocktrans with n=page.paginator.count %}Jami {{ n }} ta dars{% endblocktrans %}</p></div>
+</div>
+
+<div class="card">
+  <form class="filters" method="get">
+    <div class="search"><span class="search__icon">🔍</span>
+      <input class="input" type="search" name="q" value="{{ search }}" placeholder="{% trans 'Dars nomi...' %}"></div>
+    <select class="select" name="course" data-autosubmit>
+      <option value="">{% trans "Barcha kurslar" %}</option>
+      {% for c in courses %}
+        <option value="{{ c.pk }}" {% if course_id == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.title }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn btn--primary" type="submit">{% trans "Qidirish" %}</button>
+  </form>
+
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr>
+        <th>{% trans "Dars" %}</th><th>{% trans "Kurs / modul" %}</th>
+        <th>{% trans "Video" %}</th><th>{% trans "Davomiyligi" %}</th><th>{% trans "Holat" %}</th><th></th>
+      </tr></thead>
+      <tbody>
+      {% for l in page %}
+        <tr>
+          <td><div class="table__main">{{ l.title }}</div>
+              <div class="table__sub">{{ l.description|truncatechars:50 }}</div></td>
+          <td><div>{{ l.module.course.title }}</div>
+              <div class="table__sub">{{ l.module.title }}</div></td>
+          <td>
+            {% if l.telegram_file_id %}<span class="badge badge--ok">🔒 Telegram</span>
+            {% elif l.video_url %}<span class="badge badge--info">🔗 {% trans "Havola" %}</span>
+            {% else %}<span class="badge">📝 {% trans "Yo'q" %}</span>{% endif %}
+          </td>
+          <td>{{ l.duration|duration }}</td>
+          <td>
+            {% if l.is_free %}<span class="badge badge--ok">{% trans "Bepul" %}</span>{% endif %}
+            {% if not l.is_active %}<span class="badge badge--danger">{% trans "Bloklangan" %}</span>{% endif %}
+          </td>
+          <td><div class="table__actions">
+            <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:lesson_edit' l.module.course_id l.pk %}">✏️</a>
+          </div></td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="6">{% include "panel/partials/_empty.html" with icon="🎬" %}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% query_string as query %}
+  {% include "panel/partials/_pagination.html" %}
+</div>
+{% endblock %}

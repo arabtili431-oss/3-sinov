@@ -1,0 +1,201 @@
+{% extends "site_base.html" %}
+{% block title %}VECTOR — Zamonaviy kasblarni onlayn o'rganing{% endblock %}
+{% block nav_home %}is-active{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <span class="hero__badge">🚀 O'zbekistondagi 1-raqamli onlayn ta'lim platformasi</span>
+    <h1 class="hero__title">Zamonaviy kasblarni biz bilan <span>o'rganing</span> va kelajagingizni bugundan quring!</h1>
+    <p class="hero__sub">Soha mutaxassisidan darslar, amaliy loyihalar va moslashuvchan grafik. Daromadli kasb egasi bo'lish endi yanada oson.</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary btn--lg" href="{% url 'frontend:courses' %}">O'rganamiz</a>
+      <a class="btn btn--ghost btn--lg" href="{% url 'frontend:register' %}">Keling birga</a>
+    </div>
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card"><div class="stat-card__icon">🎬</div><div><div class="stat-card__num" data-stat="courses">—</div><div class="stat-card__label">Kurslar</div></div></div>
+      <div class="stat-card"><div class="stat-card__icon">📚</div><div><div class="stat-card__num" data-stat="lessons">—</div><div class="stat-card__label">Video darslar</div></div></div>
+      <div class="stat-card"><div class="stat-card__icon">🎓</div><div><div class="stat-card__num" data-stat="students">—</div><div class="stat-card__label">O'quvchilar</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">Nega aynan bizning platformamizda o'qishingiz kerak?</h2>
+    </div>
+    <div class="grid grid--3">
+      <div class="feature-card">
+        <div class="feature-card__icon">🌍</div>
+        <h3>Istalgan joyda turib ta'lim olish</h3>
+        <p>Uydan chiqmasdan, qahvaxonada yoki sayohatda — qayerda bo'lsangiz ham bilim olishda davom eting.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__icon">💸</div>
+        <h3>Xarajatlaringizni 5x–10x tejab qoling</h3>
+        <p>Boshqa shaharlarga qatnash, yo'l kira va ijara xarajatlariga chek qo'ying. Sifatli ta'limni uyingizda turib oling.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__icon">🕓</div>
+        <h3>O'zingizga mos vaqtni tanlang</h3>
+        <p>Qat'iy grafiklarni unuting. Darslarni kunning xohlagan soatida, o'zingizga qulay tempda ko'rib chiqing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">Eng sara kurslarimiz</h2>
+      <p class="section__sub">Sohaning yetakchi mutaxassisi tomonidan tayyorlangan tizimli ta'lim dasturlari.</p>
+    </div>
+    <div class="grid grid--3" id="featuredCourses">
+      <div class="skeleton" style="height:220px"></div>
+      <div class="skeleton" style="height:220px"></div>
+      <div class="skeleton" style="height:220px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">Obunalar bilan tanishing</h2>
+      <p class="section__sub">O'zingizga qulay obuna muddatini tanlang va Premium imkoniyatlardan foydalaning.</p>
+    </div>
+    <div class="grid grid--3" id="plansRow">
+      <div class="skeleton" style="height:280px"></div>
+      <div class="skeleton" style="height:280px"></div>
+      <div class="skeleton" style="height:280px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="card" style="background:linear-gradient(120deg, var(--accent), #123E8F); color:#fff; padding:36px; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap">
+      <div style="max-width:520px">
+        <h3 style="margin:0 0 8px;font-size:20px">Do'stlaringizni Vectorga taklif qiling va Premium obunani bepul qo'lga kiriting!</h3>
+        <p style="margin:0;opacity:.9;font-size:14px">Qancha ko'p do'st taklif qilsangiz, shuncha uzoq muddat Premium imkoniyatlardan foydalanasiz.</p>
+      </div>
+      <a class="btn btn--white" href="{% url 'frontend:register' %}">Ma'lumot olish</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">Ko'p beriladigan savollar</h2>
+    </div>
+    <div style="max-width:720px;margin:0 auto">
+      <div class="faq-item">
+        <div class="faq-item__q">Vector qanday loyiha?</div>
+        <div class="faq-item__a">Vector — zamonaviy kasb egallashga yordam beruvchi onlayn ta'lim platformasi.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-item__q">Qaysi sohalarni o'rganishim mumkin?</div>
+        <div class="faq-item__a">Kompyuter savodxonligi, sun'iy intellekt, grafik dasturlash va boshqa zamonaviy IT yo'nalishlari.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-item__q">Kurslarni tugatgandan so'ng sertifikat beriladimi?</div>
+        <div class="faq-item__a">Ha, har bir kursni to'liq tugatgan o'quvchiga elektron sertifikat taqdim etiladi.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-item__q">Kasb o'rganish uchun oldindan bilim talab qilinadimi?</div>
+        <div class="faq-item__a">Yo'q, darslar noldan (boshlang'ich darajadan) boshlab tushuntiriladi.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-item__q">Darslarni qaysi vaqtda ko'rishim mumkin?</div>
+        <div class="faq-item__a">Darslar 24/7 mavjud — o'zingizga qulay istalgan vaqtda ko'rishingiz mumkin.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-item__q">Mobil ilova orqali o'rganish mumkinmi?</div>
+        <div class="faq-item__a">Ha, Vector mobil ilovasi App Store va Play Marketda mavjud.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-item__q">Savollarim bo'lsa kimga murojaat qilsam bo'ladi?</div>
+        <div class="faq-item__a">Telegram bot orqali qo'llab-quvvatlash xizmatimizga murojaat qilishingiz mumkin.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title">Muvaffaqiyat sari yo'l</h2>
+      <p class="section__sub">Boshlovchidan professional mutaxassisgacha bo'lgan rivojlanish xaritangiz.</p>
+    </div>
+    <div class="roadmap">
+      <div class="roadmap__step"><div class="roadmap__icon">🚩</div><h4>Boshlang</h4><p>Kursni tanlang</p></div>
+      <div class="roadmap__step"><div class="roadmap__icon">📘</div><h4>Ko'nikma egallang</h4><p>Ta'lim oling</p></div>
+      <div class="roadmap__step"><div class="roadmap__icon">🛠️</div><h4>Tajriba to'plang</h4><p>Amaliyot qiling</p></div>
+      <div class="roadmap__step"><div class="roadmap__icon">📁</div><h4>Portfolio yarating</h4><p>Loyihalar tuzing</p></div>
+      <div class="roadmap__step"><div class="roadmap__icon">🏆</div><h4>Mutaxassis bo'ling</h4><p>Natijaga erishing</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="card" style="padding:36px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <div>
+        <h3 style="margin:0 0 8px;font-size:22px">Istalgan joyda, istalgan vaqtda o'rganing</h3>
+        <p style="margin:0;color:var(--muted);max-width:420px">Vector mobil ilovasi orqali istalgan joyda o'qing, natijalaringizni kuzating va yangi ko'nikmalarni egallang.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap" id="appLinks">
+        <a class="btn btn--ghost" href="#"> App Store</a>
+        <a class="btn btn--ghost" href="#">▶ Play Market</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var S = window.VectorSite;
+
+  S.apiFetch("/config/", { auth: false }).then(function (cfg) {
+    document.querySelector('[data-stat="courses"]').textContent = cfg.stats.courses;
+    document.querySelector('[data-stat="lessons"]').textContent = cfg.stats.lessons;
+    document.querySelector('[data-stat="students"]').textContent = cfg.stats.students;
+    var appLinks = document.getElementById("appLinks");
+    if (cfg.ios_url) appLinks.children[0].href = cfg.ios_url;
+    if (cfg.android_url) appLinks.children[1].href = cfg.android_url;
+  }).catch(function () {});
+
+  S.apiFetch("/courses/?featured=1", { auth: false }).then(function (list) {
+    var box = document.getElementById("featuredCourses");
+    if (!list.length) { box.innerHTML = ""; return; }
+    box.innerHTML = list.slice(0, 3).map(function (c) {
+      return '<a class="course-card" href="/kurslar/' + c.slug + '/">' +
+        '<div class="course-card__cover">' + (c.cover ? '<img src="' + c.cover + '">' : '🎓') + '</div>' +
+        '<div class="course-card__body">' +
+          '<div class="course-card__title">' + c.title + '</div>' +
+          '<div class="course-card__meta">' + c.teacher + ' · ' + c.lessons_count + ' dars</div>' +
+          '<div class="course-card__price">' + (c.access === "free" ? "Bepul" : c.access === "premium" ? "Premium obuna bilan" : S.money(c.price) + " so'm") + '</div>' +
+        '</div></a>';
+    }).join("");
+  }).catch(function () { document.getElementById("featuredCourses").innerHTML = ""; });
+
+  S.apiFetch("/plans/", { auth: false }).then(function (plans) {
+    var box = document.getElementById("plansRow");
+    box.innerHTML = plans.map(function (p) {
+      return '<div class="plan-card ' + (p.is_popular ? "plan-card--popular" : "") + '">' +
+        (p.is_popular ? '<span class="plan-card__badge">Ommabop</span>' : "") +
+        '<div class="plan-card__name">' + p.name + '</div>' +
+        '<div class="plan-card__price">' + S.money(p.price) + ' so\'m <span>/ ' + (p.period === "year" ? "yil" : "oy") + '</span></div>' +
+        '<div class="plan-card__note">' + p.description + '</div>' +
+        '<ul>' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
+        '<a class="btn btn--primary btn--block" href="{% url "frontend:premium" %}">Sotib olish</a>' +
+      '</div>';
+    }).join("");
+  }).catch(function () { document.getElementById("plansRow").innerHTML = ""; });
+})();
+</script>
+{% endblock %}

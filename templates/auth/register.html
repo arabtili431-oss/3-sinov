@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block title %}Ro‘yxatdan o‘tish — VECTOR{% endblock %}
+{% block panel_class %}auth-panel--plain{% endblock %}
+
+{% block panel %}
+<form id="registerForm" novalidate>
+  <h2 class="auth-title--on-blue">Ro‘yxatdan o‘tish</h2>
+
+  <div class="alert" id="formAlert" role="alert"></div>
+
+  <div class="role-switch" role="radiogroup" aria-label="Kim sifatida ro‘yxatdan o‘tasiz?">
+    <input type="radio" name="role" id="roleStudent" value="student" checked>
+    <label for="roleStudent">O‘quvchi</label>
+    <input type="radio" name="role" id="roleTeacher" value="teacher">
+    <label for="roleTeacher">O‘qituvchi</label>
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="phone">Telefon raqamni kiriting</label>
+    <div class="phone-row">
+      <div class="phone-prefix" aria-hidden="true">+998</div>
+      <input class="input" id="phone" name="phone" type="tel" inputmode="numeric"
+             autocomplete="tel-national" placeholder="(00)-000-00-00" required>
+    </div>
+    <p class="field__error">Telefon raqamni to‘liq kiriting.</p>
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="full_name">Ism va familiya</label>
+    <input class="input" id="full_name" name="full_name" type="text" autocomplete="name"
+           placeholder="Masalan: Sharofiddinov Xusniddin" required>
+    <p class="field__error">Ism va familiyangizni to‘liq kiriting.</p>
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="region">Viloyatingizni yozing</label>
+    <input class="input" id="region" name="region" type="text" list="regions"
+           placeholder="Masalan: Farg‘ona viloyati" required>
+    <datalist id="regions">
+      <option value="Toshkent shahri"></option>
+      <option value="Toshkent viloyati"></option>
+      <option value="Andijon viloyati"></option>
+      <option value="Buxoro viloyati"></option>
+      <option value="Farg‘ona viloyati"></option>
+      <option value="Jizzax viloyati"></option>
+      <option value="Xorazm viloyati"></option>
+      <option value="Namangan viloyati"></option>
+      <option value="Navoiy viloyati"></option>
+      <option value="Qashqadaryo viloyati"></option>
+      <option value="Qoraqalpog‘iston Respublikasi"></option>
+      <option value="Samarqand viloyati"></option>
+      <option value="Sirdaryo viloyati"></option>
+      <option value="Surxondaryo viloyati"></option>
+    </datalist>
+    <p class="field__error">Viloyatingizni kiriting.</p>
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="district">Shahar yoki tumaningizni yozing</label>
+    <input class="input" id="district" name="district" type="text"
+           placeholder="Masalan: Marg‘ilon shahri" required>
+    <p class="field__error">Shahar yoki tumaningizni kiriting.</p>
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="school">Maktabingiz raqami (ixtiyoriy)</label>
+    <input class="input" id="school" name="school" type="text" placeholder="Masalan: 4-maktab">
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="promo_code">Promo kodingiz bo‘lsa kiriting (ixtiyoriy)</label>
+    <input class="input" id="promo_code" name="promo_code" type="text"
+           style="text-transform:uppercase" placeholder="Masalan: VECTOR10">
+  </div>
+
+  <div class="field-row">
+    <div class="field is-shown" data-role-only="student">
+      <label class="field__label" for="grade">Sinfingiz (ixtiyoriy)</label>
+      <input class="input" id="grade" name="grade" type="text" placeholder="Masalan: 7-A sinf">
+    </div>
+    <div class="field" data-role-only="teacher">
+      <label class="field__label" for="subject">Qaysi fandan dars berasiz?</label>
+      <input class="input" id="subject" name="subject" type="text" placeholder="Masalan: Matematika">
+      <p class="field__error">Fan nomini kiriting.</p>
+    </div>
+    <div class="field">
+      <label class="field__label" for="birth_date">Tug‘ilgan sanangiz</label>
+      <input class="input" id="birth_date" name="birth_date" type="text" inputmode="numeric"
+             placeholder="Masalan: 07.05.2016" maxlength="10" required>
+      <p class="field__error">Sanani KK.OO.YYYY ko‘rinishida kiriting.</p>
+    </div>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <label class="field__label" for="password">Parol o‘ylab toping</label>
+      <input class="input" id="password" name="password" type="password"
+             autocomplete="new-password" placeholder="Kamida 6 ta belgi" minlength="6" required>
+      <p class="field__error">Parol kamida 6 ta belgidan iborat bo‘lsin.</p>
+    </div>
+    <div class="field">
+      <label class="field__label" for="password2">Parolni takrorlang</label>
+      <input class="input" id="password2" name="password2" type="password"
+             autocomplete="new-password" placeholder="Parolni qayta yozing" required>
+      <p class="field__error">Parollar mos kelmadi.</p>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn btn--white" type="submit" id="submitBtn">
+      <span class="btn__spinner" aria-hidden="true"></span>
+      <span class="btn__label">Davom etish</span>
+    </button>
+  </div>
+
+  <p class="legal">
+    Davom etish orqali siz
+    <a href="#" target="_blank" rel="noopener">foydalanish shartnomasiga</a>
+    rozilik bildirasiz.
+  </p>
+
+  <p class="switch-link">
+    Hisobingiz bormi? <a href="{% url 'frontend:login' %}">Kirish</a>
+  </p>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var A = window.VectorAPI;
+  var form = document.getElementById("registerForm");
+  var alertBox = document.getElementById("formAlert");
+  var btn = document.getElementById("submitBtn");
+  var el = function (id) { return document.getElementById(id); };
+
+  A.attachPhoneMask(el("phone"));
+  A.attachDateMask(el("birth_date"));
+  el("phone").focus();
+
+  /* ---------- Rolga qarab maydonlarni ko'rsatish ---------- */
+  function currentRole() {
+    var checked = form.querySelector('input[name="role"]:checked');
+    return checked ? checked.value : "student";
+  }
+  function applyRole() {
+    var role = currentRole();
+    form.querySelectorAll("[data-role-only]").forEach(function (box) {
+      box.classList.toggle("is-shown", box.getAttribute("data-role-only") === role);
+    });
+    // O'qituvchilar uchun maktab maydoni "Ish joyingiz"ga aylanadi
+    var schoolLabel = form.querySelector('label[for="school"]');
+    schoolLabel.textContent = role === "teacher"
+      ? "Ishlaydigan maktabingiz (ixtiyoriy)"
+      : "Maktabingiz raqami (ixtiyoriy)";
+  }
+  form.querySelectorAll('input[name="role"]').forEach(function (radio) {
+    radio.addEventListener("change", applyRole);
+  });
+  applyRole();
+
+  function validate() {
+    var ok = true;
+    var role = currentRole();
+    if (!A.phoneIsValid(el("phone").value)) { A.markInvalid(el("phone"), "Telefon raqamni to‘liq kiriting."); ok = false; }
+    if (el("full_name").value.trim().split(/\s+/).length < 2) {
+      A.markInvalid(el("full_name"), "Ism va familiyangizni to‘liq kiriting."); ok = false;
+    }
+    if (!el("region").value.trim()) { A.markInvalid(el("region"), "Viloyatingizni kiriting."); ok = false; }
+    if (!el("district").value.trim()) { A.markInvalid(el("district"), "Shahar yoki tumaningizni kiriting."); ok = false; }
+    if (role === "teacher" && !el("subject").value.trim()) {
+      A.markInvalid(el("subject"), "Fan nomini kiriting."); ok = false;
+    }
+    if (!A.toIsoDate(el("birth_date").value)) {
+      A.markInvalid(el("birth_date"), "Sanani KK.OO.YYYY ko‘rinishida kiriting."); ok = false;
+    }
+    if (el("password").value.length < 6) {
+      A.markInvalid(el("password"), "Parol kamida 6 ta belgidan iborat bo‘lsin."); ok = false;
+    }
+    if (el("password").value !== el("password2").value) {
+      A.markInvalid(el("password2"), "Parollar mos kelmadi."); ok = false;
+    }
+    return ok;
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    A.hideAlert(alertBox);
+    A.clearInvalid(form);
+    if (!validate()) return;
+
+    A.setLoading(btn, true, "Yuborilmoqda...");
+    A.request("/register/", {
+      method: "POST",
+      auth: false,
+      body: {
+        phone: "+998" + A.digitsOnly(el("phone").value).slice(-9),
+        full_name: el("full_name").value.trim(),
+        role: currentRole(),
+        subject: el("subject").value.trim(),
+        region: el("region").value.trim(),
+        district: el("district").value.trim(),
+        school: el("school").value.trim(),
+        promo_code: el("promo_code").value.trim().toUpperCase(),
+        grade: el("grade").value.trim(),
+        birth_date: A.toIsoDate(el("birth_date").value),
+        password: el("password").value,
+        password2: el("password2").value
+      }
+    }).then(function (data) {
+      A.save(A.STORE.verification, data);
+      window.location.href = "{% url 'frontend:verify' %}";
+    }).catch(function (err) {
+      A.setLoading(btn, false);
+      if (!A.applyFieldErrors(form, err.data)) A.showAlert(alertBox, err.message, "error");
+    });
+  });
+})();
+</script>
+{% endblock %}

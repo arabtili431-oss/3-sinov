@@ -1,0 +1,41 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Adminlar" %}</h2>
+    <p class="page__sub">{% trans "Panelga kira oladigan hisoblar" %}</p></div>
+  <div class="page__actions">
+    <a class="btn btn--primary" href="{% url 'panel:admin_create' %}">➕ {% trans "Admin qo'shish" %}</a></div>
+</div>
+
+<div class="card"><div class="table-wrap"><table class="table">
+  <thead><tr><th>{% trans "Admin" %}</th><th>{% trans "Huquqlar" %}</th>
+    <th>{% trans "Oxirgi kirish" %}</th><th>{% trans "Holat" %}</th><th></th></tr></thead>
+  <tbody>
+  {% for a in page %}
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:11px">
+        {% if a.avatar %}<img class="avatar" src="{{ a.avatar.url }}" alt="">
+        {% else %}<span class="avatar">{{ a.full_name|slice:":1"|upper }}</span>{% endif %}
+        <div><div class="table__main">{{ a.full_name }}</div><div class="table__sub">{{ a.phone }}</div></div>
+      </div></td>
+      <td>{% if a.is_superuser %}<span class="badge badge--accent">{% trans "Superadmin" %}</span>
+          {% else %}<span class="badge badge--brand">{% trans "Administrator" %}</span>{% endif %}</td>
+      <td style="color:var(--muted);font-size:13px">{{ a.last_login|date:"d.m.Y H:i"|default:"—" }}</td>
+      <td>{% if a.is_active %}<span class="badge badge--ok">{% trans "Faol" %}</span>
+          {% else %}<span class="badge badge--danger">{% trans "Bloklangan" %}</span>{% endif %}</td>
+      <td><div class="table__actions">
+        <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:admin_edit' a.pk %}">✏️</a>
+        {% if not a.is_superuser and a.pk != request.user.pk %}
+          <form method="post" action="{% url 'panel:admin_delete' a.pk %}"
+                data-confirm="{% trans 'Admin huquqlari olib tashlansinmi?' %}">
+            {% csrf_token %}<button class="btn btn--danger btn--sm btn--icon" type="submit">🚫</button></form>
+        {% endif %}
+      </div></td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">{% include "panel/partials/_empty.html" with icon="🔐" %}</td></tr>
+  {% endfor %}
+  </tbody>
+</table></div>{% include "panel/partials/_pagination.html" %}</div>
+{% endblock %}

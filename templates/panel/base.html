@@ -1,0 +1,172 @@
+{% load static i18n %}<!DOCTYPE html>
+<html lang="{{ CURRENT_LANGUAGE }}" data-theme="{{ PANEL_THEME }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title|default:_("Boshqaruv") }} — VECTOR</title>
+  <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar__brand" href="{% url 'panel:dashboard' %}">
+      <img src="{% static 'img/logo.png' %}" alt="VECTOR">
+      <span>VECTOR</span>
+    </a>
+
+    <nav class="nav">
+      <a class="nav__link {% if request.resolver_match.url_name == 'dashboard' %}is-active{% endif %}"
+         href="{% url 'panel:dashboard' %}">
+        <span class="nav__icon">📊</span> {% trans "Dashboard" %}
+      </a>
+
+      <div class="nav__group">
+        <div class="nav__title">{% trans "Ta'lim" %}</div>
+        <a class="nav__link {% if 'course' in request.resolver_match.url_name or 'module' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:course_list' %}">
+          <span class="nav__icon">📚</span> {% trans "Kurslar" %}
+        </a>
+        <a class="nav__link {% if 'category' == request.resolver_match.url_name|slice:':8' %}is-active{% endif %}"
+           href="{% url 'panel:category_list' %}">
+          <span class="nav__icon">🏷️</span> {% trans "Kategoriyalar" %}
+        </a>
+        <a class="nav__link {% if 'lesson' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:lesson_list' %}">
+          <span class="nav__icon">🎬</span> {% trans "Darslar" %}
+        </a>
+      </div>
+
+      <div class="nav__group">
+        <div class="nav__title">{% trans "Savdo" %}</div>
+        <a class="nav__link {% if 'product' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:product_list' %}">
+          <span class="nav__icon">🛒</span> {% trans "Mahsulotlar" %}
+        </a>
+        <a class="nav__link {% if 'order' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:order_list' %}">
+          <span class="nav__icon">📦</span> {% trans "Buyurtmalar" %}
+          {% if new_orders_count %}<span class="nav__badge">{{ new_orders_count }}</span>{% endif %}
+        </a>
+        <a class="nav__link {% if 'shop_category' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:shop_category_list' %}">
+          <span class="nav__icon">🗂️</span> {% trans "Do'kon kategoriyalari" %}
+        </a>
+      </div>
+
+      <div class="nav__group">
+        <div class="nav__title">{% trans "Monetizatsiya" %}</div>
+        <a class="nav__link {% if 'plan' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:plan_list' %}">
+          <span class="nav__icon">💎</span> {% trans "Premium tariflar" %}
+        </a>
+        <a class="nav__link {% if 'subscription' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:subscription_list' %}">
+          <span class="nav__icon">⭐</span> {% trans "Obunalar" %}
+        </a>
+        <a class="nav__link {% if 'payment' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:payment_list' %}">
+          <span class="nav__icon">💳</span> {% trans "To'lovlar" %}
+        </a>
+      </div>
+
+      <div class="nav__group">
+        <div class="nav__title">{% trans "Kontent" %}</div>
+        <a class="nav__link {% if 'notification' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:notification_list' %}">
+          <span class="nav__icon">🔔</span> {% trans "Bildirishnomalar" %}
+        </a>
+        <a class="nav__link {% if 'banner' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:banner_list' %}">
+          <span class="nav__icon">🖼️</span> {% trans "Bannerlar" %}
+        </a>
+      </div>
+
+      <div class="nav__group">
+        <div class="nav__title">{% trans "Tizim" %}</div>
+        <a class="nav__link {% if 'user' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:user_list' %}">
+          <span class="nav__icon">👥</span> {% trans "Foydalanuvchilar" %}
+        </a>
+        <a class="nav__link {% if 'admin' in request.resolver_match.url_name %}is-active{% endif %}"
+           href="{% url 'panel:admin_list' %}">
+          <span class="nav__icon">🔐</span> {% trans "Adminlar" %}
+        </a>
+        <a class="nav__link {% if request.resolver_match.url_name == 'statistics' %}is-active{% endif %}"
+           href="{% url 'panel:statistics' %}">
+          <span class="nav__icon">📈</span> {% trans "Statistika" %}
+        </a>
+        <a class="nav__link {% if request.resolver_match.url_name == 'activity' %}is-active{% endif %}"
+           href="{% url 'panel:activity' %}">
+          <span class="nav__icon">🕘</span> {% trans "Amallar jurnali" %}
+        </a>
+        <a class="nav__link {% if request.resolver_match.url_name == 'settings' %}is-active{% endif %}"
+           href="{% url 'panel:settings' %}">
+          <span class="nav__icon">⚙️</span> {% trans "Sozlamalar" %}
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="burger" data-burger type="button" aria-label="{% trans 'Menyu' %}">☰</button>
+      <h1 class="topbar__title">{{ page_title|default:_("Boshqaruv paneli") }}</h1>
+
+      <div class="topbar__spacer"></div>
+
+      <div class="dropdown">
+        <button class="icon-btn" data-dropdown type="button" title="{% trans 'Til' %}">🌐</button>
+        <div class="dropdown__menu">
+          {% for code, label in PANEL_LANGUAGES %}
+            <a class="dropdown__item {% if code == CURRENT_LANGUAGE %}is-active{% endif %}"
+               href="{% url 'panel:set_language' code %}">{{ label }}</a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <button class="icon-btn" data-theme-toggle type="button" title="{% trans 'Mavzu' %}">
+        <span data-theme-icon>{% if PANEL_THEME == 'dark' %}☀️{% else %}🌙{% endif %}</span>
+      </button>
+
+      <div class="dropdown">
+        <div class="userchip" data-dropdown>
+          {% if request.user.avatar %}
+            <img class="avatar" src="{{ request.user.avatar.url }}" alt="">
+          {% else %}
+            <span class="avatar">{{ request.user.full_name|slice:":1"|upper|default:"A" }}</span>
+          {% endif %}
+          <div>
+            <div class="userchip__name">{{ request.user.full_name|default:request.user.phone }}</div>
+            <div class="userchip__role">{% if request.user.is_superuser %}{% trans "Superadmin" %}{% else %}{% trans "Administrator" %}{% endif %}</div>
+          </div>
+        </div>
+        <div class="dropdown__menu">
+          <a class="dropdown__item" href="{% url 'panel:user_detail' request.user.pk %}">👤 {% trans "Profilim" %}</a>
+          <a class="dropdown__item" href="{% url 'panel:settings' %}">⚙️ {% trans "Sozlamalar" %}</a>
+          <a class="dropdown__item" href="{% url 'panel:logout' %}">🚪 {% trans "Chiqish" %}</a>
+        </div>
+      </div>
+    </header>
+
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message message--{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <main class="page">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+
+<script src="{% static 'js/panel.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

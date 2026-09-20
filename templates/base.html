@@ -1,0 +1,33 @@
+{% load static %}<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}VECTOR{% endblock %}</title>
+  <meta name="description" content="VECTOR — O'zbekistondagi 1-raqamli onlayn ta'lim platformasi">
+  <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <div class="auth-layout">
+    <aside class="auth-brand">
+      <img class="auth-brand__logo" src="{% static 'img/logo.png' %}" alt="VECTOR logotipi">
+      <h1 class="auth-brand__name">VECTOR</h1>
+      <p class="auth-brand__tagline">O‘zbekistondagi 1-raqamli onlayn ta’lim platformasi</p>
+    </aside>
+
+    <main class="auth-panel {% block panel_class %}{% endblock %}">
+      <div class="auth-panel__inner">
+        {% block panel %}{% endblock %}
+      </div>
+    </main>
+  </div>
+
+  <script src="{% static 'js/api.js' %}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

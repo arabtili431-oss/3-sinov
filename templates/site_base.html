@@ -1,0 +1,111 @@
+{% load static %}<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}VECTOR — O'zbekistondagi 1-raqamli onlayn ta'lim platformasi{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}VECTOR — zamonaviy kasblarni video darslar orqali o'rganing.{% endblock %}">
+  <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body class="site">
+
+  <header class="nav">
+    <div class="nav__row">
+      <a class="nav__logo" href="{% url 'frontend:home' %}">
+        <img src="{% static 'img/logo.png' %}" alt="Vector"> VECTOR
+      </a>
+
+      <button class="btn btn--ghost btn--sm nav__mobile-toggle" data-nav-toggle type="button">☰</button>
+
+      <nav class="nav__links">
+        <a class="nav__link nav__link--premium {% block nav_premium %}{% endblock %}" href="{% url 'frontend:premium' %}">👑 Premium</a>
+        <a class="nav__link {% block nav_home %}{% endblock %}" href="{% url 'frontend:home' %}">Asosiy</a>
+        <a class="nav__link {% block nav_shop %}{% endblock %}" href="{% url 'frontend:shop' %}">Do'kon</a>
+        <a class="nav__link {% block nav_courses %}{% endblock %}" href="{% url 'frontend:courses' %}">Kurslar</a>
+        <a class="nav__link {% block nav_leaders %}{% endblock %}" href="{% url 'frontend:leaderboard' %}">Liderlar</a>
+        <a class="nav__link {% block nav_miniapp %}{% endblock %}" href="{% url 'frontend:miniapp' %}">Mini app</a>
+      </nav>
+
+      <div class="nav__right">
+        <div class="nav__pop" data-bell-wrap>
+          <button class="nav__bell" title="Bildirishnomalar" type="button" data-bell-toggle>
+            <span class="dot" data-bell-dot></span>🔔
+          </button>
+          <div class="nav__panel nav__panel--notif" data-notif-dropdown hidden>
+            <div class="nav__panel-title">Bildirishnomalar</div>
+            <div class="nav__notif-list" data-notif-list>
+              <div class="nav__notif-loading">Yuklanmoqda...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav__guest" data-nav-guest style="display:none">
+          <a class="btn btn--ghost btn--sm" href="{% url 'frontend:login' %}">Kirish</a>
+          <a class="btn btn--primary btn--sm" href="{% url 'frontend:register' %}">Ro'yxatdan o'tish</a>
+        </div>
+
+        <div class="nav__pop" data-nav-user style="display:none">
+          <button class="nav__user" type="button" data-user-toggle>
+            <img data-user-avatar src="{% static 'img/logo.png' %}" alt="">
+            <div>
+              <div class="nav__user-name" data-user-name>—</div>
+              <div class="nav__user-coin" data-user-coin>0 Coin</div>
+            </div>
+            <span class="nav__caret">▾</span>
+          </button>
+          <div class="nav__panel nav__panel--user" data-user-dropdown hidden>
+            <a class="nav__panel-link" href="{% url 'frontend:premium' %}">👑 Premium</a>
+            <a class="nav__panel-link" href="{% url 'frontend:cart' %}">🛒 Savatcha</a>
+            <a class="nav__panel-link" href="{% url 'frontend:leaderboard' %}">🏆 Liderlar</a>
+            <button class="nav__panel-link nav__panel-link--danger" type="button" data-nav-logout>🚪 Chiqish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <div class="site-footer__brand"><img src="{% static 'img/logo.png' %}" alt="" style="width:26px;height:26px"> VECTOR</div>
+          <p class="site-footer__desc">IT sohasini noldan boshlab, professionallik sari qadam qo'ying.</p>
+        </div>
+        <div>
+          <h4>Sayt xaritasi</h4>
+          <a href="{% url 'frontend:home' %}">Asosiy</a>
+          <a href="{% url 'frontend:courses' %}">Kurslar</a>
+          <a href="{% url 'frontend:leaderboard' %}">Liderlar</a>
+        </div>
+        <div>
+          <h4>Xizmatlar</h4>
+          <a href="#">Maxfiylik siyosati</a>
+          <a href="#">Foydalanish shartlari</a>
+          <a href="#">Ommaviy oferta</a>
+        </div>
+        <div>
+          <h4>Ijtimoiy tarmoqlar</h4>
+          <a href="https://t.me/{{ bot_username|default:'' }}" target="_blank" rel="noopener">Telegram</a>
+          <a href="#" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <span>© {% now "Y" %} Vector ta'lim platformasi. Barcha huquqlar himoyalangan.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/site.js' %}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

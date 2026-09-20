@@ -1,0 +1,29 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{{ page_title }}</h2><p class="page__sub">{{ course.title }}</p></div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:course_content' course.pk %}">← {% trans "Orqaga" %}</a>
+  </div>
+</div>
+<form method="post" novalidate>
+  {% csrf_token %}
+  <div class="card"><div class="card__body">
+    <div class="form-grid">
+      {% include "panel/partials/_field.html" with field=form.title full=1 %}
+      {% include "panel/partials/_field.html" with field=form.description full=1 %}
+      {% include "panel/partials/_field.html" with field=form.order %}
+    </div>
+    <div style="margin-top:16px">
+      <label class="switchbox"><span>{{ form.is_active.label }}</span>
+        <span class="switch">{{ form.is_active }}<span class="switch__slider"></span></span></label>
+    </div>
+  </div></div>
+  {% include "panel/partials/_translations.html" %}
+  <div class="form-actions">
+    <button class="btn btn--primary" type="submit">💾 {% trans "Saqlash" %}</button>
+    <a class="btn btn--ghost" href="{% url 'panel:course_content' course.pk %}">{% trans "Bekor qilish" %}</a>
+  </div>
+</form>
+{% endblock %}

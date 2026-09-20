@@ -1,0 +1,29 @@
+{% load static i18n %}<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% trans "To'lov natijasi" %} — VECTOR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-box" style="text-align:center">
+    <div style="font-size:52px;margin-bottom:10px">
+      {% if payment and payment.state == 'paid' %}✅{% elif payment and payment.state == 'cancelled' %}❌{% else %}⏳{% endif %}
+    </div>
+    <h1>
+      {% if payment and payment.state == 'paid' %}{% trans "To'lov muvaffaqiyatli!" %}
+      {% elif payment and payment.state == 'cancelled' %}{% trans "To'lov bekor qilindi" %}
+      {% else %}{% trans "To'lov holati tekshirilmoqda" %}{% endif %}
+    </h1>
+    <p class="sub">
+      {% if payment %}{{ payment.amount }} {% trans "so'm" %} · {{ payment.get_provider_display }}
+      {% else %}{% trans "To'lov ma'lumotlari topilmadi." %}{% endif %}
+    </p>
+    <a class="btn btn--primary" href="/" style="width:100%">{% trans "Bosh sahifa" %}</a>
+  </div>
+</div>
+</body>
+</html>

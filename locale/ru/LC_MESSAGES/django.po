@@ -1,0 +1,1545 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-11 00:23+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+#: accounts/models.py:61 templates/panel/dashboard.html:107
+msgid "O'quvchi"
+msgstr "Ученик"
+
+#: accounts/models.py:62 templates/panel/courses/list.html:47
+#: templates/panel/dashboard.html:105
+msgid "O'qituvchi"
+msgstr "Преподаватель"
+
+#: accounts/models.py:63 templates/panel/admins/list.html:23
+#: templates/panel/base.html:144
+msgid "Administrator"
+msgstr "Администратор"
+
+#: billing/models.py:21
+msgid "Oylik"
+msgstr "Ежемесячно"
+
+#: billing/models.py:21
+msgid "Yillik"
+msgstr "Ежегодно"
+
+#: billing/models.py:66
+msgid "To'lov kutilmoqda"
+msgstr "Ожидает оплаты"
+
+#: billing/models.py:67 templates/panel/admins/list.html:25
+#: templates/panel/courses/categories.html:35
+#: templates/panel/courses/list.html:36 templates/panel/courses/list.html:77
+#: templates/panel/shop/categories.html:21
+msgid "Faol"
+msgstr "Активен"
+
+#: billing/models.py:68
+msgid "Muddati tugagan"
+msgstr "Истёк"
+
+#: billing/models.py:69 billing/models.py:149 shop/models.py:114
+msgid "Bekor qilingan"
+msgstr "Отменён"
+
+#: billing/models.py:138
+msgid "Qo'lda"
+msgstr "Вручную"
+
+#: billing/models.py:146
+msgid "Yaratilgan"
+msgstr "Создан"
+
+#: billing/models.py:147
+msgid "Ushlab turilgan"
+msgstr "В обработке"
+
+#: billing/models.py:148 shop/models.py:111
+msgid "To'langan"
+msgstr "Оплачен"
+
+#: billing/models.py:156
+msgid "Premium obuna"
+msgstr "Премиум-подписка"
+
+#: billing/models.py:157
+msgid "Do'kon buyurtmasi"
+msgstr "Заказ в магазине"
+
+#: billing/models.py:158 templates/panel/courses/list.html:46
+msgid "Kurs"
+msgstr "Курс"
+
+#: config/settings.py:101
+msgid "O'zbekcha"
+msgstr "Узбекский"
+
+#: config/settings.py:102
+msgid "Ўзбекча"
+msgstr "Узбекский (кирилл.)"
+
+#: config/settings.py:103
+msgid "Русский"
+msgstr "Русский"
+
+#: config/settings.py:104
+msgid "English"
+msgstr "Английский"
+
+#: core/models.py:27 templates/billing/result.html:25
+msgid "Bosh sahifa"
+msgstr "Главная"
+
+#: core/models.py:28
+msgid "Kurslar sahifasi"
+msgstr "Страница курсов"
+
+#: core/models.py:29
+msgid "Do'kon sahifasi"
+msgstr "Страница магазина"
+
+#: core/models.py:75
+msgid "Barcha foydalanuvchilar"
+msgstr "Все пользователи"
+
+#: core/models.py:76
+msgid "Faqat premium"
+msgstr "Только премиум"
+
+#: core/models.py:77
+msgid "Faqat oddiy"
+msgstr "Только обычные"
+
+#: core/models.py:78 templates/panel/courses/list.html:50
+msgid "O'quvchilar"
+msgstr "Ученики"
+
+#: core/models.py:79
+msgid "O'qituvchilar"
+msgstr "Преподаватели"
+
+#: core/models.py:80
+msgid "Muayyan kurs o'quvchilari"
+msgstr "Ученики конкретного курса"
+
+#: core/models.py:85 templates/panel/content/notifications.html:25
+msgid "Qoralama"
+msgstr "Черновик"
+
+#: core/models.py:85 shop/models.py:112
+#: templates/panel/content/notifications.html:23
+msgid "Yuborilgan"
+msgstr "Отправлен"
+
+#: core/models.py:193
+msgid "Qo'shildi"
+msgstr "Добавлено"
+
+#: core/models.py:194
+msgid "O'zgartirildi"
+msgstr "Изменено"
+
+#: core/models.py:195
+msgid "O'chirildi"
+msgstr "Удалено"
+
+#: courses/models.py:55 templates/panel/courses/content.html:70
+#: templates/panel/courses/lessons.html:43
+msgid "Bepul"
+msgstr "Бесплатно"
+
+#: courses/models.py:56
+msgid "Premium obuna bilan"
+msgstr "По премиум-подписке"
+
+#: courses/models.py:57
+msgid "Alohida sotib olinadi"
+msgstr "Покупается отдельно"
+
+#: courses/models.py:64
+msgid "Boshlang'ich"
+msgstr "Начальный"
+
+#: courses/models.py:65
+msgid "O'rta"
+msgstr "Средний"
+
+#: courses/models.py:66
+msgid "Yuqori"
+msgstr "Продвинутый"
+
+#: courses/models.py:181
+msgid "Telegram (yopiq kanal)"
+msgstr "Telegram (закрытый канал)"
+
+#: courses/models.py:182
+msgid "Tashqi havola"
+msgstr "Внешняя ссылка"
+
+#: courses/models.py:183 templates/panel/courses/content.html:65
+msgid "Videosiz"
+msgstr "Без видео"
+
+#: panel/forms.py:118
+msgid "Sotiladigan kurs uchun narx kiritilishi shart."
+msgstr "Для платного курса необходимо указать цену."
+
+#: panel/forms.py:130
+msgid "Video fayl (MP4)"
+msgstr "Видеофайл (MP4)"
+
+#: panel/forms.py:131
+msgid "Fayl yopiq Telegram kanaliga yuklanadi, serverda saqlanmaydi."
+msgstr "Файл загружается в закрытый Telegram-канал и не хранится на сервере."
+
+#: panel/forms.py:150
+msgid "Soniyalarda. Masalan, 12 daqiqa = 720"
+msgstr "В секундах. Например, 12 минут = 720"
+
+#: panel/forms.py:156
+msgid "Video havolasini kiriting."
+msgstr "Укажите ссылку на видео."
+
+#: panel/forms.py:159
+msgid "Video faylni tanlang."
+msgstr "Выберите видеофайл."
+
+#: panel/forms.py:215 templates/panel/billing/payments.html:25
+#: templates/panel/billing/subscriptions.html:44
+#: templates/panel/users/list.html:39
+msgid "Foydalanuvchi"
+msgstr "Пользователь"
+
+#: panel/forms.py:216 templates/panel/billing/subscriptions.html:44
+msgid "Tarif"
+msgstr "Тариф"
+
+#: panel/forms.py:217
+msgid "Necha kunga"
+msgstr "На сколько дней"
+
+#: panel/forms.py:253
+msgid "Kursni tanlang."
+msgstr "Выберите курс."
+
+#: panel/forms.py:283 panel/forms.py:323
+msgid "Parol"
+msgstr "Пароль"
+
+#: panel/forms.py:284
+msgid "Tahrirlashda bo'sh qoldirilsa, parol o'zgarmaydi."
+msgstr "Если оставить пустым при редактировании, пароль не изменится."
+
+#: panel/forms.py:295
+msgid "Telefon raqam noto'g'ri."
+msgstr "Неверный номер телефона."
+
+#: panel/forms.py:298
+msgid "Bu raqam band."
+msgstr "Этот номер уже занят."
+
+#: panel/forms.py:304
+msgid "Yangi admin uchun parol kiriting."
+msgstr "Укажите пароль для нового администратора."
+
+#: panel/forms.py:320
+msgid "Telefon raqam"
+msgstr "Номер телефона"
+
+#: panel/utils.py:26
+msgid "Sizda bu bo'limga ruxsat yo'q."
+msgstr "У вас нет доступа к этому разделу."
+
+#: panel/utils.py:62
+msgid "Saqlandi."
+msgstr "Сохранено."
+
+#: panel/utils.py:62
+msgid "Qo'shildi."
+msgstr "Добавлено."
+
+#: panel/utils.py:68
+msgid "O'chirildi."
+msgstr "Удалено."
+
+#: panel/views_auth.py:25
+msgid "Telefon raqam yoki parol noto'g'ri."
+msgstr "Неверный номер телефона или пароль."
+
+#: panel/views_auth.py:27
+msgid "Sizda admin panelga kirish huquqi yo'q."
+msgstr "У вас нет прав для входа в панель управления."
+
+#: panel/views_billing.py:19 templates/panel/base.html:64
+#: templates/panel/billing/plans.html:5 templates/panel/statistics.html:72
+msgid "Premium tariflar"
+msgstr "Премиум-тарифы"
+
+#: panel/views_billing.py:32 templates/panel/billing/plans.html:9
+msgid "Tarif qo'shish"
+msgstr "Добавить тариф"
+
+#: panel/views_billing.py:32
+msgid "Tarifni tahrirlash"
+msgstr "Редактировать тариф"
+
+#: panel/views_billing.py:54
+msgid "Tarif yoqildi."
+msgstr "Тариф включён."
+
+#: panel/views_billing.py:54
+msgid "Tarif o'chirildi."
+msgstr "Тариф отключён."
+
+#: panel/views_billing.py:77
+msgid "Premium obuna berildi."
+msgstr "Премиум-подписка выдана."
+
+#: panel/views_billing.py:81 templates/panel/base.html:68
+#: templates/panel/billing/plans.html:8
+#: templates/panel/billing/subscriptions.html:5
+#: templates/panel/users/detail.html:93
+msgid "Obunalar"
+msgstr "Подписки"
+
+#: panel/views_billing.py:94
+msgid "Obuna bekor qilindi."
+msgstr "Подписка отменена."
+
+#: panel/views_billing.py:114 templates/panel/base.html:72
+#: templates/panel/billing/payments.html:5 templates/panel/users/detail.html:34
+#: templates/panel/users/detail.html:114
+msgid "To'lovlar"
+msgstr "Платежи"
+
+#: panel/views_content.py:21 templates/panel/base.html:84
+#: templates/panel/content/banners.html:5
+msgid "Bannerlar"
+msgstr "Баннеры"
+
+#: panel/views_content.py:34 templates/panel/content/banners.html:8
+msgid "Banner qo'shish"
+msgstr "Добавить баннер"
+
+#: panel/views_content.py:34
+msgid "Bannerni tahrirlash"
+msgstr "Редактировать баннер"
+
+#: panel/views_content.py:56
+msgid "Banner yoqildi."
+msgstr "Баннер включён."
+
+#: panel/views_content.py:56
+msgid "Banner o'chirildi."
+msgstr "Баннер отключён."
+
+#: panel/views_content.py:65 templates/panel/base.html:80
+#: templates/panel/content/notifications.html:5
+msgid "Bildirishnomalar"
+msgstr "Уведомления"
+
+#: panel/views_content.py:74
+msgid "Yuborilgan bildirishnomani tahrirlab bo'lmaydi."
+msgstr "Отправленное уведомление нельзя редактировать."
+
+#: panel/views_content.py:91
+msgid "Bildirishnoma yaratish"
+msgstr "Создать уведомление"
+
+#: panel/views_content.py:91
+msgid "Bildirishnomani tahrirlash"
+msgstr "Редактировать уведомление"
+
+#: panel/views_content.py:104 templates/panel/content/notifications.html:29
+msgid "Yuborish"
+msgstr "Отправить"
+
+#: panel/views_content.py:110
+msgid "Bu bildirishnoma allaqachon yuborilgan."
+msgstr "Это уведомление уже отправлено."
+
+#: panel/views_content.py:130
+msgid "Yuborildi"
+msgstr "Отправлено"
+
+#: panel/views_content.py:134
+#, python-format
+msgid "Bildirishnoma %(count)d ta foydalanuvchiga yuborildi."
+msgstr "Уведомление отправлено %(count)d пользователям."
+
+#: panel/views_content.py:161 templates/panel/base.html:108
+#: templates/panel/base.html:149 templates/panel/settings.html:4
+msgid "Sozlamalar"
+msgstr "Настройки"
+
+#: panel/views_content.py:173 templates/panel/activity.html:4
+#: templates/panel/base.html:104
+msgid "Amallar jurnali"
+msgstr "Журнал действий"
+
+#: panel/views_courses.py:21 templates/panel/courses/categories.html:6
+msgid "Kurs kategoriyalari"
+msgstr "Категории курсов"
+
+#: panel/views_courses.py:35 panel/views_shop.py:90
+#: templates/panel/courses/categories.html:9
+msgid "Kategoriya qo'shish"
+msgstr "Добавить категорию"
+
+#: panel/views_courses.py:35 panel/views_shop.py:90
+msgid "Kategoriyani tahrirlash"
+msgstr "Редактировать категорию"
+
+#: panel/views_courses.py:76 panel/views_dashboard.py:109
+#: templates/panel/base.html:31 templates/panel/courses/categories.html:8
+#: templates/panel/courses/categories.html:17
+#: templates/panel/courses/content.html:14 templates/panel/courses/list.html:7
+#: templates/panel/users/detail.html:32 templates/panel/users/list.html:42
+msgid "Kurslar"
+msgstr "Курсы"
+
+#: panel/views_courses.py:94 templates/panel/courses/list.html:12
+msgid "Kurs qo'shish"
+msgstr "Добавить курс"
+
+#: panel/views_courses.py:94
+msgid "Kursni tahrirlash"
+msgstr "Редактировать курс"
+
+#: panel/views_courses.py:119
+msgid "Kurs yoqildi."
+msgstr "Курс включён."
+
+#: panel/views_courses.py:119
+msgid "Kurs o'chirildi."
+msgstr "Курс отключён."
+
+#: panel/views_courses.py:156
+msgid "Modul qo'shish"
+msgstr "Добавить модуль"
+
+#: panel/views_courses.py:156
+msgid "Modulni tahrirlash"
+msgstr "Редактировать модуль"
+
+#: panel/views_courses.py:202 templates/panel/courses/content.html:49
+#: templates/panel/courses/lessons.html:26
+msgid "Dars"
+msgstr "Урок"
+
+#: panel/views_courses.py:219 templates/panel/courses/content.html:17
+msgid "Dars qo'shish"
+msgstr "Добавить урок"
+
+#: panel/views_courses.py:219
+msgid "Darsni tahrirlash"
+msgstr "Редактировать урок"
+
+#: panel/views_courses.py:243
+msgid "Dars yoqildi."
+msgstr "Урок включён."
+
+#: panel/views_courses.py:243
+msgid "Dars bloklandi."
+msgstr "Урок заблокирован."
+
+#: panel/views_courses.py:253
+msgid "Fayl o'chirildi."
+msgstr "Файл удалён."
+
+#: panel/views_courses.py:270 templates/panel/base.html:39
+#: templates/panel/courses/list.html:49 templates/panel/courses/list.html:83
+#: templates/panel/statistics.html:30
+msgid "Darslar"
+msgstr "Уроки"
+
+#: panel/views_dashboard.py:76 templates/panel/base.html:117
+#: templates/panel/login.html:19
+msgid "Boshqaruv paneli"
+msgstr "Панель управления"
+
+#: panel/views_dashboard.py:107
+msgid "Premium obunalar"
+msgstr "Премиум-подписки"
+
+#: panel/views_dashboard.py:108
+msgid "Do'kon savdolari"
+msgstr "Продажи магазина"
+
+#: panel/views_dashboard.py:125 templates/panel/base.html:100
+#: templates/panel/statistics.html:5
+msgid "Statistika"
+msgstr "Статистика"
+
+#: panel/views_shop.py:32 templates/panel/base.html:47
+#: templates/panel/shop/categories.html:7
+#: templates/panel/shop/categories.html:13
+#: templates/panel/shop/order_detail.html:14
+#: templates/panel/shop/orders.html:22 templates/panel/shop/products.html:5
+msgid "Mahsulotlar"
+msgstr "Товары"
+
+#: panel/views_shop.py:47 templates/panel/shop/products.html:9
+msgid "Mahsulot qo'shish"
+msgstr "Добавить товар"
+
+#: panel/views_shop.py:47
+msgid "Mahsulotni tahrirlash"
+msgstr "Редактировать товар"
+
+#: panel/views_shop.py:69
+msgid "Sotuvga qo'yildi."
+msgstr "Товар выставлен на продажу."
+
+#: panel/views_shop.py:69
+msgid "Sotuvdan olindi."
+msgstr "Товар снят с продажи."
+
+#: panel/views_shop.py:77 templates/panel/base.html:56
+#: templates/panel/shop/categories.html:5
+msgid "Do'kon kategoriyalari"
+msgstr "Категории магазина"
+
+#: panel/views_shop.py:121 templates/panel/base.html:51
+#: templates/panel/shop/orders.html:5 templates/panel/statistics.html:28
+#: templates/panel/users/detail.html:36
+msgid "Buyurtmalar"
+msgstr "Заказы"
+
+#: panel/views_shop.py:142 templates/panel/shop/order_detail.html:5
+msgid "Buyurtma"
+msgstr "Заказ"
+
+#: panel/views_users.py:47 templates/panel/base.html:92
+#: templates/panel/statistics.html:20 templates/panel/users/list.html:7
+msgid "Foydalanuvchilar"
+msgstr "Пользователи"
+
+#: panel/views_users.py:86
+msgid "Foydalanuvchini tahrirlash"
+msgstr "Редактировать пользователя"
+
+#: panel/views_users.py:98
+msgid "Superadminni bloklab bo'lmaydi."
+msgstr "Суперадминистратора нельзя заблокировать."
+
+#: panel/views_users.py:105
+msgid "Foydalanuvchi bloklandi."
+msgstr "Пользователь заблокирован."
+
+#: panel/views_users.py:106
+msgid "Blokdan chiqarildi."
+msgstr "Пользователь разблокирован."
+
+#: panel/views_users.py:115
+msgid "Superadminni o'chirib bo'lmaydi."
+msgstr "Суперадминистратора нельзя удалить."
+
+#: panel/views_users.py:118
+msgid "O'zingizni o'chira olmaysiz."
+msgstr "Вы не можете удалить себя."
+
+#: panel/views_users.py:130 templates/panel/admins/list.html:5
+#: templates/panel/base.html:96
+msgid "Adminlar"
+msgstr "Администраторы"
+
+#: panel/views_users.py:147 templates/panel/admins/list.html:8
+msgid "Admin qo'shish"
+msgstr "Добавить администратора"
+
+#: panel/views_users.py:147
+msgid "Adminni tahrirlash"
+msgstr "Редактировать администратора"
+
+#: panel/views_users.py:160
+msgid "Bu adminni o'chirib bo'lmaydi."
+msgstr "Этого администратора нельзя удалить."
+
+#: panel/views_users.py:165
+msgid "Admin huquqlari olib tashlandi."
+msgstr "Права администратора сняты."
+
+#: shop/models.py:110
+msgid "Yangi"
+msgstr "Новый"
+
+#: shop/models.py:113
+msgid "Yakunlangan"
+msgstr "Завершён"
+
+#: templates/billing/result.html:6
+msgid "To'lov natijasi"
+msgstr "Результат оплаты"
+
+#: templates/billing/result.html:17
+msgid "To'lov muvaffaqiyatli!"
+msgstr "Оплата прошла успешно!"
+
+#: templates/billing/result.html:18
+msgid "To'lov bekor qilindi"
+msgstr "Оплата отменена"
+
+#: templates/billing/result.html:19
+msgid "To'lov holati tekshirilmoqda"
+msgstr "Проверяем статус оплаты"
+
+#: templates/billing/result.html:22 templates/panel/billing/payments.html:6
+#: templates/panel/billing/plans.html:22 templates/panel/courses/list.html:72
+#: templates/panel/dashboard.html:59 templates/panel/dashboard.html:67
+#: templates/panel/dashboard.html:139 templates/panel/shop/order_detail.html:29
+#: templates/panel/shop/orders.html:6 templates/panel/shop/products.html:45
+#: templates/panel/users/detail.html:119
+msgid "so'm"
+msgstr "сум"
+
+#: templates/billing/result.html:23
+msgid "To'lov ma'lumotlari topilmadi."
+msgstr "Данные об оплате не найдены."
+
+#: templates/panel/activity.html:6
+msgid "Amal"
+msgstr "Действие"
+
+#: templates/panel/activity.html:6
+msgid "Obyekt"
+msgstr "Объект"
+
+#: templates/panel/activity.html:6
+msgid "Kim"
+msgstr "Кто"
+
+#: templates/panel/activity.html:6
+msgid "Vaqt"
+msgstr "Время"
+
+#: templates/panel/admins/list.html:6
+msgid "Panelga kira oladigan hisoblar"
+msgstr "Учётные записи с доступом к панели"
+
+#: templates/panel/admins/list.html:12 templates/panel/dashboard.html:106
+msgid "Admin"
+msgstr "Админ"
+
+#: templates/panel/admins/list.html:12
+msgid "Huquqlar"
+msgstr "Права"
+
+#: templates/panel/admins/list.html:13 templates/panel/users/detail.html:57
+msgid "Oxirgi kirish"
+msgstr "Последний вход"
+
+#: templates/panel/admins/list.html:13 templates/panel/billing/payments.html:26
+#: templates/panel/billing/subscriptions.html:45
+#: templates/panel/content/banners.html:13
+#: templates/panel/content/notifications.html:12
+#: templates/panel/courses/categories.html:18
+#: templates/panel/courses/lessons.html:27 templates/panel/courses/list.html:35
+#: templates/panel/courses/list.html:51 templates/panel/shop/categories.html:14
+#: templates/panel/shop/orders.html:23 templates/panel/shop/products.html:33
+msgid "Holat"
+msgstr "Статус"
+
+#: templates/panel/admins/list.html:22 templates/panel/base.html:144
+msgid "Superadmin"
+msgstr "Суперадмин"
+
+#: templates/panel/admins/list.html:26 templates/panel/courses/content.html:71
+#: templates/panel/courses/lessons.html:44 templates/panel/users/detail.html:13
+#: templates/panel/users/list.html:29 templates/panel/users/list.html:78
+msgid "Bloklangan"
+msgstr "Заблокирован"
+
+#: templates/panel/admins/list.html:31
+msgid "Admin huquqlari olib tashlansinmi?"
+msgstr "Снять права администратора?"
+
+#: templates/panel/base.html:6
+msgid "Boshqaruv"
+msgstr "Управление"
+
+#: templates/panel/base.html:24
+msgid "Dashboard"
+msgstr "Дашборд"
+
+#: templates/panel/base.html:28
+msgid "Ta'lim"
+msgstr "Обучение"
+
+#: templates/panel/base.html:35 templates/panel/courses/list.html:11
+#: templates/panel/shop/products.html:8
+msgid "Kategoriyalar"
+msgstr "Категории"
+
+#: templates/panel/base.html:44
+msgid "Savdo"
+msgstr "Торговля"
+
+#: templates/panel/base.html:61
+msgid "Monetizatsiya"
+msgstr "Монетизация"
+
+#: templates/panel/base.html:77
+msgid "Kontent"
+msgstr "Контент"
+
+#: templates/panel/base.html:89 templates/panel/billing/payments.html:25
+msgid "Tizim"
+msgstr "Система"
+
+#: templates/panel/base.html:116
+msgid "Menyu"
+msgstr "Меню"
+
+#: templates/panel/base.html:122
+msgid "Til"
+msgstr "Язык"
+
+#: templates/panel/base.html:131
+msgid "Mavzu"
+msgstr "Тема"
+
+#: templates/panel/base.html:148
+msgid "Profilim"
+msgstr "Мой профиль"
+
+#: templates/panel/base.html:150
+msgid "Chiqish"
+msgstr "Выйти"
+
+#: templates/panel/billing/payments.html:6
+msgid "ta muvaffaqiyatli to'lov"
+msgstr "успешных платежей"
+
+#: templates/panel/billing/payments.html:12
+msgid "Raqam, ism..."
+msgstr "Номер, имя..."
+
+#: templates/panel/billing/payments.html:14
+msgid "Barcha tizimlar"
+msgstr "Все системы"
+
+#: templates/panel/billing/payments.html:18
+#: templates/panel/billing/subscriptions.html:37
+#: templates/panel/shop/orders.html:14 templates/panel/users/list.html:26
+msgid "Barcha holatlar"
+msgstr "Все статусы"
+
+#: templates/panel/billing/payments.html:21
+#: templates/panel/billing/subscriptions.html:40
+#: templates/panel/courses/lessons.html:20 templates/panel/courses/list.html:39
+#: templates/panel/shop/orders.html:17 templates/panel/shop/products.html:26
+#: templates/panel/users/list.html:32
+msgid "Qidirish"
+msgstr "Поиск"
+
+#: templates/panel/billing/payments.html:25 templates/panel/shop/orders.html:22
+msgid "Raqam"
+msgstr "Номер"
+
+#: templates/panel/billing/payments.html:26
+msgid "Nima uchun"
+msgstr "За что"
+
+#: templates/panel/billing/payments.html:26
+#: templates/panel/billing/subscriptions.html:44
+#: templates/panel/shop/orders.html:23
+msgid "Summa"
+msgstr "Сумма"
+
+#: templates/panel/billing/payments.html:26
+#: templates/panel/content/notifications.html:12
+#: templates/panel/shop/orders.html:23
+msgid "Sana"
+msgstr "Дата"
+
+#: templates/panel/billing/plans.html:6
+msgid "Ilovadagi obuna kartalari shu yerdan boshqariladi"
+msgstr "Карточки подписок в приложении управляются отсюда"
+
+#: templates/panel/billing/plans.html:19
+msgid "Ommabop"
+msgstr "Популярный"
+
+#: templates/panel/billing/plans.html:20
+#: templates/panel/content/banners.html:27
+msgid "O'chirilgan"
+msgstr "Отключён"
+
+#: templates/panel/billing/plans.html:24
+msgid "kun"
+msgstr "дн."
+
+#: templates/panel/billing/plans.html:24
+msgid "obuna"
+msgstr "подписок"
+
+#: templates/panel/billing/plans.html:29
+#: templates/panel/content/notification_send.html:25
+#: templates/panel/courses/list.html:84 templates/panel/users/detail.html:19
+#: templates/panel/users/list.html:81
+msgid "Tahrirlash"
+msgstr "Редактировать"
+
+#: templates/panel/billing/plans.html:31 templates/panel/crud_form.html:82
+#: templates/panel/shop/order_detail.html:53
+msgid "O'chirish"
+msgstr "Удалить"
+
+#: templates/panel/billing/plans.html:31
+#: templates/panel/courses/content.html:76
+msgid "Yoqish"
+msgstr "Включить"
+
+#: templates/panel/billing/plans.html:37
+msgid "Hali tarif qo'shilmagan"
+msgstr "Тарифы ещё не добавлены"
+
+#: templates/panel/billing/subscriptions.html:6
+msgid "ta faol obuna"
+msgstr "активных подписок"
+
+#: templates/panel/billing/subscriptions.html:12
+msgid "Qo'lda premium berish"
+msgstr "Выдать премиум вручную"
+
+#: templates/panel/billing/subscriptions.html:19
+msgid "Berish"
+msgstr "Выдать"
+
+#: templates/panel/billing/subscriptions.html:24
+msgid "Izoh"
+msgstr "Примечание"
+
+#: templates/panel/billing/subscriptions.html:26
+msgid ""
+"Qo'lda berilgan obuna uchun to'lov yozuvi yaratilmaydi — u statistikada "
+"daromad sifatida hisoblanmaydi."
+msgstr ""
+
+#: templates/panel/billing/subscriptions.html:27
+msgid ""
+"Amaldagi obunasi bor foydalanuvchiga qayta berilsa, muddat uzaytiriladi."
+msgstr ""
+
+#: templates/panel/billing/subscriptions.html:35
+msgid "Ism yoki telefon..."
+msgstr "Имя или телефон..."
+
+#: templates/panel/billing/subscriptions.html:45
+#: templates/panel/content/banners.html:12
+msgid "Muddat"
+msgstr "Срок"
+
+#: templates/panel/billing/subscriptions.html:51
+msgid "qo'lda"
+msgstr "вручную"
+
+#: templates/panel/billing/subscriptions.html:54
+msgid "kun qoldi"
+msgstr "дн. осталось"
+
+#: templates/panel/billing/subscriptions.html:60
+msgid "Obuna bekor qilinsinmi?"
+msgstr "Отменить подписку?"
+
+#: templates/panel/billing/subscriptions.html:61
+#: templates/panel/courses/lesson_form.html:115
+#: templates/panel/courses/module_form.html:26
+#: templates/panel/crud_form.html:71
+msgid "Bekor qilish"
+msgstr "Отмена"
+
+#: templates/panel/content/banners.html:6
+msgid "Ilova bosh sahifasidagi reklama bloklari"
+msgstr "Рекламные блоки на главной странице приложения"
+
+#: templates/panel/content/banners.html:12
+msgid "Banner"
+msgstr "Баннер"
+
+#: templates/panel/content/banners.html:12
+msgid "Joylashuv"
+msgstr "Размещение"
+
+#: templates/panel/content/banners.html:25
+msgid "Efirda"
+msgstr "В эфире"
+
+#: templates/panel/content/banners.html:26
+msgid "Kutmoqda"
+msgstr "Ожидает"
+
+#: templates/panel/content/banners.html:32
+#: templates/panel/content/notifications.html:32
+#: templates/panel/courses/categories.html:39
+#: templates/panel/shop/categories.html:25
+#: templates/panel/shop/products.html:56
+msgid "O‘chirilsinmi?"
+msgstr "Удалить?"
+
+#: templates/panel/content/notification_form.html:7
+#: templates/panel/content/notification_send.html:7
+#: templates/panel/courses/lesson_form.html:8
+#: templates/panel/courses/module_form.html:7 templates/panel/crud_form.html:11
+#: templates/panel/shop/order_detail.html:8
+#: templates/panel/users/detail.html:18
+msgid "Orqaga"
+msgstr "Назад"
+
+#: templates/panel/content/notification_form.html:38
+msgid "Qoralama sifatida saqlash"
+msgstr "Сохранить как черновик"
+
+#: templates/panel/content/notification_form.html:39
+msgid "Saqlash va yuborish"
+msgstr "Сохранить и отправить"
+
+#: templates/panel/content/notification_send.html:5
+msgid "Bildirishnomani yuborish"
+msgstr "Отправить уведомление"
+
+#: templates/panel/content/notification_send.html:17
+msgid "Qabul qiluvchilar"
+msgstr "Получатели"
+
+#: templates/panel/content/notification_send.html:18
+#: templates/panel/content/notifications.html:24
+msgid "kishi"
+msgstr "чел."
+
+#: templates/panel/content/notification_send.html:22
+#, python-format
+msgid "Bildirishnoma %(count)s ta foydalanuvchiga yuboriladi. Davom etamizmi?"
+msgstr "Уведомление будет отправлено %(count)s пользователям. Продолжить?"
+
+#: templates/panel/content/notification_send.html:24
+msgid "Hozir yuborish"
+msgstr "Отправить сейчас"
+
+#: templates/panel/content/notifications.html:7
+msgid "Yangi bildirishnoma"
+msgstr "Новое уведомление"
+
+#: templates/panel/content/notifications.html:11
+msgid "Sarlavha"
+msgstr "Заголовок"
+
+#: templates/panel/content/notifications.html:11
+msgid "Kimga"
+msgstr "Кому"
+
+#: templates/panel/content/notifications.html:11
+msgid "Kanallar"
+msgstr "Каналы"
+
+#: templates/panel/courses/categories.html:17
+#: templates/panel/shop/categories.html:13
+msgid "Nomi"
+msgstr "Название"
+
+#: templates/panel/courses/categories.html:18
+#: templates/panel/shop/categories.html:14
+msgid "Tartib"
+msgstr "Порядок"
+
+#: templates/panel/courses/categories.html:36
+#: templates/panel/courses/content.html:47 templates/panel/courses/list.html:37
+#: templates/panel/courses/list.html:78 templates/panel/shop/categories.html:22
+msgid "Nofaol"
+msgstr "Неактивен"
+
+#: templates/panel/courses/content.html:9
+msgid "modul"
+msgstr "модулей"
+
+#: templates/panel/courses/content.html:10
+#: templates/panel/courses/content.html:46
+msgid "dars"
+msgstr "уроков"
+
+#: templates/panel/courses/content.html:10
+msgid "o'quvchi"
+msgstr "учеников"
+
+#: templates/panel/courses/content.html:15
+msgid "Kurs sozlamalari"
+msgstr "Настройки курса"
+
+#: templates/panel/courses/content.html:16
+msgid "Modul"
+msgstr "Модуль"
+
+#: templates/panel/courses/content.html:26
+msgid "Telegram saqlash sozlanmagan."
+msgstr "Хранилище Telegram не настроено."
+
+#: templates/panel/courses/content.html:28
+msgid ""
+"Video yuklash uchun .env faylida TELEGRAM_STORAGE_CHAT_ID ni to'ldiring "
+"(yopiq kanal ID si va bot o'sha kanalda admin bo'lishi kerak)."
+msgstr ""
+
+#: templates/panel/courses/content.html:36
+msgid ""
+"Rasmiy Telegram API 20 MB dan katta videoni qaytara olmaydi. Katta darslar "
+"uchun local Bot API serverni sozlang."
+msgstr ""
+
+#: templates/panel/courses/content.html:52
+msgid "Modul va uning darslari o‘chiriladi. Davom etamizmi?"
+msgstr "Модуль и его уроки будут удалены. Продолжить?"
+
+#: templates/panel/courses/content.html:63
+msgid "Telegramda"
+msgstr "В Telegram"
+
+#: templates/panel/courses/content.html:64
+#: templates/panel/courses/lessons.html:38
+msgid "Havola"
+msgstr "Ссылка"
+
+#: templates/panel/courses/content.html:76 templates/panel/users/detail.html:24
+msgid "Bloklash"
+msgstr "Заблокировать"
+
+#: templates/panel/courses/content.html:81
+msgid "Dars o‘chirilsinmi?"
+msgstr "Удалить урок?"
+
+#: templates/panel/courses/content.html:87
+msgid "Bu modulda hali dars yo'q"
+msgstr "В этом модуле пока нет уроков"
+
+#: templates/panel/courses/content.html:92
+msgid "Kurs hali bo'sh. Avval modul, keyin darslar qo'shing."
+msgstr "Курс пока пуст. Сначала добавьте модуль, затем уроки."
+
+#: templates/panel/courses/content.html:94
+msgid "Birinchi modulni qo'shish"
+msgstr "Добавить первый модуль"
+
+#: templates/panel/courses/lesson_form.html:22
+msgid "Asosiy ma'lumotlar"
+msgstr "Основные данные"
+
+#: templates/panel/courses/lesson_form.html:36
+#: templates/panel/courses/lessons.html:27
+msgid "Video"
+msgstr "Видео"
+
+#: templates/panel/courses/lesson_form.html:38
+msgid "Telegram ulangan"
+msgstr "Telegram подключён"
+
+#: templates/panel/courses/lesson_form.html:40
+msgid "Telegram sozlanmagan"
+msgstr "Telegram не настроен"
+
+#: templates/panel/courses/lesson_form.html:59
+msgid "Video allaqachon yuklangan"
+msgstr "Видео уже загружено"
+
+#: templates/panel/courses/lesson_form.html:60
+msgid "Yangi fayl tanlansa, eskisi almashtiriladi."
+msgstr "Если выбрать новый файл, старый будет заменён."
+
+#: templates/panel/courses/lesson_form.html:82
+msgid "Qo'shimcha fayllar"
+msgstr "Дополнительные файлы"
+
+#: templates/panel/courses/lesson_form.html:96
+msgid "PDF, arxiv va boshqa materiallar. Bir nechtasini birdan tanlash mumkin."
+msgstr "PDF, архивы и другие материалы. Можно выбрать несколько сразу."
+
+#: templates/panel/courses/lesson_form.html:114
+#: templates/panel/courses/module_form.html:25
+#: templates/panel/crud_form.html:70 templates/panel/settings.html:70
+#: templates/panel/shop/order_detail.html:45
+msgid "Saqlash"
+msgstr "Сохранить"
+
+#: templates/panel/courses/lesson_form.html:121
+msgid "Dars va uning videosi o‘chiriladi. Davom etamizmi?"
+msgstr "Урок и его видео будут удалены. Продолжить?"
+
+#: templates/panel/courses/lesson_form.html:122
+msgid "Darsni o'chirish"
+msgstr "Удалить урок"
+
+#: templates/panel/courses/lessons.html:6
+msgid "Barcha darslar"
+msgstr "Все уроки"
+
+#: templates/panel/courses/lessons.html:7
+#, python-format
+msgid "Jami %(n)s ta dars"
+msgstr "Всего %(n)s уроков"
+
+#: templates/panel/courses/lessons.html:13
+msgid "Dars nomi..."
+msgstr "Название урока..."
+
+#: templates/panel/courses/lessons.html:15
+msgid "Barcha kurslar"
+msgstr "Все курсы"
+
+#: templates/panel/courses/lessons.html:26
+msgid "Kurs / modul"
+msgstr "Курс / модуль"
+
+#: templates/panel/courses/lessons.html:27
+msgid "Davomiyligi"
+msgstr "Длительность"
+
+#: templates/panel/courses/lessons.html:39
+msgid "Yo'q"
+msgstr "Нет"
+
+#: templates/panel/courses/list.html:8
+#, python-format
+msgid "Jami %(n)s ta kurs"
+msgstr "Всего %(n)s курсов"
+
+#: templates/panel/courses/list.html:20
+msgid "Kurs nomi..."
+msgstr "Название курса..."
+
+#: templates/panel/courses/list.html:23 templates/panel/shop/products.html:18
+msgid "Barcha kategoriyalar"
+msgstr "Все категории"
+
+#: templates/panel/courses/list.html:29
+msgid "Kirish turi"
+msgstr "Тип доступа"
+
+#: templates/panel/courses/list.html:48 templates/panel/login.html:6
+#: templates/panel/login.html:37
+msgid "Kirish"
+msgstr "Вход"
+
+#: templates/panel/courses/list.html:64
+msgid "Kategoriyasiz"
+msgstr "Без категории"
+
+#: templates/panel/courses/list.html:86
+msgid "Kurs va uning barcha darslari o‘chiriladi. Davom etamizmi?"
+msgstr "Курс и все его уроки будут удалены. Продолжить?"
+
+#: templates/panel/courses/list.html:88
+msgid "O‘chirish"
+msgstr "Удалить"
+
+#: templates/panel/courses/list.html:94
+msgid "Hali kurs qo'shilmagan"
+msgstr "Курсы ещё не добавлены"
+
+#: templates/panel/crud_form.html:80
+msgid "Rostdan ham o‘chirmoqchimisiz? Bu amalni qaytarib bo‘lmaydi."
+msgstr "Действительно удалить? Это действие необратимо."
+
+#: templates/panel/dashboard.html:9
+msgid "Jami foydalanuvchilar"
+msgstr "Всего пользователей"
+
+#: templates/panel/dashboard.html:11
+msgid "bugun"
+msgstr "сегодня"
+
+#: templates/panel/dashboard.html:17
+msgid "Bugun kirganlar"
+msgstr "Заходили сегодня"
+
+#: templates/panel/dashboard.html:24
+msgid "Jami kurslar"
+msgstr "Всего курсов"
+
+#: templates/panel/dashboard.html:26
+msgid "faol"
+msgstr "активных"
+
+#: templates/panel/dashboard.html:32
+msgid "Jami darslar"
+msgstr "Всего уроков"
+
+#: templates/panel/dashboard.html:42
+msgid "Premium foydalanuvchilar"
+msgstr "Премиум-пользователи"
+
+#: templates/panel/dashboard.html:49
+msgid "Do'kondagi mahsulotlar"
+msgstr "Товаров в магазине"
+
+#: templates/panel/dashboard.html:51
+msgid "yangi buyurtma"
+msgstr "новых заказов"
+
+#: templates/panel/dashboard.html:57 templates/panel/statistics.html:26
+msgid "Umumiy daromad"
+msgstr "Общий доход"
+
+#: templates/panel/dashboard.html:65
+msgid "Oxirgi 30 kun daromadi"
+msgstr "Доход за 30 дней"
+
+#: templates/panel/dashboard.html:74
+msgid "Yangi foydalanuvchilar (30 kun)"
+msgstr "Новые пользователи (30 дней)"
+
+#: templates/panel/dashboard.html:79
+msgid "Daromad (30 kun)"
+msgstr "Доход (30 дней)"
+
+#: templates/panel/dashboard.html:88
+msgid "So'nggi ro'yxatdan o'tganlar"
+msgstr "Последние регистрации"
+
+#: templates/panel/dashboard.html:89 templates/panel/dashboard.html:130
+#: templates/panel/dashboard.html:157
+msgid "Barchasi"
+msgstr "Все"
+
+#: templates/panel/dashboard.html:120
+msgid "Kurslar bo'yicha o'quvchilar"
+msgstr "Ученики по курсам"
+
+#: templates/panel/dashboard.html:129
+msgid "So'nggi buyurtmalar"
+msgstr "Последние заказы"
+
+#: templates/panel/dashboard.html:156
+msgid "So'nggi amallar"
+msgstr "Последние действия"
+
+#: templates/panel/login.html:20
+msgid "Telefon raqamingiz va parol bilan kiring"
+msgstr "Войдите с номером телефона и паролем"
+
+#: templates/panel/partials/_empty.html:4
+msgid "Hozircha ma'lumot yo'q"
+msgstr "Пока нет данных"
+
+#: templates/panel/partials/_pagination.html:25
+#: templates/panel/partials/_pagination.html:30
+#, python-format
+msgid "Jami: %(total)s"
+msgstr "Всего: %(total)s"
+
+#: templates/panel/partials/_translations.html:5
+msgid "Boshqa tillardagi matnlar"
+msgstr "Тексты на других языках"
+
+#: templates/panel/partials/_translations.html:6
+msgid "Bo'sh qoldirilsa, o'zbekcha matn ko'rsatiladi"
+msgstr "Если оставить пустым, будет показан узбекский текст"
+
+#: templates/panel/settings.html:8
+msgid "Video saqlash holati"
+msgstr "Состояние видеохранилища"
+
+#: templates/panel/settings.html:11
+msgid "Ulangan"
+msgstr "Подключено"
+
+#: templates/panel/settings.html:12
+msgid "Videolar yopiq Telegram kanalida saqlanmoqda."
+msgstr "Видео хранятся в закрытом Telegram-канале."
+
+#: templates/panel/settings.html:14
+msgid "Sozlanmagan"
+msgstr "Не настроено"
+
+#: templates/panel/settings.html:15
+msgid ".env faylida TELEGRAM_STORAGE_CHAT_ID ni to'ldiring."
+msgstr "Заполните TELEGRAM_STORAGE_CHAT_ID в файле .env."
+
+#: templates/panel/settings.html:18
+msgid "Yuklab olish chegarasi"
+msgstr "Лимит скачивания"
+
+#: templates/panel/settings.html:21
+msgid ""
+"Rasmiy Telegram API ishlatilmoqda. Kattaroq videolar uchun local Bot API "
+"serverni sozlang (TELEGRAM_API_BASE)."
+msgstr ""
+
+#: templates/panel/settings.html:24
+msgid "Local Bot API server ishlatilmoqda."
+msgstr "Используется локальный Bot API сервер."
+
+#: templates/panel/settings.html:31
+msgid "Interfeys"
+msgstr "Интерфейс"
+
+#: templates/panel/settings.html:34
+msgid "Tungi rejim"
+msgstr "Тёмная тема"
+
+#: templates/panel/settings.html:37
+msgid "Almashtirish"
+msgstr "Переключить"
+
+#: templates/panel/settings.html:41
+msgid "Panel tili"
+msgstr "Язык панели"
+
+#: templates/panel/settings.html:56
+msgid "Sayt ma'lumotlari"
+msgstr "Данные сайта"
+
+#: templates/panel/shop/categories.html:8
+msgid "Qo'shish"
+msgstr "Добавить"
+
+#: templates/panel/shop/order_detail.html:28
+msgid "Jami"
+msgstr "Итого"
+
+#: templates/panel/shop/order_detail.html:35
+msgid "Buyurtma ma'lumotlari"
+msgstr "Данные заказа"
+
+#: templates/panel/shop/order_detail.html:52
+msgid "Buyurtma o‘chirilsinmi?"
+msgstr "Удалить заказ?"
+
+#: templates/panel/shop/orders.html:6
+msgid "ta yangi"
+msgstr "новых"
+
+#: templates/panel/shop/orders.html:6
+msgid "Tushum"
+msgstr "Выручка"
+
+#: templates/panel/shop/orders.html:12
+msgid "Raqam, ism, telefon..."
+msgstr "Номер, имя, телефон..."
+
+#: templates/panel/shop/orders.html:22
+msgid "Mijoz"
+msgstr "Клиент"
+
+#: templates/panel/shop/orders.html:29
+msgid "dona"
+msgstr "шт."
+
+#: templates/panel/shop/orders.html:39
+msgid "Ochish"
+msgstr "Открыть"
+
+#: templates/panel/shop/products.html:6
+#, python-format
+msgid "Jami %(n)s ta mahsulot"
+msgstr "Всего %(n)s товаров"
+
+#: templates/panel/shop/products.html:16
+msgid "Nomi yoki artikul..."
+msgstr "Название или артикул..."
+
+#: templates/panel/shop/products.html:22 templates/panel/shop/products.html:33
+msgid "Qoldiq"
+msgstr "Остаток"
+
+#: templates/panel/shop/products.html:23
+msgid "Kam qolgan"
+msgstr "Мало осталось"
+
+#: templates/panel/shop/products.html:24 templates/panel/shop/products.html:49
+msgid "Tugagan"
+msgstr "Закончился"
+
+#: templates/panel/shop/products.html:32
+msgid "Mahsulot"
+msgstr "Товар"
+
+#: templates/panel/shop/products.html:32
+msgid "Kategoriya"
+msgstr "Категория"
+
+#: templates/panel/shop/products.html:32
+msgid "Narxi"
+msgstr "Цена"
+
+#: templates/panel/shop/products.html:50
+msgid "Sotuvda"
+msgstr "В продаже"
+
+#: templates/panel/shop/products.html:51
+msgid "Sotuvda emas"
+msgstr "Не в продаже"
+
+#: templates/panel/statistics.html:9
+msgid "7 kun"
+msgstr "7 дней"
+
+#: templates/panel/statistics.html:10
+msgid "30 kun"
+msgstr "30 дней"
+
+#: templates/panel/statistics.html:11
+msgid "3 oy"
+msgstr "3 месяца"
+
+#: templates/panel/statistics.html:12
+msgid "1 yil"
+msgstr "1 год"
+
+#: templates/panel/statistics.html:22
+msgid "Kurslarga yozilganlar"
+msgstr "Записались на курсы"
+
+#: templates/panel/statistics.html:24 templates/panel/users/list.html:27
+#: templates/panel/users/list.html:72
+msgid "Premium"
+msgstr "Премиум"
+
+#: templates/panel/statistics.html:35
+msgid "Yangi foydalanuvchilar"
+msgstr "Новые пользователи"
+
+#: templates/panel/statistics.html:40
+msgid "Kursga yozilishlar"
+msgstr "Записи на курсы"
+
+#: templates/panel/statistics.html:48
+msgid "Daromad"
+msgstr "Доход"
+
+#: templates/panel/statistics.html:53
+msgid "Do'kon buyurtmalari"
+msgstr "Заказы магазина"
+
+#: templates/panel/statistics.html:61
+msgid "Daromad manbalari"
+msgstr "Источники дохода"
+
+#: templates/panel/statistics.html:83
+msgid "Eng ommabop kurslar"
+msgstr "Самые популярные курсы"
+
+#: templates/panel/users/detail.html:21
+msgid "Blokdan chiqarilsinmi?"
+msgstr "Разблокировать?"
+
+#: templates/panel/users/detail.html:21
+msgid "Foydalanuvchi bloklansinmi?"
+msgstr "Заблокировать пользователя?"
+
+#: templates/panel/users/detail.html:24
+msgid "Blokdan chiqarish"
+msgstr "Разблокировать"
+
+#: templates/panel/users/detail.html:41
+msgid "Shaxsiy ma'lumotlar"
+msgstr "Личные данные"
+
+#: templates/panel/users/detail.html:45
+msgid "Telefon"
+msgstr "Телефон"
+
+#: templates/panel/users/detail.html:46
+msgid "Viloyat"
+msgstr "Область"
+
+#: templates/panel/users/detail.html:47
+msgid "Shahar/tuman"
+msgstr "Город/район"
+
+#: templates/panel/users/detail.html:48
+msgid "Maktab"
+msgstr "Школа"
+
+#: templates/panel/users/detail.html:50
+msgid "Fan"
+msgstr "Предмет"
+
+#: templates/panel/users/detail.html:52
+msgid "Sinf"
+msgstr "Класс"
+
+#: templates/panel/users/detail.html:54
+msgid "Tug'ilgan sana"
+msgstr "Дата рождения"
+
+#: templates/panel/users/detail.html:55
+msgid "Telegram"
+msgstr "Telegram"
+
+#: templates/panel/users/detail.html:56 templates/panel/users/list.html:44
+msgid "Ro'yxatdan o'tgan"
+msgstr "Зарегистрирован"
+
+#: templates/panel/users/detail.html:64
+msgid "Kurslardagi progress"
+msgstr "Прогресс по курсам"
+
+#: templates/panel/users/detail.html:79
+msgid "Tugatgan"
+msgstr "Завершил"
+
+#: templates/panel/users/detail.html:83
+msgid "Hech qanday kursga yozilmagan"
+msgstr "Не записан ни на один курс"
+
+#: templates/panel/users/detail.html:107
+msgid "Obuna yo'q"
+msgstr "Нет подписки"
+
+#: templates/panel/users/detail.html:128
+msgid "To'lovlar yo'q"
+msgstr "Нет платежей"
+
+#: templates/panel/users/list.html:8
+#, python-format
+msgid "Jami %(n)s ta foydalanuvchi"
+msgstr "Всего %(n)s пользователей"
+
+#: templates/panel/users/list.html:17
+msgid "Ism, telefon, maktab..."
+msgstr "Имя, телефон, школа..."
+
+#: templates/panel/users/list.html:20
+msgid "Barcha rollar"
+msgstr "Все роли"
+
+#: templates/panel/users/list.html:28 templates/panel/users/list.html:73
+msgid "Oddiy"
+msgstr "Обычный"
+
+#: templates/panel/users/list.html:30 templates/panel/users/list.html:79
+msgid "Tasdiqlanmagan"
+msgstr "Не подтверждён"
+
+#: templates/panel/users/list.html:40
+msgid "Rol"
+msgstr "Роль"
+
+#: templates/panel/users/list.html:41
+msgid "Hudud"
+msgstr "Регион"
+
+#: templates/panel/users/list.html:43
+msgid "Obuna"
+msgstr "Подписка"
+
+#: templates/panel/users/list.html:80
+msgid "Ko‘rish"
+msgstr "Просмотр"

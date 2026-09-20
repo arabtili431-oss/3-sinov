@@ -1,0 +1,93 @@
+{% extends "site_base.html" %}
+{% block title %}Do'kon — VECTOR{% endblock %}
+{% block nav_shop %}is-active{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-hero" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px">
+    <div>
+      <h1>Do'kon</h1>
+      <p>Darslarda faol ishtirok etib Coin to'plang va ularni sovg'alarga almashtiring.</p>
+    </div>
+    <div style="text-align:right">
+      <div class="coin-chip" style="font-size:20px" id="coinBalance">0 Coin</div>
+      <a href="{% url 'frontend:cart' %}" style="font-size:13px;color:var(--muted)">🛒 Savatcha (<span id="cartCount">0</span>)</a>
+    </div>
+  </div>
+
+  <div class="tabs" style="margin:18px 0 26px" id="shopTabs">
+    <button class="tab is-active" data-slug="sovga" type="button">Sovg'a</button>
+    <button class="tab" data-slug="oshxona" type="button">Oshxona</button>
+    <button class="tab" data-slug="markaz" type="button">Markaz</button>
+  </div>
+
+  <div class="grid grid--4" id="productsGrid">
+    <div class="skeleton" style="height:260px"></div>
+    <div class="skeleton" style="height:260px"></div>
+    <div class="skeleton" style="height:260px"></div>
+    <div class="skeleton" style="height:260px"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var S = window.VectorSite, A = window.VectorAPI;
+  var grid = document.getElementById("productsGrid");
+
+  A.request("/me/").then(function (user) {
+    document.getElementById("coinBalance").textContent = S.money(user.coins) + " Coin";
+  }).catch(function () {});
+
+  function refreshCartCount() {
+    if (!S.isLoggedIn()) return;
+    S.apiFetch("/shop/cart/").then(function (order) {
+      var count = (order.items || []).reduce(function (s, i) { return s + i.quantity; }, 0);
+      document.getElementById("cartCount").textContent = count;
+    }).catch(function () {});
+  }
+  refreshCartCount();
+
+  function emptyState(slug) {
+    var titles = { oshxona: "Oshxona hali yaratilmagan", markaz: "Markaz hali yaratilmagan", sovga: "Hozircha mahsulot yo'q" };
+    grid.innerHTML = '<div style="grid-column:1/-1"><div class="empty-state">' +
+      '<div class="empty-state__mascot">🐱</div>' +
+      '<h3>' + (titles[slug] || "Hozircha mahsulot yo'q") + '</h3>' +
+      '<p>Darslarda faol ishtirok etib coinlar to\'plang va ularni do\'kondagi sovg\'alarga ega bo\'ling.</p>' +
+      '</div></div>';
+  }
+
+  function loadProducts(slug) {
+    grid.innerHTML = '<div class="skeleton" style="height:260px"></div><div class="skeleton" style="height:260px"></div>' +
+      '<div class="skeleton" style="height:260px"></div><div class="skeleton" style="height:260px"></div>';
+    S.apiFetch("/shop/products/?category=" + slug, { auth: false }).then(function (list) {
+      list = (list.results || list).filter(function (p) { return p.is_coin_item; });
+      if (!list.length) { emptyState(slug); return; }
+      grid.innerHTML = list.map(function (p) {
+        return '<a class="product-card" href="/dokon/' + p.slug + '/">' +
+          '<div class="product-card__img">' + (p.image ? '<img src="' + p.image + '">' : '🎁') + '</div>' +
+          '<div class="product-card__body">' +
+            '<div class="product-card__title">' + p.name + '</div>' +
+            '<div class="product-card__desc">' + (p.description || "").slice(0, 60) + '</div>' +
+            '<div class="product-card__row">' +
+              '<span class="coin-chip">' + p.coin_price + '</span>' +
+              '<span class="product-card__stock">' + p.stock + ' dona qoldi</span>' +
+            '</div>' +
+          '</div></a>';
+      }).join("");
+    }).catch(function () { emptyState(slug); });
+  }
+
+  document.querySelectorAll("#shopTabs .tab").forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      document.querySelectorAll("#shopTabs .tab").forEach(function (t) { t.classList.remove("is-active"); });
+      tab.classList.add("is-active");
+      loadProducts(tab.dataset.slug);
+    });
+  });
+
+  loadProducts("sovga");
+})();
+</script>
+{% endblock %}

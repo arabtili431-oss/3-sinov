@@ -1,0 +1,21 @@
+{% extends "site_base.html" %}
+{% block title %}Mini app — VECTOR{% endblock %}
+{% block nav_miniapp %}is-active{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:560px;padding:50px 20px;text-align:center">
+  <div style="font-size:60px;margin-bottom:14px">🤖</div>
+  <h1 style="margin:0 0 10px">Vector Mini App</h1>
+  <p style="color:var(--muted);font-size:15px;margin-bottom:26px">
+    Telegram ichida to'g'ridan-to'g'ri kurslaringizni ko'ring, Coin balansingizni tekshiring
+    va bildirishnomalarni qabul qiling — hech qanday qo'shimcha ilova o'rnatmasdan.
+  </p>
+  {% if bot_username %}
+    <a class="btn btn--primary btn--lg" href="https://t.me/{{ bot_username }}" target="_blank" rel="noopener">
+      Telegramda ochish
+    </a>
+  {% else %}
+    <p style="color:var(--muted)">Tez orada ishga tushadi.</p>
+  {% endif %}
+</div>
+{% endblock %}

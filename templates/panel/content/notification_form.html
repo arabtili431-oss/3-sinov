@@ -1,0 +1,42 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{{ page_title }}</h2></div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:notification_list' %}">← {% trans "Orqaga" %}</a></div>
+</div>
+
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  <div class="card"><div class="card__body">
+    <div class="form-grid">
+      {% include "panel/partials/_field.html" with field=form.title full=1 %}
+      {% include "panel/partials/_field.html" with field=form.body full=1 %}
+      {% include "panel/partials/_field.html" with field=form.audience %}
+      {% include "panel/partials/_field.html" with field=form.course %}
+      <div class="form-field form-field--full">
+        <label class="form-label">{{ form.image.label }}</label>
+        <div class="upload">
+          <img class="upload__preview" alt=""
+               src="{% if obj and obj.image %}{{ obj.image.url }}{% else %}data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E{% endif %}">
+          <div>{{ form.image }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid--2" style="margin-top:16px">
+      <label class="switchbox"><span>{{ form.send_push.label }}</span>
+        <span class="switch">{{ form.send_push }}<span class="switch__slider"></span></span></label>
+      <label class="switchbox"><span>{{ form.send_telegram.label }}</span>
+        <span class="switch">{{ form.send_telegram }}<span class="switch__slider"></span></span></label>
+    </div>
+  </div></div>
+
+  {% include "panel/partials/_translations.html" %}
+
+  <div class="form-actions">
+    <button class="btn btn--ghost" type="submit" name="action" value="draft">💾 {% trans "Qoralama sifatida saqlash" %}</button>
+    <button class="btn btn--primary" type="submit" name="action" value="send">📤 {% trans "Saqlash va yuborish" %}</button>
+  </div>
+</form>
+{% endblock %}

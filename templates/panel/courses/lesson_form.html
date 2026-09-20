@@ -1,0 +1,140 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="page__head">
+  <div><h2>{{ page_title }}</h2><p class="page__sub">{{ course.title }}</p></div>
+  <div class="page__actions">
+    {% if obj %}
+      <a class="btn btn--ghost" href="{% url 'panel:quiz_manage' course.pk obj.pk %}">🧩 {% trans "Dars testi (Coin)" %}</a>
+    {% endif %}
+    <a class="btn btn--ghost" href="{% url 'panel:course_content' course.pk %}">← {% trans "Orqaga" %}</a>
+  </div>
+</div>
+
+{% if form.non_field_errors %}
+  <div class="card" style="margin-bottom:16px;border-color:var(--danger)"><div class="card__body">
+    {% for e in form.non_field_errors %}<p class="form-error">{{ e }}</p>{% endfor %}
+  </div></div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Asosiy ma'lumotlar" %}</h3></div>
+    <div class="card__body">
+      <div class="form-grid">
+        {% include "panel/partials/_field.html" with field=form.module %}
+        {% include "panel/partials/_field.html" with field=form.order %}
+        {% include "panel/partials/_field.html" with field=form.title full=1 %}
+        {% include "panel/partials/_field.html" with field=form.description full=1 %}
+        {% include "panel/partials/_field.html" with field=form.text full=1 %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card__head">
+      <h3>🎬 {% trans "Video" %}</h3>
+      {% if telegram_ready %}
+        <span class="badge badge--ok" style="margin-left:auto">{% trans "Telegram ulangan" %}</span>
+      {% else %}
+        <span class="badge badge--warn" style="margin-left:auto">{% trans "Telegram sozlanmagan" %}</span>
+      {% endif %}
+    </div>
+    <div class="card__body">
+      <div class="form-grid">
+        {% include "panel/partials/_field.html" with field=form.video_source %}
+        {% include "panel/partials/_field.html" with field=form.duration %}
+        {% include "panel/partials/_field.html" with field=form.video_url full=1 %}
+      </div>
+
+      <div class="form-field form-field--full" style="margin-top:14px">
+        <label class="form-label" for="{{ form.video_file.id_for_label }}">{{ form.video_file.label }}</label>
+        <div class="upload" style="align-items:flex-start">
+          <span class="upload__preview" style="display:inline-flex;align-items:center;justify-content:center;font-size:26px">🎥</span>
+          <div style="flex:1">
+            {{ form.video_file }}
+            <p class="form-help">{{ form.video_file.help_text }}</p>
+            {% if obj and obj.telegram_file_id %}
+              <p class="form-help" style="color:var(--ok)">
+                ✅ {% trans "Video allaqachon yuklangan" %} — {{ obj.video_size|filesize }}.
+                {% trans "Yangi fayl tanlansa, eskisi almashtiriladi." %}
+              </p>
+            {% endif %}
+            {% for e in form.video_file.errors %}<p class="form-error">{{ e }}</p>{% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid" style="margin-top:14px">
+        <div class="form-field form-field--full">
+          <label class="form-label">{{ form.thumbnail.label }}</label>
+          <div class="upload">
+            <img class="upload__preview" alt=""
+                 src="{% if obj and obj.thumbnail %}{{ obj.thumbnail.url }}{% else %}data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E{% endif %}">
+            <div>{{ form.thumbnail }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card__head"><h3>📎 {% trans "Qo'shimcha fayllar" %}</h3></div>
+    <div class="card__body">
+      {% if obj %}
+        {% for a in obj.attachments.all %}
+          <div class="lesson-row" style="border:1px solid var(--line);border-radius:10px;margin-bottom:8px">
+            <span>📄</span>
+            <div style="flex:1">
+              <div class="lesson-row__title">{{ a.title }}</div>
+              <div class="lesson-row__meta">{{ a.size|filesize }}</div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+      <input class="input" type="file" name="attachments" multiple>
+      <p class="form-help">{% trans "PDF, arxiv va boshqa materiallar. Bir nechtasini birdan tanlash mumkin." %}</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card__body">
+      <div class="grid grid--2">
+        <label class="switchbox"><span>{{ form.is_free.label }}</span>
+          <span class="switch">{{ form.is_free }}<span class="switch__slider"></span></span></label>
+        <label class="switchbox"><span>{{ form.is_active.label }}</span>
+          <span class="switch">{{ form.is_active }}<span class="switch__slider"></span></span></label>
+      </div>
+    </div>
+  </div>
+
+  {% include "panel/partials/_translations.html" %}
+
+  <div class="form-actions">
+    <button class="btn btn--primary" type="submit">💾 {% trans "Saqlash" %}</button>
+    <a class="btn btn--ghost" href="{% url 'panel:course_content' course.pk %}">{% trans "Bekor qilish" %}</a>
+  </div>
+</form>
+
+{% if obj %}
+  <form method="post" action="{% url 'panel:lesson_delete' course.pk obj.pk %}" style="margin-top:14px"
+        data-confirm="{% trans 'Dars va uning videosi o‘chiriladi. Davom etamizmi?' %}">
+    {% csrf_token %}<button class="btn btn--danger" type="submit">🗑 {% trans "Darsni o'chirish" %}</button>
+  </form>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Modul GET parametridan oldindan tanlanadi
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var moduleId = params.get("module");
+    var select = document.getElementById("{{ form.module.id_for_label }}");
+    if (moduleId && select && !select.value) select.value = moduleId;
+  })();
+</script>
+{% endblock %}

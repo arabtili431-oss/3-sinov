@@ -1,0 +1,41 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Premium tariflar" %}</h2>
+    <p class="page__sub">{% trans "Ilovadagi obuna kartalari shu yerdan boshqariladi" %}</p></div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:subscription_list' %}">⭐ {% trans "Obunalar" %}</a>
+    <a class="btn btn--primary" href="{% url 'panel:plan_create' %}">➕ {% trans "Tarif qo'shish" %}</a>
+  </div>
+</div>
+
+<div class="grid grid--3" style="margin-bottom:18px">
+  {% for p in page %}
+    <div class="card" style="{% if p.is_popular %}border-color:{{ p.color }};border-width:2px{% endif %}">
+      <div class="card__body">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <span class="badge" style="background:{{ p.color }};color:#fff;font-size:13px;padding:5px 14px">{{ p.name }}</span>
+          {% if p.is_popular %}<span class="badge badge--accent">⭐ {% trans "Ommabop" %}</span>{% endif %}
+          {% if not p.is_active %}<span class="badge badge--danger">{% trans "O'chirilgan" %}</span>{% endif %}
+        </div>
+        <div style="font-size:26px;font-weight:800;color:var(--accent)">{{ p.price|money }} {% trans "so'm" %}</div>
+        <div style="color:var(--muted);font-size:13px;margin-bottom:14px">
+          {{ p.get_period_display }} · {{ p.duration_days }} {% trans "kun" %} · {{ p.subs }} {% trans "obuna" %}</div>
+        <ul style="list-style:none;padding:0;margin:0 0 16px;font-size:13.5px;line-height:1.9">
+          {% for f in p.features %}<li>✅ {{ f }}</li>{% endfor %}
+        </ul>
+        <div style="display:flex;gap:8px">
+          <a class="btn btn--ghost btn--sm" href="{% url 'panel:plan_edit' p.pk %}">✏️ {% trans "Tahrirlash" %}</a>
+          <form method="post" action="{% url 'panel:plan_toggle' p.pk %}">{% csrf_token %}
+            <button class="btn btn--ghost btn--sm" type="submit">{% if p.is_active %}⏸ {% trans "O'chirish" %}{% else %}▶️ {% trans "Yoqish" %}{% endif %}</button></form>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="card" style="grid-column:1/-1"><div class="card__body">
+      {% include "panel/partials/_empty.html" with icon="💎" text=_("Hali tarif qo'shilmagan") %}</div></div>
+  {% endfor %}
+</div>
+{% include "panel/partials/_pagination.html" %}
+{% endblock %}

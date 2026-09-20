@@ -1,0 +1,85 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="page__head">
+  <div><h2>🧩 {% trans "Dars testi" %}</h2><p class="page__sub">{{ lesson.title }}</p></div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:lesson_edit' course.pk lesson.pk %}">← {% trans "Darsga qaytish" %}</a>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:18px">
+  <div class="card__head"><h3>{% trans "Coin sozlamalari" %}</h3></div>
+  <div class="card__body">
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="form" value="settings">
+      <div class="form-grid">
+        {% include "panel/partials/_field.html" with field=form.coin_reward %}
+        {% include "panel/partials/_field.html" with field=form.pass_percent %}
+      </div>
+      <label class="switchbox" style="margin-top:12px;max-width:280px">
+        <span>{{ form.is_active.label }}</span>
+        <span class="switch">{{ form.is_active }}<span class="switch__slider"></span></span>
+      </label>
+      <p class="form-help" style="margin-top:10px">
+        {% trans "Test 100% to'g'ri yechilsa — to'liq Coin, qisman to'g'ri bo'lsa — foiziga qarab beriladi. Har talaba testni faqat 1 marta yechadi." %}
+      </p>
+      <div class="form-actions"><button class="btn btn--primary" type="submit">💾 {% trans "Saqlash" %}</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:18px">
+  <div class="card__head"><h3>{% trans "Savollar" %} ({{ questions|length }})</h3></div>
+  <div class="card__body">
+    {% for q in questions %}
+      <div class="lesson-row" style="align-items:flex-start;border:1px solid var(--line);border-radius:10px;margin-bottom:10px">
+        <span class="lesson-row__num">{{ forloop.counter }}</span>
+        <div style="flex:1">
+          <div class="lesson-row__title">{{ q.text }}</div>
+          <ul style="list-style:none;padding:0;margin:8px 0 0;font-size:13.5px;color:var(--muted)">
+            {% for c in q.choices.all %}
+              <li>{% if c.is_correct %}✅{% else %}▫️{% endif %} {{ c.text }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <form method="post" action="{% url 'panel:quiz_question_delete' course.pk lesson.pk q.pk %}"
+              data-confirm="{% trans 'Savol o‘chirilsinmi?' %}">
+          {% csrf_token %}<button class="btn btn--danger btn--sm btn--icon" type="submit">🗑</button>
+        </form>
+      </div>
+    {% empty %}
+      {% include "panel/partials/_empty.html" with icon="🧩" text=_("Hali savol qo'shilmagan") %}
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__head"><h3>➕ {% trans "Yangi savol qo'shish" %}</h3></div>
+  <div class="card__body">
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="form" value="question">
+      <div class="form-field form-field--full">
+        <label class="form-label">{% trans "Savol matni" %}</label>
+        <input class="input" type="text" name="text" required placeholder="{% trans 'Masalan: HTML nima uchun ishlatiladi?' %}">
+      </div>
+      <div class="form-grid" style="margin-top:12px">
+        {% for i in "1234" %}
+          <div class="form-field">
+            <label class="form-label">{% trans "Javob" %} {{ i }}</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="radio" name="correct" value="{{ i }}" required style="width:auto">
+              <input class="input" type="text" name="choice_{{ i }}" required placeholder="{% trans 'Javob varianti matni' %}">
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <p class="form-help" style="margin-top:10px">{% trans "To'g'ri javobni chap tomondagi doiracha bilan belgilang." %}</p>
+      <div class="form-actions"><button class="btn btn--primary" type="submit">➕ {% trans "Savolni qo'shish" %}</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

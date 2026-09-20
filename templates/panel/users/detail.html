@@ -1,0 +1,134 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="page__head">
+  <div style="display:flex;align-items:center;gap:14px">
+    {% if obj.avatar %}<img class="avatar" style="width:56px;height:56px" src="{{ obj.avatar.url }}" alt="">
+    {% else %}<span class="avatar" style="width:56px;height:56px;font-size:20px">{{ obj.full_name|slice:":1"|upper }}</span>{% endif %}
+    <div>
+      <h2>{{ obj.full_name }}</h2>
+      <p class="page__sub">{{ obj.phone }} · {{ obj.get_role_display }}
+        {% if obj.is_premium %}· <span class="badge badge--accent">💎 {{ obj.plan_name }}</span>{% endif %}
+        {% if obj.is_blocked %}· <span class="badge badge--danger">{% trans "Bloklangan" %}</span>{% endif %}
+      </p>
+    </div>
+  </div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:user_list' %}">← {% trans "Orqaga" %}</a>
+    <a class="btn btn--primary" href="{% url 'panel:user_edit' obj.pk %}">✏️ {% trans "Tahrirlash" %}</a>
+    <form method="post" action="{% url 'panel:user_block' obj.pk %}"
+          data-confirm="{% if obj.is_blocked %}{% trans 'Blokdan chiqarilsinmi?' %}{% else %}{% trans 'Foydalanuvchi bloklansinmi?' %}{% endif %}">
+      {% csrf_token %}
+      <button class="btn {% if obj.is_blocked %}btn--ghost{% else %}btn--danger{% endif %}" type="submit">
+        {% if obj.is_blocked %}✅ {% trans "Blokdan chiqarish" %}{% else %}🚫 {% trans "Bloklash" %}{% endif %}
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="grid grid--3" style="margin-bottom:18px">
+  <div class="stat"><div class="stat__icon">📚</div><div>
+    <div class="stat__label">{% trans "Kurslar" %}</div><div class="stat__value">{{ enrollments.count }}</div></div></div>
+  <div class="stat"><div class="stat__icon stat__icon--accent">💳</div><div>
+    <div class="stat__label">{% trans "To'lovlar" %}</div><div class="stat__value">{{ payments|length }}</div></div></div>
+  <div class="stat"><div class="stat__icon stat__icon--ok">📦</div><div>
+    <div class="stat__label">{% trans "Buyurtmalar" %}</div><div class="stat__value">{{ orders|length }}</div></div></div>
+</div>
+
+<div class="grid grid--2">
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Shaxsiy ma'lumotlar" %}</h3></div>
+    <div class="card__body">
+      <table class="table">
+        <tbody>
+          <tr><td style="color:var(--muted)">{% trans "Telefon" %}</td><td>{{ obj.phone }}</td></tr>
+          <tr><td style="color:var(--muted)">{% trans "Viloyat" %}</td><td>{{ obj.region|default:"—" }}</td></tr>
+          <tr><td style="color:var(--muted)">{% trans "Shahar/tuman" %}</td><td>{{ obj.district|default:"—" }}</td></tr>
+          <tr><td style="color:var(--muted)">{% trans "Maktab" %}</td><td>{{ obj.school|default:"—" }}</td></tr>
+          {% if obj.is_teacher %}
+            <tr><td style="color:var(--muted)">{% trans "Fan" %}</td><td>{{ obj.subject|default:"—" }}</td></tr>
+          {% else %}
+            <tr><td style="color:var(--muted)">{% trans "Sinf" %}</td><td>{{ obj.grade|default:"—" }}</td></tr>
+          {% endif %}
+          <tr><td style="color:var(--muted)">{% trans "Tug'ilgan sana" %}</td><td>{{ obj.birth_date|date:"d.m.Y"|default:"—" }}</td></tr>
+          <tr><td style="color:var(--muted)">{% trans "Telegram" %}</td><td>{% if obj.telegram_username %}@{{ obj.telegram_username }}{% else %}{{ obj.telegram_id|default:"—" }}{% endif %}</td></tr>
+          <tr><td style="color:var(--muted)">{% trans "Ro'yxatdan o'tgan" %}</td><td>{{ obj.date_joined|date:"d.m.Y H:i" }}</td></tr>
+          <tr><td style="color:var(--muted)">{% trans "Oxirgi kirish" %}</td><td>{{ obj.last_login|date:"d.m.Y H:i"|default:"—" }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Kurslardagi progress" %}</h3></div>
+    <div class="table-wrap">
+      <table class="table">
+        <tbody>
+        {% for e in enrollments %}
+          <tr>
+            <td>
+              <div class="table__main">{{ e.course.title }}</div>
+              <div class="table__sub">{{ e.created_at|date:"d.m.Y" }}</div>
+            </td>
+            <td style="width:140px">
+              <div class="progress"><div class="progress__bar" style="width:{{ e.progress }}%"></div></div>
+              <div class="table__sub">{{ e.progress }}%</div>
+            </td>
+            <td style="text-align:right">
+              {% if e.is_completed %}<span class="badge badge--ok">{% trans "Tugatgan" %}</span>{% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td>{% include "panel/partials/_empty.html" with icon="📚" text=_("Hech qanday kursga yozilmagan") %}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid--2" style="margin-top:18px">
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Obunalar" %}</h3></div>
+    <div class="table-wrap">
+      <table class="table"><tbody>
+      {% for s in subscriptions %}
+        <tr>
+          <td><div class="table__main">{{ s.plan_name|default:"—" }}</div>
+              <div class="table__sub">{{ s.starts_at|date:"d.m.Y" }} — {{ s.ends_at|date:"d.m.Y" }}</div></td>
+          <td style="text-align:right">
+            {% if s.status == 'active' %}<span class="badge badge--ok">{{ s.get_status_display }}</span>
+            {% elif s.status == 'pending' %}<span class="badge badge--warn">{{ s.get_status_display }}</span>
+            {% else %}<span class="badge">{{ s.get_status_display }}</span>{% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td>{% include "panel/partials/_empty.html" with icon="💎" text=_("Obuna yo'q") %}</td></tr>
+      {% endfor %}
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__head"><h3>{% trans "To'lovlar" %}</h3></div>
+    <div class="table-wrap">
+      <table class="table"><tbody>
+      {% for p in payments %}
+        <tr>
+          <td><div class="table__main">{{ p.amount|money }} {% trans "so'm" %}</div>
+              <div class="table__sub">{{ p.get_provider_display }} · {{ p.created_at|date:"d.m.Y H:i" }}</div></td>
+          <td style="text-align:right">
+            {% if p.state == 'paid' %}<span class="badge badge--ok">{{ p.get_state_display }}</span>
+            {% elif p.state == 'cancelled' %}<span class="badge badge--danger">{{ p.get_state_display }}</span>
+            {% else %}<span class="badge badge--warn">{{ p.get_state_display }}</span>{% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td>{% include "panel/partials/_empty.html" with icon="💳" text=_("To'lovlar yo'q") %}</td></tr>
+      {% endfor %}
+      </tbody></table>
+    </div>
+  </div>
+</div>
+{% endblock %}

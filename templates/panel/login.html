@@ -1,0 +1,49 @@
+{% load static i18n %}<!DOCTYPE html>
+<html lang="{{ CURRENT_LANGUAGE }}" data-theme="{{ PANEL_THEME }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% trans "Kirish" %} — VECTOR</title>
+  <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+</head>
+<body>
+<div class="auth-wrap">
+  <form class="auth-box" method="post" novalidate>
+    {% csrf_token %}
+    <div class="auth-box__logo">
+      <img src="{% static 'img/logo.png' %}" alt="VECTOR">
+      <span>VECTOR</span>
+    </div>
+    <h1>{% trans "Boshqaruv paneli" %}</h1>
+    <p class="sub">{% trans "Telefon raqamingiz va parol bilan kiring" %}</p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message message--{{ message.tags }}" style="position:static;margin-bottom:16px;box-shadow:none">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="form-field" style="margin-bottom:14px">
+      <label class="form-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+      {{ form.phone }}
+    </div>
+    <div class="form-field" style="margin-bottom:20px">
+      <label class="form-label" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+      {{ form.password }}
+    </div>
+
+    <button class="btn btn--primary" type="submit" style="width:100%">{% trans "Kirish" %}</button>
+
+    <div style="display:flex;justify-content:center;gap:14px;margin-top:18px">
+      {% for code, label in PANEL_LANGUAGES %}
+        <a href="{% url 'panel:set_language' code %}"
+           style="font-size:13px;{% if code == CURRENT_LANGUAGE %}font-weight:700{% else %}color:var(--muted){% endif %}">{{ label }}</a>
+      {% endfor %}
+    </div>
+  </form>
+</div>
+<script src="{% static 'js/panel.js' %}"></script>
+</body>
+</html>

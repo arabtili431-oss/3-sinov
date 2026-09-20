@@ -1,0 +1,29 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Bildirishnomani yuborish" %}</h2></div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:notification_list' %}">← {% trans "Orqaga" %}</a></div>
+</div>
+
+<div class="card" style="max-width:640px">
+  <div class="card__head"><h3>{{ obj.title }}</h3></div>
+  <div class="card__body">
+    <p style="line-height:1.7;color:var(--ink-2)">{{ obj.body|linebreaksbr }}</p>
+    {% if obj.image %}<img src="{{ obj.image.url }}" alt="" style="max-width:100%;border-radius:12px;margin-top:12px">{% endif %}
+
+    <div class="switchbox" style="margin-top:18px">
+      <span>{% trans "Qabul qiluvchilar" %}: <b>{{ obj.get_audience_display }}</b></span>
+      <span class="badge badge--brand" style="font-size:14px">{{ count }} {% trans "kishi" %}</span>
+    </div>
+
+    <form method="post" style="margin-top:18px"
+          data-confirm="{% blocktrans %}Bildirishnoma {{ count }} ta foydalanuvchiga yuboriladi. Davom etamizmi?{% endblocktrans %}">
+      {% csrf_token %}
+      <button class="btn btn--primary" type="submit">📤 {% trans "Hozir yuborish" %}</button>
+      <a class="btn btn--ghost" href="{% url 'panel:notification_edit' obj.pk %}">{% trans "Tahrirlash" %}</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

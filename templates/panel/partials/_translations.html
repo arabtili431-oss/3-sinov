@@ -1,0 +1,25 @@
+{% load i18n panel_extras %}
+{% if form.translatable %}
+<div class="card" style="margin-top:18px">
+  <div class="card__head">
+    <h3>🌐 {% trans "Boshqa tillardagi matnlar" %}</h3>
+    <span style="color:var(--muted);font-size:13px">{% trans "Bo'sh qoldirilsa, o'zbekcha matn ko'rsatiladi" %}</span>
+  </div>
+  <div class="card__body" data-tabs>
+    <div class="tabs">
+      {% for code, label in PANEL_LANGUAGES %}{% if code != 'uz' %}
+        <button type="button" class="tab {% if forloop.counter == 2 %}is-active{% endif %}" data-tab="{{ code }}">{{ label }}</button>
+      {% endif %}{% endfor %}
+    </div>
+    {% for code, label in PANEL_LANGUAGES %}{% if code != 'uz' %}
+      <div class="tabpane {% if forloop.counter == 2 %}is-active{% endif %}" data-tabpane="{{ code }}">
+        <div class="form-grid">
+          {% for field in form|translations_for:code %}
+            {% include "panel/partials/_field.html" with field=field full=1 %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}{% endfor %}
+  </div>
+</div>
+{% endif %}

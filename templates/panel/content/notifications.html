@@ -1,0 +1,41 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Bildirishnomalar" %}</h2></div>
+  <div class="page__actions">
+    <a class="btn btn--primary" href="{% url 'panel:notification_create' %}">➕ {% trans "Yangi bildirishnoma" %}</a></div>
+</div>
+
+<div class="card"><div class="table-wrap"><table class="table">
+  <thead><tr><th>{% trans "Sarlavha" %}</th><th>{% trans "Kimga" %}</th><th>{% trans "Kanallar" %}</th>
+    <th>{% trans "Holat" %}</th><th>{% trans "Sana" %}</th><th></th></tr></thead>
+  <tbody>
+  {% for n in page %}
+    <tr>
+      <td><div class="table__main">{{ n.title }}</div>
+          <div class="table__sub">{{ n.body|truncatechars:70 }}</div></td>
+      <td>{{ n.get_audience_display }}{% if n.course %}<div class="table__sub">{{ n.course.title }}</div>{% endif %}</td>
+      <td>
+        {% if n.send_push %}<span class="badge badge--info">Push</span>{% endif %}
+        {% if n.send_telegram %}<span class="badge badge--brand">Telegram</span>{% endif %}
+      </td>
+      <td>{% if n.status == 'sent' %}<span class="badge badge--ok">{% trans "Yuborilgan" %}</span>
+          <div class="table__sub">{{ n.recipients_count }} {% trans "kishi" %}</div>
+          {% else %}<span class="badge badge--warn">{% trans "Qoralama" %}</span>{% endif %}</td>
+      <td style="color:var(--muted);font-size:13px">{{ n.sent_at|date:"d.m.Y H:i"|default:n.created_at|date:"d.m.Y" }}</td>
+      <td><div class="table__actions">
+        {% if n.status != 'sent' %}
+          <a class="btn btn--primary btn--sm" href="{% url 'panel:notification_send' n.pk %}">📤 {% trans "Yuborish" %}</a>
+          <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:notification_edit' n.pk %}">✏️</a>
+        {% endif %}
+        <form method="post" action="{% url 'panel:notification_delete' n.pk %}" data-confirm="{% trans 'O‘chirilsinmi?' %}">
+          {% csrf_token %}<button class="btn btn--danger btn--sm btn--icon" type="submit">🗑</button></form>
+      </div></td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6">{% include "panel/partials/_empty.html" with icon="🔔" %}</td></tr>
+  {% endfor %}
+  </tbody>
+</table></div>{% include "panel/partials/_pagination.html" %}</div>
+{% endblock %}

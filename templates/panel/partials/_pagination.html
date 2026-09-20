@@ -1,0 +1,32 @@
+{% load i18n %}
+{% if page.paginator.num_pages > 1 %}
+<div class="pagination">
+  {% if page.has_previous %}
+    <a href="?{% if query %}{{ query }}&{% endif %}page={{ page.previous_page_number }}">‹</a>
+  {% else %}
+    <span class="is-disabled">‹</span>
+  {% endif %}
+
+  {% for num in page.paginator.page_range %}
+    {% if num == page.number %}
+      <span class="is-current">{{ num }}</span>
+    {% elif num > page.number|add:"-3" and num < page.number|add:"3" %}
+      <a href="?{% if query %}{{ query }}&{% endif %}page={{ num }}">{{ num }}</a>
+    {% endif %}
+  {% endfor %}
+
+  {% if page.has_next %}
+    <a href="?{% if query %}{{ query }}&{% endif %}page={{ page.next_page_number }}">›</a>
+  {% else %}
+    <span class="is-disabled">›</span>
+  {% endif %}
+
+  <span class="pagination__info">
+    {% blocktrans with total=page.paginator.count %}Jami: {{ total }}{% endblocktrans %}
+  </span>
+</div>
+{% elif page.paginator.count %}
+<div class="pagination">
+  <span class="pagination__info">{% blocktrans with total=page.paginator.count %}Jami: {{ total }}{% endblocktrans %}</span>
+</div>
+{% endif %}

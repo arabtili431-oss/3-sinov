@@ -1,0 +1,67 @@
+{% extends "site_base.html" %}
+{% block title %}Kurslar — VECTOR{% endblock %}
+{% block nav_courses %}is-active{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-hero">
+    <h1>Kurslar</h1>
+    <p>Sizga mos yo'nalishni tanlang va bugundanoq o'rganishni boshlang.</p>
+  </div>
+
+  <div class="tabs" id="categoryTabs" style="margin:18px 0 26px">
+    <button class="tab is-active" data-slug="" type="button">Barchasi</button>
+  </div>
+
+  <div class="grid grid--3" id="coursesGrid">
+    <div class="skeleton" style="height:230px"></div>
+    <div class="skeleton" style="height:230px"></div>
+    <div class="skeleton" style="height:230px"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var S = window.VectorSite;
+  var grid = document.getElementById("coursesGrid");
+  var tabs = document.getElementById("categoryTabs");
+
+  function courseCard(c) {
+    var priceLabel = c.access === "free" ? "Bepul" : c.access === "premium" ? "Premium obuna bilan" : S.money(c.price) + " so'm";
+    return '<a class="course-card" href="/kurslar/' + c.slug + '/">' +
+      '<div class="course-card__cover">' + (c.cover ? '<img src="' + c.cover + '">' : '🎓') + '</div>' +
+      '<div class="course-card__body">' +
+        '<div class="course-card__title">' + c.title + '</div>' +
+        '<div class="course-card__meta">' + (c.category_name || "") + ' · ' + c.lessons_count + ' dars · ' + c.students_count + ' o\'quvchi</div>' +
+        '<div class="course-card__price">' + priceLabel + '</div>' +
+      '</div></a>';
+  }
+
+  function loadCourses(slug) {
+    grid.innerHTML = '<div class="skeleton" style="height:230px"></div><div class="skeleton" style="height:230px"></div><div class="skeleton" style="height:230px"></div>';
+    S.apiFetch("/courses/" + (slug ? "?category=" + slug : ""), { auth: false }).then(function (list) {
+      list = list.results || list;
+      if (!list.length) { grid.innerHTML = '<p style="color:var(--muted)">Bu yo\'nalishda hali kurs yo\'q.</p>'; return; }
+      grid.innerHTML = list.map(courseCard).join("");
+    });
+  }
+
+  S.apiFetch("/categories/", { auth: false }).then(function (cats) {
+    tabs.innerHTML += cats.map(function (c) {
+      return '<button class="tab" data-slug="' + c.slug + '" type="button">' + c.name + '</button>';
+    }).join("");
+    tabs.querySelectorAll(".tab").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        tabs.querySelectorAll(".tab").forEach(function (t) { t.classList.remove("is-active"); });
+        tab.classList.add("is-active");
+        loadCourses(tab.dataset.slug);
+      });
+    });
+  });
+
+  loadCourses("");
+})();
+</script>
+{% endblock %}

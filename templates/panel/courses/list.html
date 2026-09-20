@@ -1,0 +1,102 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="page__head">
+  <div>
+    <h2>{% trans "Kurslar" %}</h2>
+    <p class="page__sub">{% blocktrans with n=page.paginator.count %}Jami {{ n }} ta kurs{% endblocktrans %}</p>
+  </div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:category_list' %}">🏷️ {% trans "Kategoriyalar" %}</a>
+    <a class="btn btn--primary" href="{% url 'panel:course_create' %}">➕ {% trans "Kurs qo'shish" %}</a>
+  </div>
+</div>
+
+<div class="card">
+  <form class="filters" method="get">
+    <div class="search">
+      <span class="search__icon">🔍</span>
+      <input class="input" type="search" name="q" value="{{ search }}" placeholder="{% trans 'Kurs nomi...' %}">
+    </div>
+    <select class="select" name="category" data-autosubmit>
+      <option value="">{% trans "Barcha kategoriyalar" %}</option>
+      {% for c in categories %}
+        <option value="{{ c.pk }}" {% if category == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>
+      {% endfor %}
+    </select>
+    <select class="select" name="access" data-autosubmit>
+      <option value="">{% trans "Kirish turi" %}</option>
+      {% for value, label in access_choices %}
+        <option value="{{ value }}" {% if access == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <select class="select" name="status" data-autosubmit>
+      <option value="">{% trans "Holat" %}</option>
+      <option value="active" {% if status == 'active' %}selected{% endif %}>{% trans "Faol" %}</option>
+      <option value="inactive" {% if status == 'inactive' %}selected{% endif %}>{% trans "Nofaol" %}</option>
+    </select>
+    <button class="btn btn--primary" type="submit">{% trans "Qidirish" %}</button>
+  </form>
+
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{% trans "Kurs" %}</th>
+          <th>{% trans "O'qituvchi" %}</th>
+          <th>{% trans "Kirish" %}</th>
+          <th>{% trans "Darslar" %}</th>
+          <th>{% trans "O'quvchilar" %}</th>
+          <th>{% trans "Holat" %}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for c in page %}
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              {% if c.cover %}<img class="table__thumb" src="{{ c.cover.url }}" alt="">
+              {% else %}<span class="table__thumb" style="display:inline-flex;align-items:center;justify-content:center">📚</span>{% endif %}
+              <div>
+                <div class="table__main"><a href="{% url 'panel:course_content' c.pk %}">{{ c.title }}</a></div>
+                <div class="table__sub">{{ c.category.name|default:_("Kategoriyasiz") }}</div>
+              </div>
+            </div>
+          </td>
+          <td>{{ c.teacher_display }}</td>
+          <td>
+            {% if c.access == 'free' %}<span class="badge badge--ok">{{ c.get_access_display }}</span>
+            {% elif c.access == 'premium' %}<span class="badge badge--accent">💎 {{ c.get_access_display }}</span>
+            {% else %}<span class="badge badge--brand">{{ c.price|money }} {% trans "so'm" %}</span>{% endif %}
+          </td>
+          <td>{{ c.lessons_total }}</td>
+          <td>{{ c.students }}</td>
+          <td>
+            {% if c.is_active %}<span class="badge badge--ok">{% trans "Faol" %}</span>
+            {% else %}<span class="badge badge--danger">{% trans "Nofaol" %}</span>{% endif %}
+            {% if c.is_featured %}<span class="badge badge--accent">⭐</span>{% endif %}
+          </td>
+          <td>
+            <div class="table__actions">
+              <a class="btn btn--ghost btn--sm" href="{% url 'panel:course_content' c.pk %}">🎬 {% trans "Darslar" %}</a>
+              <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:course_edit' c.pk %}" title="{% trans 'Tahrirlash' %}">✏️</a>
+              <form method="post" action="{% url 'panel:course_delete' c.pk %}"
+                    data-confirm="{% trans 'Kurs va uning barcha darslari o‘chiriladi. Davom etamizmi?' %}">
+                {% csrf_token %}
+                <button class="btn btn--danger btn--sm btn--icon" type="submit" title="{% trans 'O‘chirish' %}">🗑</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="7">{% include "panel/partials/_empty.html" with icon="📚" text=_("Hali kurs qo'shilmagan") %}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% query_string as query %}
+  {% include "panel/partials/_pagination.html" %}
+</div>
+{% endblock %}

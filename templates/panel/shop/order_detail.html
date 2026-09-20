@@ -1,0 +1,55 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Buyurtma" %} #{{ order.number }}</h2>
+    <p class="page__sub">{{ order.created_at|date:"d.m.Y H:i" }}</p></div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:order_list' %}">← {% trans "Orqaga" %}</a>
+  </div>
+</div>
+
+<div class="grid grid--2">
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Mahsulotlar" %}</h3></div>
+    <div class="table-wrap"><table class="table"><tbody>
+      {% for i in order.items.all %}
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:11px">
+              {% if i.product.image %}<img class="table__thumb" src="{{ i.product.image.url }}" alt="">{% endif %}
+              <div><div class="table__main">{{ i.product_name }}</div>
+                   <div class="table__sub">{{ i.price|money }} × {{ i.quantity }}</div></div>
+            </div>
+          </td>
+          <td style="text-align:right"><b>{{ i.subtotal|money }}</b></td>
+        </tr>
+      {% endfor %}
+      <tr><td><b>{% trans "Jami" %}</b></td>
+          <td style="text-align:right;font-size:17px"><b>{{ order.total|money }} {% trans "so'm" %}</b></td></tr>
+    </tbody></table></div>
+  </div>
+
+  <form method="post" class="card" novalidate>
+    {% csrf_token %}
+    <div class="card__head"><h3>{% trans "Buyurtma ma'lumotlari" %}</h3></div>
+    <div class="card__body">
+      <div class="form-grid">
+        {% include "panel/partials/_field.html" with field=form.status full=1 %}
+        {% include "panel/partials/_field.html" with field=form.full_name %}
+        {% include "panel/partials/_field.html" with field=form.phone %}
+        {% include "panel/partials/_field.html" with field=form.address full=1 %}
+        {% include "panel/partials/_field.html" with field=form.comment full=1 %}
+      </div>
+      <div class="form-actions">
+        <button class="btn btn--primary" type="submit">💾 {% trans "Saqlash" %}</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<form method="post" action="{% url 'panel:order_delete' order.pk %}" style="margin-top:14px"
+      data-confirm="{% trans 'Buyurtma o‘chirilsinmi?' %}">
+  {% csrf_token %}<button class="btn btn--danger" type="submit">🗑 {% trans "O'chirish" %}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Kurs kategoriyalari" %}</h2></div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:course_list' %}">📚 {% trans "Kurslar" %}</a>
+    <a class="btn btn--primary" href="{% url 'panel:category_create' %}">➕ {% trans "Kategoriya qo'shish" %}</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr>
+        <th>{% trans "Nomi" %}</th><th>{% trans "Kurslar" %}</th>
+        <th>{% trans "Tartib" %}</th><th>{% trans "Holat" %}</th><th></th>
+      </tr></thead>
+      <tbody>
+      {% for c in page %}
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:11px">
+              <span class="stat__icon" style="width:38px;height:38px;font-size:17px;background:{{ c.color }}22;color:{{ c.color }}">
+                {{ c.icon|default:"🏷️" }}</span>
+              <div>
+                <div class="table__main">{{ c.name }}</div>
+                <div class="table__sub">{{ c.description|truncatechars:60 }}</div>
+              </div>
+            </div>
+          </td>
+          <td>{{ c.courses_total }}</td>
+          <td>{{ c.order }}</td>
+          <td>{% if c.is_active %}<span class="badge badge--ok">{% trans "Faol" %}</span>
+              {% else %}<span class="badge badge--danger">{% trans "Nofaol" %}</span>{% endif %}</td>
+          <td><div class="table__actions">
+            <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:category_edit' c.pk %}">✏️</a>
+            <form method="post" action="{% url 'panel:category_delete' c.pk %}" data-confirm="{% trans 'O‘chirilsinmi?' %}">
+              {% csrf_token %}<button class="btn btn--danger btn--sm btn--icon" type="submit">🗑</button>
+            </form>
+          </div></td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5">{% include "panel/partials/_empty.html" with icon="🏷️" %}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% include "panel/partials/_pagination.html" %}
+</div>
+{% endblock %}

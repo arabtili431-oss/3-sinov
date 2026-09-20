@@ -1,0 +1,94 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="page__head">
+  <div>
+    <h2>{{ page_title }}</h2>
+    {% if form_hint %}<p class="page__sub">{{ form_hint }}</p>{% endif %}
+  </div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{{ back_url }}">← {% trans "Orqaga" %}</a>
+  </div>
+</div>
+
+{% if form.non_field_errors %}
+  <div class="card" style="margin-bottom:16px;border-color:var(--danger)">
+    <div class="card__body">
+      {% for error in form.non_field_errors %}<p class="form-error">{{ error }}</p>{% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+
+  <div class="card">
+    <div class="card__body">
+      <div class="form-grid">
+        {% for field in form.visible_fields %}
+          {% if "__" not in field.name %}
+            {% if field.field.widget.input_type == "checkbox" %}
+            {% elif field.field.widget.input_type == "file" %}
+              <div class="form-field form-field--full {% if field.errors %}has-error{% endif %}">
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                <div class="upload">
+                  <img class="upload__preview" alt=""
+                       src="{% if field.value and field.value.url %}{{ field.value.url }}{% else %}data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E{% endif %}">
+                  <div>{{ field }}</div>
+                </div>
+                {% if field.help_text %}<p class="form-help">{{ field.help_text }}</p>{% endif %}
+                {% for error in field.errors %}<p class="form-error">{{ error }}</p>{% endfor %}
+              </div>
+            {% else %}
+              {% include "panel/partials/_field.html" with field=field full=field.field.widget.attrs.rows %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% with checks=form.visible_fields %}
+      <div class="grid grid--3" style="margin-top:18px">
+        {% for field in checks %}
+          {% if field.field.widget.input_type == "checkbox" %}
+            <label class="switchbox">
+              <span>{{ field.label }}</span>
+              <span class="switch">{{ field }}<span class="switch__slider"></span></span>
+            </label>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endwith %}
+    </div>
+  </div>
+
+  {% include "panel/partials/_translations.html" %}
+
+  {% block extra_form %}{% endblock %}
+
+  <div class="form-actions">
+    <button class="btn btn--primary" type="submit">💾 {% trans "Saqlash" %}</button>
+    <a class="btn btn--ghost" href="{{ back_url }}">{% trans "Bekor qilish" %}</a>
+    {% if obj and delete_url %}
+      <span class="spacer"></span>
+    {% endif %}
+  </div>
+</form>
+
+{% if obj and delete_url %}
+  <form method="post" action="{{ delete_url }}" style="margin-top:14px"
+        data-confirm="{% trans 'Rostdan ham o‘chirmoqchimisiz? Bu amalni qaytarib bo‘lmaydi.' %}">
+    {% csrf_token %}
+    <button class="btn btn--danger" type="submit">🗑 {% trans "O'chirish" %}</button>
+  </form>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Checkbox maydonlari yuqoridagi to'rda takrorlanmasligi uchun switch ichida qoladi
+  document.querySelectorAll(".switch input[type=checkbox]").forEach(function (el) {
+    el.classList.remove("input");
+  });
+</script>
+{% endblock %}

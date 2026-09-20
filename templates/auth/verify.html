@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block title %}Telegram orqali tasdiqlash — VECTOR{% endblock %}
+
+{% block panel %}
+<div class="auth-card">
+  <h2 class="auth-card__title">Telegram orqali tasdiqlash</h2>
+
+  <div class="alert" id="formAlert" role="alert"></div>
+
+  <!-- 1-qadam: botni ochish -->
+  <section id="stepOpenBot">
+    <p class="step-hint">
+      Tasdiqlash kodini olish uchun quyidagi tugmani bosing va Telegram botda
+      <b>«📱 Telefon raqamni ulashish»</b> tugmasini tanlang.
+      Raqam <b id="phoneMasked"></b> bilan mos kelishi shart.
+    </p>
+
+    <a class="btn btn--tg" id="botLink" href="#" target="_blank" rel="noopener">
+      <span class="btn__label">Telegram botni ochish</span>
+    </a>
+
+    <div class="tg-status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Telegramda tugmani bosishingizni kutmoqdamiz...</span>
+    </div>
+
+    <p class="switch-link" style="margin-top:22px">
+      Raqamni noto‘g‘ri kiritdingizmi?
+      <a href="{% url 'frontend:register' %}">Orqaga qaytish</a>
+    </p>
+  </section>
+
+  <!-- 2-qadam: kodni kiritish -->
+  <section id="stepCode" hidden>
+    <p class="step-hint">
+      Telegramga 5 xonali kod yubordik. Uni quyiga kiriting.
+    </p>
+
+    <form id="otpForm" novalidate>
+      <div class="field">
+        <label class="sr-only" for="otp0">Tasdiqlash kodi</label>
+        <div class="otp-inputs" id="otpInputs">
+          <input id="otp0" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code">
+          <input id="otp1" type="text" inputmode="numeric" maxlength="1">
+          <input id="otp2" type="text" inputmode="numeric" maxlength="1">
+          <input id="otp3" type="text" inputmode="numeric" maxlength="1">
+          <input id="otp4" type="text" inputmode="numeric" maxlength="1">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn--accent" type="submit" id="verifyBtn">
+          <span class="btn__spinner" aria-hidden="true"></span>
+          <span class="btn__label">Tasdiqlash</span>
+        </button>
+      </div>
+    </form>
+
+    <p class="switch-link">
+      Kod kelmadimi?
+      <button class="link-btn" id="resendBtn" type="button" disabled>
+        Qayta yuborish (<span class="timer" id="timer">60</span>)
+      </button>
+    </p>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var A = window.VectorAPI;
+  var alertBox = document.getElementById("formAlert");
+  var stepOpenBot = document.getElementById("stepOpenBot");
+  var stepCode = document.getElementById("stepCode");
+  var botLink = document.getElementById("botLink");
+  var statusDot = document.getElementById("statusDot");
+  var statusText = document.getElementById("statusText");
+  var verifyBtn = document.getElementById("verifyBtn");
+  var resendBtn = document.getElementById("resendBtn");
+  var timerEl = document.getElementById("timer");
+  var inputs = Array.prototype.slice.call(document.querySelectorAll("#otpInputs input"));
+
+  var session = A.load(A.STORE.verification, true);
+  if (!session || !session.verification_id) {
+    window.location.href = "{% url 'frontend:register' %}";
+    return;
+  }
+
+  document.getElementById("phoneMasked").textContent = session.phone_masked || "";
+  if (session.bot_url) {
+    botLink.href = session.bot_url;
+  } else {
+    botLink.removeAttribute("href");
+    A.showAlert(alertBox, "Telegram bot sozlanmagan. .env faylida TELEGRAM_BOT_USERNAME ni to‘ldiring.", "error");
+  }
+
+  /* ---------- Bot kod yuborganini kutish ---------- */
+  var pollTimer = null;
+  function startPolling() {
+    stopPolling();
+    pollTimer = setInterval(checkStatus, 3000);
+    checkStatus();
+  }
+  function stopPolling() { if (pollTimer) { clearInterval(pollTimer); pollTimer = null; } }
+
+  function checkStatus() {
+    A.request("/verification/" + session.verification_id + "/", { auth: false })
+      .then(function (data) {
+        if (data.status === "code_sent") { stopPolling(); showCodeStep(); }
+        else if (data.status === "expired") {
+          stopPolling();
+          statusDot.classList.remove("dot--ok");
+          statusText.textContent = "Muddat tugadi.";
+          A.showAlert(alertBox, "Tasdiqlash muddati tugadi. Iltimos, qaytadan ro‘yxatdan o‘ting.", "error");
+        }
+      })
+      .catch(function () { /* tarmoq uzilishi — keyingi urinishda tekshiramiz */ });
+  }
+
+  function showCodeStep() {
+    stepOpenBot.hidden = true;
+    stepCode.hidden = false;
+    A.showAlert(alertBox, "Telegramga tasdiqlash kodi yuborildi.", "success");
+    inputs[0].focus();
+    startResendTimer(60);
+  }
+
+  if (session.status === "code_sent") showCodeStep(); else startPolling();
+
+  /* ---------- OTP maydonlari ---------- */
+  inputs.forEach(function (input, index) {
+    input.addEventListener("input", function () {
+      input.value = input.value.replace(/\D/g, "").slice(0, 1);
+      if (input.value && index < inputs.length - 1) inputs[index + 1].focus();
+    });
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Backspace" && !input.value && index > 0) inputs[index - 1].focus();
+      if (e.key === "ArrowLeft" && index > 0) inputs[index - 1].focus();
+      if (e.key === "ArrowRight" && index < inputs.length - 1) inputs[index + 1].focus();
+    });
+    input.addEventListener("paste", function (e) {
+      e.preventDefault();
+      var text = (e.clipboardData || window.clipboardData).getData("text").replace(/\D/g, "");
+      inputs.forEach(function (box, i) { box.value = text[i] || ""; });
+      inputs[Math.min(text.length, inputs.length - 1)].focus();
+    });
+  });
+
+  function currentCode() { return inputs.map(function (i) { return i.value; }).join(""); }
+
+  document.getElementById("otpForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    A.hideAlert(alertBox);
+    var code = currentCode();
+    if (code.length !== 5) { A.showAlert(alertBox, "5 xonali kodni to‘liq kiriting.", "error"); return; }
+
+    A.setLoading(verifyBtn, true, "Tekshirilmoqda...");
+    A.request("/verify/", {
+      method: "POST",
+      auth: false,
+      body: { verification_id: session.verification_id, code: code }
+    }).then(function (data) {
+      A.saveSession(data);
+      window.location.href = "{% url 'frontend:dashboard' %}";
+    }).catch(function (err) {
+      A.setLoading(verifyBtn, false);
+      A.showAlert(alertBox, err.message, "error");
+      inputs.forEach(function (i) { i.value = ""; });
+      inputs[0].focus();
+    });
+  });
+
+  /* ---------- Qayta yuborish ---------- */
+  var countdown = null;
+  function startResendTimer(seconds) {
+    var left = seconds;
+    resendBtn.disabled = true;
+    timerEl.textContent = left;
+    if (countdown) clearInterval(countdown);
+    countdown = setInterval(function () {
+      left -= 1;
+      timerEl.textContent = left;
+      if (left <= 0) {
+        clearInterval(countdown);
+        resendBtn.disabled = false;
+        resendBtn.innerHTML = "Qayta yuborish";
+      }
+    }, 1000);
+  }
+
+  resendBtn.addEventListener("click", function () {
+    A.hideAlert(alertBox);
+    resendBtn.disabled = true;
+    A.request("/resend/", {
+      method: "POST",
+      auth: false,
+      body: { verification_id: session.verification_id }
+    }).then(function () {
+      A.showAlert(alertBox, "Yangi kod Telegramga yuborildi.", "success");
+      resendBtn.innerHTML = 'Qayta yuborish (<span class="timer" id="timer">60</span>)';
+      timerEl = document.getElementById("timer");
+      startResendTimer(60);
+    }).catch(function (err) {
+      resendBtn.disabled = false;
+      A.showAlert(alertBox, err.message, "error");
+    });
+  });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="page__head"><div><h2>{% trans "Sozlamalar" %}</h2></div></div>
+
+<div class="grid grid--2" style="margin-bottom:18px">
+  <div class="card">
+    <div class="card__head"><h3>🎬 {% trans "Video saqlash holati" %}</h3></div>
+    <div class="card__body">
+      {% if telegram_ready %}
+        <p><span class="badge badge--ok">{% trans "Ulangan" %}</span>
+          {% trans "Videolar yopiq Telegram kanalida saqlanmoqda." %}</p>
+      {% else %}
+        <p><span class="badge badge--danger">{% trans "Sozlanmagan" %}</span>
+          {% trans ".env faylida TELEGRAM_STORAGE_CHAT_ID ni to'ldiring." %}</p>
+      {% endif %}
+      <p style="margin-top:12px;color:var(--ink-2);line-height:1.7">
+        {% trans "Yuklab olish chegarasi" %}: <b>{{ download_limit_mb }} MB</b>
+        {% if not local_api %}
+          <br><span style="color:var(--warn)">
+            {% trans "Rasmiy Telegram API ishlatilmoqda. Kattaroq videolar uchun local Bot API serverni sozlang (TELEGRAM_API_BASE)." %}
+          </span>
+        {% else %}
+          <br><span style="color:var(--ok)">{% trans "Local Bot API server ishlatilmoqda." %}</span>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__head"><h3>🌐 {% trans "Interfeys" %}</h3></div>
+    <div class="card__body">
+      <div class="switchbox" style="margin-bottom:12px">
+        <span>{% trans "Tungi rejim" %}</span>
+        <button class="btn btn--ghost btn--sm" data-theme-toggle type="button">
+          <span data-theme-icon>{% if PANEL_THEME == 'dark' %}☀️{% else %}🌙{% endif %}</span>
+          {% trans "Almashtirish" %}
+        </button>
+      </div>
+      <div class="switchbox">
+        <span>{% trans "Panel tili" %}</span>
+        <span style="display:flex;gap:10px">
+          {% for code, label in PANEL_LANGUAGES %}
+            <a href="{% url 'panel:set_language' code %}"
+               class="badge {% if code == CURRENT_LANGUAGE %}badge--brand{% endif %}">{{ label }}</a>
+          {% endfor %}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form method="post" novalidate>
+  {% csrf_token %}
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Sayt ma'lumotlari" %}</h3></div>
+    <div class="card__body">
+      <div class="form-grid">
+        {% for field in form.visible_fields %}
+          {% if field.field.widget.input_type != "checkbox" %}
+            {% include "panel/partials/_field.html" with field=field %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div style="margin-top:16px">
+        <label class="switchbox"><span>{{ form.maintenance_mode.label }}</span>
+          <span class="switch">{{ form.maintenance_mode }}<span class="switch__slider"></span></span></label>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn--primary" type="submit">💾 {% trans "Saqlash" %}</button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

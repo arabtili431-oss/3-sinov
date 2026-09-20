@@ -1,0 +1,183 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="grid grid--4" style="margin-bottom:18px">
+  <div class="stat">
+    <div class="stat__icon">👥</div>
+    <div>
+      <div class="stat__label">{% trans "Jami foydalanuvchilar" %}</div>
+      <div class="stat__value">{{ stats.users_total }}</div>
+      <div class="stat__delta stat__delta--up">+{{ stats.users_new_today }} {% trans "bugun" %}</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat__icon stat__icon--ok">🟢</div>
+    <div>
+      <div class="stat__label">{% trans "Bugun kirganlar" %}</div>
+      <div class="stat__value">{{ stats.users_today }}</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat__icon stat__icon--accent">📚</div>
+    <div>
+      <div class="stat__label">{% trans "Jami kurslar" %}</div>
+      <div class="stat__value">{{ stats.courses_total }}</div>
+      <div class="stat__delta">{{ stats.courses_active }} {% trans "faol" %}</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat__icon">🎬</div>
+    <div>
+      <div class="stat__label">{% trans "Jami darslar" %}</div>
+      <div class="stat__value">{{ stats.lessons_total }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid--4" style="margin-bottom:22px">
+  <div class="stat">
+    <div class="stat__icon stat__icon--warn">💎</div>
+    <div>
+      <div class="stat__label">{% trans "Premium foydalanuvchilar" %}</div>
+      <div class="stat__value">{{ stats.premium_total }}</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat__icon stat__icon--accent">🛒</div>
+    <div>
+      <div class="stat__label">{% trans "Do'kondagi mahsulotlar" %}</div>
+      <div class="stat__value">{{ stats.products_total }}</div>
+      <div class="stat__delta">{{ stats.orders_new }} {% trans "yangi buyurtma" %}</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat__icon stat__icon--ok">💰</div>
+    <div>
+      <div class="stat__label">{% trans "Umumiy daromad" %}</div>
+      <div class="stat__value">{{ stats.revenue_total|money }}</div>
+      <div class="stat__delta">{% trans "so'm" %}</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat__icon">📈</div>
+    <div>
+      <div class="stat__label">{% trans "Oxirgi 30 kun daromadi" %}</div>
+      <div class="stat__value">{{ stats.revenue_month|money }}</div>
+      <div class="stat__delta">{% trans "so'm" %}</div>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid--2" style="margin-bottom:18px">
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Yangi foydalanuvchilar (30 kun)" %}</h3></div>
+    <div class="chart" data-chart="line" data-color="#1f6feb"
+         data-values="{{ chart_users|jsonify }}" data-labels="{{ chart_labels|jsonify }}"></div>
+  </div>
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Daromad (30 kun)" %}</h3></div>
+    <div class="chart" data-chart="line" data-color="#ff6a00"
+         data-values="{{ chart_revenue|jsonify }}" data-labels="{{ chart_labels|jsonify }}"></div>
+  </div>
+</div>
+
+<div class="grid grid--2" style="margin-bottom:18px">
+  <div class="card">
+    <div class="card__head">
+      <h3>{% trans "So'nggi ro'yxatdan o'tganlar" %}</h3>
+      <a href="{% url 'panel:user_list' %}" class="btn btn--ghost btn--sm" style="margin-left:auto">{% trans "Barchasi" %}</a>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <tbody>
+        {% for u in recent_users %}
+          <tr>
+            <td style="width:52px">
+              {% if u.avatar %}<img class="avatar" src="{{ u.avatar.url }}" alt="">
+              {% else %}<span class="avatar">{{ u.full_name|slice:":1"|upper }}</span>{% endif %}
+            </td>
+            <td>
+              <div class="table__main"><a href="{% url 'panel:user_detail' u.pk %}">{{ u.full_name }}</a></div>
+              <div class="table__sub">{{ u.phone }}</div>
+            </td>
+            <td>
+              {% if u.role == 'teacher' %}<span class="badge badge--brand">{% trans "O'qituvchi" %}</span>
+              {% elif u.role == 'admin' %}<span class="badge badge--accent">{% trans "Admin" %}</span>
+              {% else %}<span class="badge">{% trans "O'quvchi" %}</span>{% endif %}
+            </td>
+            <td style="text-align:right;color:var(--muted);font-size:12.5px">{{ u.date_joined|date:"d.m.Y H:i" }}</td>
+          </tr>
+        {% empty %}
+          <tr><td>{% include "panel/partials/_empty.html" with icon="👥" %}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Kurslar bo'yicha o'quvchilar" %}</h3></div>
+    <div class="chart" data-chart="bar" data-color="#1f6feb"
+         data-values="{{ top_courses_values|jsonify }}" data-labels="{{ top_courses_labels|jsonify }}"></div>
+  </div>
+</div>
+
+<div class="grid grid--2">
+  <div class="card">
+    <div class="card__head">
+      <h3>{% trans "So'nggi buyurtmalar" %}</h3>
+      <a href="{% url 'panel:order_list' %}" class="btn btn--ghost btn--sm" style="margin-left:auto">{% trans "Barchasi" %}</a>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <tbody>
+        {% for o in recent_orders %}
+          <tr>
+            <td><a href="{% url 'panel:order_detail' o.pk %}" class="table__main">#{{ o.number }}</a>
+              <div class="table__sub">{{ o.full_name }}</div></td>
+            <td>{{ o.total|money }} {% trans "so'm" %}</td>
+            <td style="text-align:right">
+              {% if o.status == 'new' %}<span class="badge badge--warn">{{ o.get_status_display }}</span>
+              {% elif o.status == 'cancelled' %}<span class="badge badge--danger">{{ o.get_status_display }}</span>
+              {% else %}<span class="badge badge--ok">{{ o.get_status_display }}</span>{% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td>{% include "panel/partials/_empty.html" with icon="📦" %}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__head">
+      <h3>{% trans "So'nggi amallar" %}</h3>
+      <a href="{% url 'panel:activity' %}" class="btn btn--ghost btn--sm" style="margin-left:auto">{% trans "Barchasi" %}</a>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <tbody>
+        {% for a in activity %}
+          <tr>
+            <td>
+              <div class="table__main">{{ a.description|truncatechars:44 }}</div>
+              <div class="table__sub">{{ a.user.full_name|default:"—" }} · {{ a.model_name }}</div>
+            </td>
+            <td style="text-align:right">
+              {% if a.action == 'create' %}<span class="badge badge--ok">{{ a.get_action_display }}</span>
+              {% elif a.action == 'delete' %}<span class="badge badge--danger">{{ a.get_action_display }}</span>
+              {% else %}<span class="badge badge--info">{{ a.get_action_display }}</span>{% endif %}
+              <div class="table__sub">{{ a.created_at|date:"d.m H:i" }}</div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td>{% include "panel/partials/_empty.html" with icon="🕘" %}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

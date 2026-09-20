@@ -1,0 +1,67 @@
+{% extends "site_base.html" %}
+{% block title %}Premium — VECTOR{% endblock %}
+{% block nav_premium %}is-active{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-hero" style="text-align:center">
+    <h1>👑 Premium obunalar</h1>
+    <p>O'zingizga qulay obuna muddatini tanlang va barcha kurslardan cheklovsiz foydalaning.</p>
+  </div>
+  <div id="currentSub" style="max-width:520px;margin:14px auto 0"></div>
+  <div class="grid grid--3" id="plansGrid" style="margin-top:26px">
+    <div class="skeleton" style="height:320px"></div>
+    <div class="skeleton" style="height:320px"></div>
+    <div class="skeleton" style="height:320px"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var S = window.VectorSite;
+
+  if (S.isLoggedIn()) {
+    S.apiFetch("/my/subscription/").then(function (sub) {
+      if (sub.active) {
+        document.getElementById("currentSub").innerHTML =
+          '<div class="card" style="padding:16px 20px;text-align:center;background:var(--accent-light);color:var(--accent-dark);font-weight:700">' +
+          '✅ ' + sub.plan_name + ' tarifi faol — ' + sub.days_left + ' kun qoldi</div>';
+      }
+    }).catch(function () {});
+  }
+
+  S.apiFetch("/plans/", { auth: false }).then(function (plans) {
+    document.getElementById("plansGrid").innerHTML = plans.map(function (p) {
+      return '<div class="plan-card ' + (p.is_popular ? "plan-card--popular" : "") + '">' +
+        (p.is_popular ? '<span class="plan-card__badge">Ommabop</span>' : "") +
+        '<div class="plan-card__name">' + p.name + '</div>' +
+        '<div class="plan-card__price">' + S.money(p.price) + ' so\'m <span>/ ' + (p.period === "year" ? "yil" : "oy") + '</span></div>' +
+        '<div class="plan-card__note">' + (p.description || "") + '</div>' +
+        '<ul>' + p.features.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '</ul>' +
+        '<button class="btn btn--primary btn--block" data-plan="' + p.id + '">Sotib olish</button>' +
+      '</div>';
+    }).join("");
+
+    document.querySelectorAll("[data-plan]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (!S.isLoggedIn()) { window.location.href = "{% url 'frontend:login' %}"; return; }
+        btn.disabled = true; btn.textContent = "Yuklanmoqda...";
+        S.apiFetch("/subscribe/", { method: "POST", body: { plan: btn.dataset.plan } }).then(function (res) {
+          if (res.promo_applied) {
+            alert("Promo kodingiz qo'llanildi: -" + res.discount_percent + "% chegirma!");
+          }
+          var url = res.checkout.payme || res.checkout.click;
+          if (url) window.location.href = url;
+          else alert("To'lov havolasi topilmadi. Administratorga murojaat qiling.");
+        }).catch(function (err) {
+          btn.disabled = false; btn.textContent = "Sotib olish";
+          alert(err.message);
+        });
+      });
+    });
+  });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Bannerlar" %}</h2>
+    <p class="page__sub">{% trans "Ilova bosh sahifasidagi reklama bloklari" %}</p></div>
+  <div class="page__actions">
+    <a class="btn btn--primary" href="{% url 'panel:banner_create' %}">➕ {% trans "Banner qo'shish" %}</a></div>
+</div>
+
+<div class="card"><div class="table-wrap"><table class="table">
+  <thead><tr><th>{% trans "Banner" %}</th><th>{% trans "Joylashuv" %}</th><th>{% trans "Muddat" %}</th>
+    <th>{% trans "Holat" %}</th><th></th></tr></thead>
+  <tbody>
+  {% for b in page %}
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:12px">
+        {% if b.image %}<img class="table__thumb" style="width:90px;height:50px" src="{{ b.image.url }}" alt="">
+        {% else %}<span class="table__thumb" style="width:90px;height:50px;display:inline-flex;align-items:center;justify-content:center">🖼️</span>{% endif %}
+        <div><div class="table__main">{{ b.title }}</div>
+             <div class="table__sub">{{ b.subtitle|truncatechars:60 }}</div></div>
+      </div></td>
+      <td>{{ b.get_placement_display }}</td>
+      <td style="font-size:13px">{{ b.starts_at|date:"d.m.Y"|default:"—" }} → {{ b.ends_at|date:"d.m.Y"|default:"∞" }}</td>
+      <td>{% if b.is_live %}<span class="badge badge--ok">{% trans "Efirda" %}</span>
+          {% elif b.is_active %}<span class="badge badge--warn">{% trans "Kutmoqda" %}</span>
+          {% else %}<span class="badge badge--danger">{% trans "O'chirilgan" %}</span>{% endif %}</td>
+      <td><div class="table__actions">
+        <form method="post" action="{% url 'panel:banner_toggle' b.pk %}">{% csrf_token %}
+          <button class="btn btn--ghost btn--sm btn--icon" type="submit">{% if b.is_active %}⏸{% else %}▶️{% endif %}</button></form>
+        <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:banner_edit' b.pk %}">✏️</a>
+        <form method="post" action="{% url 'panel:banner_delete' b.pk %}" data-confirm="{% trans 'O‘chirilsinmi?' %}">
+          {% csrf_token %}<button class="btn btn--danger btn--sm btn--icon" type="submit">🗑</button></form>
+      </div></td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">{% include "panel/partials/_empty.html" with icon="🖼️" %}</td></tr>
+  {% endfor %}
+  </tbody>
+</table></div>{% include "panel/partials/_pagination.html" %}</div>
+{% endblock %}

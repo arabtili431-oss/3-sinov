@@ -1,0 +1,94 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="page__head">
+  <div>
+    <h2>{% trans "Foydalanuvchilar" %}</h2>
+    <p class="page__sub">{% blocktrans with n=page.paginator.count %}Jami {{ n }} ta foydalanuvchi{% endblocktrans %}</p>
+  </div>
+</div>
+
+<div class="card">
+  <form class="filters" method="get">
+    <div class="search">
+      <span class="search__icon">🔍</span>
+      <input class="input" type="search" name="q" value="{{ search }}"
+             placeholder="{% trans 'Ism, telefon, maktab...' %}">
+    </div>
+    <select class="select" name="role" data-autosubmit>
+      <option value="">{% trans "Barcha rollar" %}</option>
+      {% for value, label in roles %}
+        <option value="{{ value }}" {% if role == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <select class="select" name="status" data-autosubmit>
+      <option value="">{% trans "Barcha holatlar" %}</option>
+      <option value="premium" {% if status == 'premium' %}selected{% endif %}>{% trans "Premium" %}</option>
+      <option value="free" {% if status == 'free' %}selected{% endif %}>{% trans "Oddiy" %}</option>
+      <option value="blocked" {% if status == 'blocked' %}selected{% endif %}>{% trans "Bloklangan" %}</option>
+      <option value="unverified" {% if status == 'unverified' %}selected{% endif %}>{% trans "Tasdiqlanmagan" %}</option>
+    </select>
+    <button class="btn btn--primary" type="submit">{% trans "Qidirish" %}</button>
+  </form>
+
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{% trans "Foydalanuvchi" %}</th>
+          <th>{% trans "Rol" %}</th>
+          <th>{% trans "Hudud" %}</th>
+          <th>{% trans "Kurslar" %}</th>
+          <th>{% trans "Obuna" %}</th>
+          <th>{% trans "Ro'yxatdan o'tgan" %}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for u in page %}
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:11px">
+              {% if u.avatar %}<img class="avatar" src="{{ u.avatar.url }}" alt="">
+              {% else %}<span class="avatar">{{ u.full_name|slice:":1"|upper|default:"?" }}</span>{% endif %}
+              <div>
+                <div class="table__main"><a href="{% url 'panel:user_detail' u.pk %}">{{ u.full_name|default:"—" }}</a></div>
+                <div class="table__sub">{{ u.phone }}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            {% if u.role == 'teacher' %}<span class="badge badge--brand">{{ u.get_role_display }}</span>
+            {% elif u.role == 'admin' %}<span class="badge badge--accent">{{ u.get_role_display }}</span>
+            {% else %}<span class="badge">{{ u.get_role_display }}</span>{% endif %}
+          </td>
+          <td>
+            <div>{{ u.region|default:"—" }}</div>
+            <div class="table__sub">{{ u.district }}{% if u.school %} · {{ u.school }}{% endif %}</div>
+          </td>
+          <td>{{ u.courses_count }}</td>
+          <td>
+            {% if u.is_premium %}<span class="badge badge--accent">💎 {{ u.plan_name|default:_("Premium") }}</span>
+            {% else %}<span class="badge">{% trans "Oddiy" %}</span>{% endif %}
+          </td>
+          <td style="color:var(--muted);font-size:13px">{{ u.date_joined|date:"d.m.Y" }}</td>
+          <td>
+            <div class="table__actions">
+              {% if u.is_blocked %}<span class="badge badge--danger">{% trans "Bloklangan" %}</span>{% endif %}
+              {% if not u.is_phone_verified %}<span class="badge badge--warn">{% trans "Tasdiqlanmagan" %}</span>{% endif %}
+              <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:user_detail' u.pk %}" title="{% trans 'Ko‘rish' %}">👁</a>
+              <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:user_edit' u.pk %}" title="{% trans 'Tahrirlash' %}">✏️</a>
+            </div>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="7">{% include "panel/partials/_empty.html" with icon="👥" %}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% query_string as query %}
+  {% include "panel/partials/_pagination.html" %}
+</div>
+{% endblock %}

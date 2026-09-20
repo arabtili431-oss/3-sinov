@@ -1,0 +1,35 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Do'kon kategoriyalari" %}</h2></div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:product_list' %}">🛒 {% trans "Mahsulotlar" %}</a>
+    <a class="btn btn--primary" href="{% url 'panel:shop_category_create' %}">➕ {% trans "Qo'shish" %}</a>
+  </div>
+</div>
+<div class="card"><div class="table-wrap">
+  <table class="table">
+    <thead><tr><th>{% trans "Nomi" %}</th><th>{% trans "Mahsulotlar" %}</th>
+      <th>{% trans "Tartib" %}</th><th>{% trans "Holat" %}</th><th></th></tr></thead>
+    <tbody>
+    {% for c in page %}
+      <tr>
+        <td class="table__main">{{ c.name }}</td>
+        <td>{{ c.products_total }}</td>
+        <td>{{ c.order }}</td>
+        <td>{% if c.is_active %}<span class="badge badge--ok">{% trans "Faol" %}</span>
+            {% else %}<span class="badge badge--danger">{% trans "Nofaol" %}</span>{% endif %}</td>
+        <td><div class="table__actions">
+          <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:shop_category_edit' c.pk %}">✏️</a>
+          <form method="post" action="{% url 'panel:shop_category_delete' c.pk %}" data-confirm="{% trans 'O‘chirilsinmi?' %}">
+            {% csrf_token %}<button class="btn btn--danger btn--sm btn--icon" type="submit">🗑</button></form>
+        </div></td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">{% include "panel/partials/_empty.html" with icon="🗂️" %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>{% include "panel/partials/_pagination.html" %}</div>
+{% endblock %}

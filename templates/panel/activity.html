@@ -1,0 +1,22 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="page__head"><div><h2>{% trans "Amallar jurnali" %}</h2></div></div>
+<div class="card"><div class="table-wrap"><table class="table">
+  <thead><tr><th>{% trans "Amal" %}</th><th>{% trans "Obyekt" %}</th><th>{% trans "Kim" %}</th><th>{% trans "Vaqt" %}</th></tr></thead>
+  <tbody>
+  {% for a in page %}
+    <tr>
+      <td>{% if a.action == 'create' %}<span class="badge badge--ok">{{ a.get_action_display }}</span>
+          {% elif a.action == 'delete' %}<span class="badge badge--danger">{{ a.get_action_display }}</span>
+          {% else %}<span class="badge badge--info">{{ a.get_action_display }}</span>{% endif %}</td>
+      <td><div class="table__main">{{ a.description }}</div><div class="table__sub">{{ a.model_name }}</div></td>
+      <td>{{ a.user.full_name|default:"—" }}</td>
+      <td style="color:var(--muted);font-size:13px">{{ a.created_at|date:"d.m.Y H:i" }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4">{% include "panel/partials/_empty.html" with icon="🕘" %}</td></tr>
+  {% endfor %}
+  </tbody>
+</table></div>{% include "panel/partials/_pagination.html" %}</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Kirish — VECTOR{% endblock %}
+
+{% block panel %}
+<form class="auth-card" id="loginForm" novalidate>
+  <h2 class="auth-card__title">Kirish</h2>
+
+  <div class="alert" id="formAlert" role="alert"></div>
+
+  <div class="field">
+    <label class="field__label" for="phone">Telefon raqamni kiriting</label>
+    <div class="phone-row">
+      <div class="phone-prefix" aria-hidden="true">+998</div>
+      <input class="input" id="phone" name="phone" type="tel" inputmode="numeric"
+             autocomplete="tel-national" placeholder="(00)-000-00-00" required>
+    </div>
+    <p class="field__error">Telefon raqamni to‘liq kiriting.</p>
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="password">Parolni kiriting</label>
+    <input class="input" id="password" name="password" type="password"
+           autocomplete="current-password" placeholder="••••••" required>
+    <p class="field__error">Parolni kiriting.</p>
+  </div>
+
+  <div class="forgot-row">
+    <a href="{% url 'frontend:password-reset' %}">Parolni unutdingizmi?</a>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn btn--accent" type="submit" id="submitBtn">
+      <span class="btn__spinner" aria-hidden="true"></span>
+      <span class="btn__label">Davom etish</span>
+    </button>
+  </div>
+
+  <p class="legal">
+    Davom etish orqali siz
+    <a href="#" target="_blank" rel="noopener">foydalanish shartnomasiga</a>
+    rozilik bildirasiz.
+  </p>
+
+  <p class="switch-link">
+    Hisobingiz yo‘qmi? <a href="{% url 'frontend:register' %}">Ro‘yxatdan o‘tish</a>
+  </p>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var A = window.VectorAPI;
+  var form = document.getElementById("loginForm");
+  var alertBox = document.getElementById("formAlert");
+  var btn = document.getElementById("submitBtn");
+  var phone = document.getElementById("phone");
+  var password = document.getElementById("password");
+
+  A.attachPhoneMask(phone);
+  phone.focus();
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    A.hideAlert(alertBox);
+    A.clearInvalid(form);
+
+    var ok = true;
+    if (!A.phoneIsValid(phone.value)) { A.markInvalid(phone, "Telefon raqamni to‘liq kiriting."); ok = false; }
+    if (!password.value) { A.markInvalid(password, "Parolni kiriting."); ok = false; }
+    if (!ok) return;
+
+    A.setLoading(btn, true, "Tekshirilmoqda...");
+    A.request("/login/", {
+      method: "POST",
+      auth: false,
+      body: { phone: "+998" + A.digitsOnly(phone.value).slice(-9), password: password.value }
+    }).then(function (data) {
+      A.saveSession(data);
+      window.location.href = "{% url 'frontend:dashboard' %}";
+    }).catch(function (err) {
+      A.setLoading(btn, false);
+      if (err.data && err.data.code === "not_verified") {
+        A.showAlert(alertBox, "Raqamingiz Telegram orqali tasdiqlanmagan. Ro‘yxatdan o‘tishni yakunlang.", "info");
+        return;
+      }
+      if (!A.applyFieldErrors(form, err.data)) A.showAlert(alertBox, err.message, "error");
+    });
+  });
+})();
+</script>
+{% endblock %}

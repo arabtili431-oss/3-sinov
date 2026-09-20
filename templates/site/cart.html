@@ -1,0 +1,61 @@
+{% extends "site_base.html" %}
+{% block title %}Savatcha — VECTOR{% endblock %}
+{% block nav_shop %}is-active{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:640px;padding-top:26px">
+  <a href="{% url 'frontend:shop' %}" style="font-size:13.5px;color:var(--muted)">← Do'konga qaytish</a>
+  <h1 style="margin:14px 0">🛒 Savatcha</h1>
+  <div id="cartArea"><div class="skeleton" style="height:200px"></div></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var S = window.VectorSite;
+  if (!S.requireAuth()) return;
+  var area = document.getElementById("cartArea");
+
+  function load() {
+    S.apiFetch("/shop/cart/").then(function (order) {
+      if (!order.items.length) {
+        area.innerHTML = '<div class="empty-state"><div class="empty-state__mascot">🛒</div><h3>Savatcha bo\'sh</h3>' +
+          '<p>Do\'kondan yoqqan mahsulotni tanlab, savatga qo\'shing.</p></div>';
+        return;
+      }
+      var total = order.items.reduce(function (s, i) { return s + Number(i.price) * i.quantity; }, 0);
+      area.innerHTML = '<div class="card" style="padding:10px 20px">' +
+        order.items.map(function (i) {
+          return '<div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)">' +
+            '<span style="flex:1;font-weight:600;font-size:14px">' + i.product_name + ' × ' + i.quantity + '</span>' +
+            '<span class="coin-chip">' + Math.round(i.price * i.quantity) + '</span>' +
+            '<button class="btn btn--ghost btn--sm btn--icon" data-remove="' + i.id + '">🗑</button></div>';
+        }).join("") +
+        '<div style="display:flex;justify-content:space-between;padding:16px 0;font-weight:800">' +
+          '<span>Jami:</span><span class="coin-chip">' + total + '</span></div>' +
+        '<button class="btn btn--primary btn--block" id="checkoutBtn">Buyurtmani rasmiylashtirish</button>' +
+        '<div id="cartAlert" style="margin-top:10px;font-size:13px"></div></div>';
+
+      area.querySelectorAll("[data-remove]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          S.apiFetch("/shop/cart/remove/", { method: "POST", body: { item_id: btn.dataset.remove } }).then(load);
+        });
+      });
+
+      document.getElementById("checkoutBtn").addEventListener("click", function () {
+        S.apiFetch("/shop/cart/checkout/", { method: "POST" }).then(function () {
+          document.getElementById("cartAlert").style.color = "var(--ok)";
+          document.getElementById("cartAlert").textContent = "Buyurtma muvaffaqiyatli rasmiylashtirildi ✅";
+          setTimeout(load, 1200);
+        }).catch(function (err) {
+          document.getElementById("cartAlert").style.color = "var(--danger)";
+          document.getElementById("cartAlert").textContent = err.message;
+        });
+      });
+    });
+  }
+  load();
+})();
+</script>
+{% endblock %}

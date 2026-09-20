@@ -1,0 +1,22 @@
+Django==5.1.6
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
+django-cors-headers==4.6.0
+python-dotenv==1.0.1
+requests==2.32.3
+Pillow==11.1.0
+
+# --- Production uchun (deploy) ---
+gunicorn==23.0.0
+whitenoise==6.8.2
+dj-database-url==2.3.0
+psycopg2-binary==2.9.10
+# DIQQAT: asl "pyrogram" paketi o'rniga uning faol qo'llab-quvvatlanadigan
+# forki "kurigram" ishlatiladi — u xuddi shu `import pyrogram` nomi bilan
+# ishlaydi (kod o'zgarmaydi), lekin Telegram'ning yangi (kattaroq) kanal ID
+# raqamlarini to'g'ri qabul qiladi — asl pyrogram buni eskirgan chegara
+# tufayli "Peer id invalid" deb noto'g'ri rad etadi.
+kurigram
+# tgcrypto — ixtiyoriy tezlashtiruvchi (C kengaytma). Windows'da o'rnatish uchun
+# Microsoft C++ Build Tools kerak bo'ladi. Bo'lmasa ishlashda muammo bo'lmaydi,
+# faqat biroz sekinroq. Kerak bo'lsa keyin qo'shing: pip install tgcrypto

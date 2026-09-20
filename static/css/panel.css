@@ -1,0 +1,481 @@
+/* ================== VECTOR admin panel ==================
+   Yorug' va tungi rejim uchun bitta rang tizimi.
+   Ranglar faqat :root va [data-theme] blokda belgilanadi. */
+
+:root {
+  --brand: #1f6feb;
+  --brand-600: #1a5fd0;
+  --brand-050: #eaf2ff;
+  --accent: #ff6a00;
+  --accent-050: #fff1e6;
+
+  --bg: #f4f6fb;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --sidebar: #0d1b33;
+  --sidebar-ink: #b9c6dd;
+  --sidebar-ink-active: #ffffff;
+  --sidebar-hover: rgba(255, 255, 255, .08);
+
+  --ink: #0f1b2d;
+  --ink-2: #46586f;
+  --muted: #8194ad;
+  --line: #e3e9f2;
+  --line-strong: #cfd8e6;
+
+  --ok: #16a34a;
+  --ok-bg: #e7f7ee;
+  --warn: #d97706;
+  --warn-bg: #fff4e2;
+  --danger: #e5484d;
+  --danger-bg: #fdecec;
+  --info: #0ea5e9;
+  --info-bg: #e6f6fe;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 2px rgba(16, 32, 61, .06), 0 8px 24px rgba(16, 32, 61, .06);
+  --shadow-lg: 0 20px 50px rgba(16, 32, 61, .16);
+  --font: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --sidebar-w: 260px;
+}
+
+[data-theme="dark"] {
+  --brand: #4d94ff;
+  --brand-600: #3b82f6;
+  --brand-050: #16263f;
+  --accent: #ff8534;
+  --accent-050: #33210f;
+
+  --bg: #0b1220;
+  --surface: #121c2e;
+  --surface-2: #172336;
+  --sidebar: #0a1120;
+  --sidebar-ink: #8fa2bf;
+  --sidebar-ink-active: #ffffff;
+  --sidebar-hover: rgba(255, 255, 255, .07);
+
+  --ink: #e8eef8;
+  --ink-2: #b3c1d6;
+  --muted: #7f90a8;
+  --line: #22304a;
+  --line-strong: #2e3f5e;
+
+  --ok: #4ade80;
+  --ok-bg: #10281b;
+  --warn: #fbbf24;
+  --warn-bg: #2c2210;
+  --danger: #f87171;
+  --danger-bg: #2e1618;
+  --info: #38bdf8;
+  --info-bg: #0d2635;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, .5);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------------- Tuzilma ---------------- */
+.layout { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: var(--sidebar-w);
+  flex: none;
+  background: var(--sidebar);
+  color: var(--sidebar-ink);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar__brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px 20px 12px;
+  color: #fff; font-weight: 800; font-size: 19px; letter-spacing: .04em;
+}
+.sidebar__brand img { width: 30px; height: 30px; object-fit: contain; }
+.sidebar__brand:hover { text-decoration: none; }
+
+.nav { padding: 4px 12px 20px; }
+.nav__group { margin-top: 12px; }
+.nav__title {
+  padding: 0 12px 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: #5c718f;
+}
+.nav__link {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 12px; margin-bottom: 2px;
+  border-radius: var(--radius-sm);
+  color: var(--sidebar-ink); font-weight: 500; font-size: 14px;
+}
+.nav__link:hover { background: var(--sidebar-hover); color: #fff; text-decoration: none; }
+.nav__link.is-active { background: var(--brand); color: #fff; font-weight: 600; }
+.nav__icon { width: 20px; text-align: center; font-size: 15px; flex: none; }
+.nav__badge {
+  margin-left: auto; padding: 1px 8px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-size: 11px; font-weight: 700;
+}
+.nav__sub { margin: 2px 0 6px 31px; padding-left: 10px; border-left: 1px solid #22304a; }
+.nav__sub .nav__link { padding: 7px 10px; font-size: 13px; }
+
+/* ---------------- Yuqori panel ---------------- */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 26px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.topbar__title { margin: 0; font-size: 19px; font-weight: 700; }
+.topbar__spacer { margin-left: auto; }
+.burger { display: none; background: none; border: 0; font-size: 22px; color: var(--ink); cursor: pointer; }
+
+.icon-btn {
+  width: 38px; height: 38px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); color: var(--ink-2);
+  cursor: pointer; font-size: 16px;
+}
+.icon-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+
+.dropdown { position: relative; }
+.dropdown__menu {
+  position: absolute; right: 0; top: calc(100% + 8px); min-width: 190px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-lg);
+  padding: 6px; display: none; z-index: 40;
+}
+.dropdown.is-open .dropdown__menu { display: block; }
+.dropdown__item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 11px; border-radius: 8px;
+  color: var(--ink); font-size: 14px; white-space: nowrap;
+}
+.dropdown__item:hover { background: var(--surface-2); text-decoration: none; }
+.dropdown__item.is-active { color: var(--brand); font-weight: 600; }
+
+.userchip { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--brand-050); color: var(--brand);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; object-fit: cover; flex: none;
+}
+.userchip__name { font-weight: 600; font-size: 13px; line-height: 1.2; }
+.userchip__role { color: var(--muted); font-size: 12px; }
+
+/* ---------------- Sahifa ---------------- */
+.page { padding: 24px 26px 60px; flex: 1; }
+.page__head {
+  display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.page__head h2 { margin: 0; font-size: 22px; font-weight: 700; }
+.page__sub { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.page__actions { margin-left: auto; display: flex; gap: 10px; flex-wrap: wrap; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.card__head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 18px; border-bottom: 1px solid var(--line);
+}
+.card__head h3 { margin: 0; font-size: 15px; font-weight: 700; }
+.card__body { padding: 18px; }
+.card__foot { padding: 14px 18px; border-top: 1px solid var(--line); }
+
+.grid { display: grid; gap: 16px; }
+.grid--4 { grid-template-columns: repeat(4, 1fr); }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+.grid--2 { grid-template-columns: repeat(2, 1fr); }
+
+/* ---------------- Statistik kartalar ---------------- */
+.stat {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow);
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.stat__icon {
+  width: 44px; height: 44px; border-radius: 12px; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 20px; background: var(--brand-050); color: var(--brand);
+}
+.stat__icon--accent { background: var(--accent-050); color: var(--accent); }
+.stat__icon--ok { background: var(--ok-bg); color: var(--ok); }
+.stat__icon--warn { background: var(--warn-bg); color: var(--warn); }
+.stat__label { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
+.stat__value { font-size: 24px; font-weight: 800; line-height: 1.15; }
+.stat__delta { font-size: 12px; font-weight: 600; margin-top: 4px; }
+.stat__delta--up { color: var(--ok); }
+.stat__delta--down { color: var(--danger); }
+
+/* ---------------- Jadval ---------------- */
+.table-wrap { overflow-x: auto; }
+table.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th {
+  text-align: left; padding: 12px 16px; white-space: nowrap;
+  color: var(--muted); font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .05em;
+  border-bottom: 1px solid var(--line); background: var(--surface-2);
+}
+.table td { padding: 13px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.table tr:last-child td { border-bottom: 0; }
+.table tbody tr:hover { background: var(--surface-2); }
+.table__thumb {
+  width: 46px; height: 46px; border-radius: 10px; object-fit: cover;
+  background: var(--surface-2); border: 1px solid var(--line);
+}
+.table__main { font-weight: 600; }
+.table__sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.table__actions { display: flex; gap: 6px; justify-content: flex-end; }
+
+.empty { padding: 56px 20px; text-align: center; color: var(--muted); }
+.empty__icon { font-size: 34px; margin-bottom: 10px; opacity: .7; }
+
+/* ---------------- Nishonlar ---------------- */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; white-space: nowrap;
+  background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line);
+}
+.badge--ok { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+.badge--warn { background: var(--warn-bg); color: var(--warn); border-color: transparent; }
+.badge--danger { background: var(--danger-bg); color: var(--danger); border-color: transparent; }
+.badge--info { background: var(--info-bg); color: var(--info); border-color: transparent; }
+.badge--brand { background: var(--brand-050); color: var(--brand); border-color: transparent; }
+.badge--accent { background: var(--accent-050); color: var(--accent); border-color: transparent; }
+
+/* ---------------- Tugmalar ---------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 40px; padding: 0 16px;
+  border: 1px solid transparent; border-radius: var(--radius-sm);
+  font: inherit; font-weight: 600; font-size: 14px;
+  cursor: pointer; white-space: nowrap; text-decoration: none;
+  transition: background-color .15s, border-color .15s, color .15s;
+}
+.btn:hover { text-decoration: none; }
+.btn--primary { background: var(--brand); color: #fff; }
+.btn--primary:hover { background: var(--brand-600); }
+.btn--accent { background: var(--accent); color: #fff; }
+.btn--accent:hover { filter: brightness(.94); }
+.btn--ghost { background: var(--surface); border-color: var(--line-strong); color: var(--ink); }
+.btn--ghost:hover { background: var(--surface-2); }
+.btn--danger { background: var(--danger-bg); color: var(--danger); }
+.btn--danger:hover { background: var(--danger); color: #fff; }
+.btn--sm { height: 32px; padding: 0 11px; font-size: 13px; border-radius: 8px; }
+.btn--icon { width: 32px; height: 32px; padding: 0; }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+
+/* ---------------- Formalar ---------------- */
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.form-field { display: flex; flex-direction: column; }
+.form-field--full { grid-column: 1 / -1; }
+.form-label { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--ink-2); }
+.form-label .req { color: var(--danger); }
+
+.input, .select, .textarea {
+  width: 100%; min-height: 42px; padding: 10px 13px;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  font: inherit; font-size: 14px; outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.textarea { min-height: 110px; resize: vertical; line-height: 1.55; }
+.input:focus, .select:focus, .textarea:focus {
+  border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-050);
+}
+.input::placeholder, .textarea::placeholder { color: var(--muted); }
+.select { appearance: none; padding-right: 34px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+                    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 19px, calc(100% - 13px) 19px;
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+.form-help { margin: 5px 2px 0; font-size: 12px; color: var(--muted); }
+.form-error { margin: 5px 2px 0; font-size: 12.5px; color: var(--danger); font-weight: 500; }
+.has-error .input, .has-error .select, .has-error .textarea { border-color: var(--danger); }
+
+.check { display: flex; align-items: center; gap: 9px; cursor: pointer; user-select: none; }
+.check input { width: 18px; height: 18px; accent-color: var(--brand); cursor: pointer; }
+.check span { font-size: 14px; }
+
+.switchbox {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 12px 14px; background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+}
+.switch { position: relative; width: 44px; height: 25px; flex: none; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch__slider {
+  position: absolute; inset: 0; background: var(--line-strong);
+  border-radius: 999px; cursor: pointer; transition: background-color .18s;
+}
+.switch__slider::before {
+  content: ""; position: absolute; width: 19px; height: 19px; left: 3px; top: 3px;
+  background: #fff; border-radius: 50%; transition: transform .18s;
+}
+.switch input:checked + .switch__slider { background: var(--brand); }
+.switch input:checked + .switch__slider::before { transform: translateX(19px); }
+
+.form-actions {
+  display: flex; gap: 10px; align-items: center;
+  padding-top: 18px; margin-top: 4px; border-top: 1px solid var(--line);
+}
+.form-actions .spacer { margin-left: auto; }
+
+/* Rasm yuklash */
+.upload {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px; border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm); background: var(--surface-2);
+}
+.upload__preview {
+  width: 74px; height: 74px; border-radius: 10px; object-fit: cover;
+  background: var(--surface); border: 1px solid var(--line); flex: none;
+}
+.upload input[type="file"] { font-size: 13px; color: var(--ink-2); }
+
+/* Til yorliqlari (tarjimalar) */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 18px; flex-wrap: wrap; }
+.tab {
+  padding: 9px 15px; border: 0; background: none; cursor: pointer;
+  font: inherit; font-size: 13.5px; font-weight: 600; color: var(--muted);
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.tab:hover { color: var(--ink); }
+.tab.is-active { color: var(--brand); border-bottom-color: var(--brand); }
+.tabpane { display: none; }
+.tabpane.is-active { display: block; }
+
+/* ---------------- Filtr paneli ---------------- */
+.filters {
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  padding: 14px 18px; border-bottom: 1px solid var(--line);
+}
+.filters .input, .filters .select { min-height: 38px; width: auto; min-width: 160px; }
+.search { position: relative; flex: 1; min-width: 200px; }
+.search .input { width: 100%; padding-left: 36px; }
+.search__icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+
+/* ---------------- Sahifalash ---------------- */
+.pagination { display: flex; gap: 6px; align-items: center; justify-content: center; padding: 16px; flex-wrap: wrap; }
+.pagination a, .pagination span {
+  min-width: 34px; height: 34px; padding: 0 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); border-radius: 8px;
+  color: var(--ink-2); font-size: 13px; font-weight: 600;
+}
+.pagination a:hover { border-color: var(--brand); color: var(--brand); text-decoration: none; }
+.pagination .is-current { background: var(--brand); border-color: var(--brand); color: #fff; }
+.pagination .is-disabled { opacity: .4; }
+.pagination__info { color: var(--muted); font-weight: 500; border: 0; }
+
+/* ---------------- Xabarlar ---------------- */
+.messages { position: fixed; right: 22px; top: 78px; z-index: 200; display: flex; flex-direction: column; gap: 10px; }
+.message {
+  min-width: 260px; max-width: 380px;
+  padding: 13px 16px; border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg); font-size: 14px; font-weight: 500;
+  background: var(--surface); border-left: 4px solid var(--brand); color: var(--ink);
+  animation: slideIn .25s ease;
+}
+.message--success { border-left-color: var(--ok); }
+.message--error { border-left-color: var(--danger); }
+.message--warning { border-left-color: var(--warn); }
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } }
+
+/* ---------------- Grafiklar ---------------- */
+.chart { width: 100%; height: 260px; display: block; }
+.chart-legend { display: flex; gap: 18px; flex-wrap: wrap; padding: 0 18px 16px; font-size: 13px; color: var(--ink-2); }
+.chart-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 6px; }
+
+.progress { height: 7px; background: var(--line); border-radius: 999px; overflow: hidden; min-width: 90px; }
+.progress__bar { height: 100%; background: var(--brand); border-radius: 999px; }
+
+/* ---------------- Kurs daraxti ---------------- */
+.module {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); margin-bottom: 14px; overflow: hidden;
+}
+.module__head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; background: var(--surface-2); border-bottom: 1px solid var(--line);
+}
+.module__title { font-weight: 700; font-size: 15px; }
+.module__meta { color: var(--muted); font-size: 12.5px; }
+.lesson-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-bottom: 1px solid var(--line);
+}
+.lesson-row:last-child { border-bottom: 0; }
+.lesson-row__num {
+  width: 28px; height: 28px; border-radius: 8px; flex: none;
+  background: var(--brand-050); color: var(--brand);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+.lesson-row__title { font-weight: 600; }
+.lesson-row__meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ---------------- Kirish sahifasi ---------------- */
+.auth-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 24px; background: var(--bg);
+}
+.auth-box {
+  width: 100%; max-width: 400px; padding: 34px 30px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 18px; box-shadow: var(--shadow-lg);
+}
+.auth-box__logo { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.auth-box__logo img { width: 34px; height: 34px; }
+.auth-box__logo span { font-size: 20px; font-weight: 800; letter-spacing: .04em; }
+.auth-box h1 { margin: 14px 0 4px; font-size: 20px; }
+.auth-box p.sub { margin: 0 0 22px; color: var(--muted); font-size: 13.5px; }
+
+/* ---------------- Moslashuvchanlik ---------------- */
+@media (max-width: 1100px) {
+  .grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .grid--3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed; left: 0; top: 0; z-index: 60;
+    transform: translateX(-100%); transition: transform .22s;
+  }
+  body.nav-open .sidebar { transform: translateX(0); box-shadow: var(--shadow-lg); }
+  body.nav-open::after {
+    content: ""; position: fixed; inset: 0; background: rgba(6, 12, 24, .5); z-index: 50;
+  }
+  .burger { display: inline-flex; }
+  .page { padding: 18px 16px 60px; }
+  .topbar { padding: 12px 16px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .grid--4, .grid--3, .grid--2 { grid-template-columns: 1fr; }
+  .userchip__name, .userchip__role { display: none; }
+  .messages { right: 12px; left: 12px; top: 70px; }
+  .message { max-width: none; }
+}

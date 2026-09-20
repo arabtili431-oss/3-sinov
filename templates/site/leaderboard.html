@@ -1,0 +1,37 @@
+{% extends "site_base.html" %}
+{% load static %}
+{% block title %}Liderlar — VECTOR{% endblock %}
+{% block nav_leaders %}is-active{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:640px;padding-top:26px">
+  <div class="page-hero">
+    <h1>🏆 Liderlar</h1>
+    <p>Darslardagi testlarni eng yaxshi yechgan va eng ko'p Coin to'plagan o'quvchilar.</p>
+  </div>
+  <div class="card" style="margin-top:18px;padding:10px 20px" id="leaderList">
+    <div class="skeleton" style="height:300px;margin:10px 0"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var S = window.VectorSite;
+  var medals = { 1: "🥇", 2: "🥈", 3: "🥉" };
+  S.apiFetch("/leaderboard/", { auth: false }).then(function (list) {
+    var box = document.getElementById("leaderList");
+    if (!list.length) { box.innerHTML = '<p style="color:var(--muted);padding:20px 0">Hozircha reytingda hech kim yo\'q.</p>'; return; }
+    box.innerHTML = list.map(function (u) {
+      return '<div style="display:flex;align-items:center;gap:14px;padding:14px 0;' +
+        (list.indexOf(u) ? 'border-top:1px solid var(--line);' : '') + (u.is_me ? 'background:var(--accent-light);border-radius:10px;padding-left:10px' : '') + '">' +
+        '<span style="width:30px;text-align:center;font-weight:800;font-size:15px">' + (medals[u.rank] || u.rank) + '</span>' +
+        '<img src="' + (u.avatar || "{% static 'img/logo.png' %}") + '" style="width:38px;height:38px;border-radius:50%;object-fit:cover;background:var(--accent-light)">' +
+        '<span style="flex:1;font-weight:700;font-size:14px">' + u.full_name + (u.is_me ? " (Siz)" : "") + '</span>' +
+        '<span class="coin-chip">' + S.money(u.coins) + '</span></div>';
+    }).join("");
+  });
+})();
+</script>
+{% endblock %}

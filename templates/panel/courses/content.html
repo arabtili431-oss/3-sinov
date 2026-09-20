@@ -1,0 +1,100 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+
+{% block content %}
+<div class="page__head">
+  <div>
+    <h2>{{ course.title }}</h2>
+    <p class="page__sub">
+      {{ course.get_access_display }} · {{ course.modules.count }} {% trans "modul" %} ·
+      {{ course.lessons_count }} {% trans "dars" %} · {{ course.students_count }} {% trans "o'quvchi" %}
+    </p>
+  </div>
+  <div class="page__actions">
+    <a class="btn btn--ghost" href="{% url 'panel:course_list' %}">← {% trans "Kurslar" %}</a>
+    <a class="btn btn--ghost" href="{% url 'panel:course_edit' course.pk %}">✏️ {% trans "Kurs sozlamalari" %}</a>
+    <a class="btn btn--ghost" href="{% url 'panel:module_create' course.pk %}">➕ {% trans "Modul" %}</a>
+    <a class="btn btn--primary" href="{% url 'panel:lesson_create' course.pk %}">🎬 {% trans "Dars qo'shish" %}</a>
+  </div>
+</div>
+
+{% if not telegram_ready %}
+  <div class="card" style="margin-bottom:18px;border-color:var(--warn)">
+    <div class="card__body" style="display:flex;gap:12px;align-items:center">
+      <span style="font-size:22px">⚠️</span>
+      <div>
+        <b>{% trans "Telegram saqlash sozlanmagan." %}</b><br>
+        <span style="color:var(--muted)">
+          {% trans "Video yuklash uchun .env faylida TELEGRAM_STORAGE_CHAT_ID ni to'ldiring (yopiq kanal ID si va bot o'sha kanalda admin bo'lishi kerak)." %}
+        </span>
+      </div>
+    </div>
+  </div>
+{% elif not local_api %}
+  <div class="card" style="margin-bottom:18px;border-color:var(--info)">
+    <div class="card__body" style="color:var(--ink-2)">
+      ℹ️ {% trans "Rasmiy Telegram API 20 MB dan katta videoni qaytara olmaydi. Katta darslar uchun local Bot API serverni sozlang." %}
+    </div>
+  </div>
+{% endif %}
+
+{% for module in course.modules.all %}
+  <div class="module">
+    <div class="module__head">
+      <div style="flex:1">
+        <div class="module__title">{{ forloop.counter }}. {{ module.title }}</div>
+        <div class="module__meta">{{ module.lessons.count }} {% trans "dars" %}
+          {% if not module.is_active %} · <span class="badge badge--danger">{% trans "Nofaol" %}</span>{% endif %}</div>
+      </div>
+      <a class="btn btn--ghost btn--sm" href="{% url 'panel:lesson_create' course.pk %}?module={{ module.pk }}">➕ {% trans "Dars" %}</a>
+      <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:module_edit' course.pk module.pk %}">✏️</a>
+      <form method="post" action="{% url 'panel:module_delete' course.pk module.pk %}"
+            data-confirm="{% trans 'Modul va uning darslari o‘chiriladi. Davom etamizmi?' %}">
+        {% csrf_token %}<button class="btn btn--danger btn--sm btn--icon" type="submit">🗑</button>
+      </form>
+    </div>
+
+    {% for lesson in module.lessons.all %}
+      <div class="lesson-row">
+        <span class="lesson-row__num">{{ forloop.counter }}</span>
+        <div style="flex:1;min-width:0">
+          <div class="lesson-row__title">{{ lesson.title }}</div>
+          <div class="lesson-row__meta">
+            {% if lesson.telegram_file_id %}<span>🔒 {% trans "Telegramda" %} · {{ lesson.video_size|filesize }}</span>
+            {% elif lesson.video_url %}<span>🔗 {% trans "Havola" %}</span>
+            {% else %}<span>📝 {% trans "Videosiz" %}</span>{% endif %}
+            {% if lesson.duration %}<span>⏱ {{ lesson.duration|duration }}</span>{% endif %}
+            {% if lesson.attachments.count %}<span>📎 {{ lesson.attachments.count }}</span>{% endif %}
+          </div>
+        </div>
+        {% if lesson.is_free %}<span class="badge badge--ok">{% trans "Bepul" %}</span>{% endif %}
+        {% if not lesson.is_active %}<span class="badge badge--danger">{% trans "Bloklangan" %}</span>{% endif %}
+        <div class="table__actions">
+          <form method="post" action="{% url 'panel:lesson_toggle' course.pk lesson.pk %}">
+            {% csrf_token %}
+            <button class="btn btn--ghost btn--sm btn--icon" type="submit"
+                    title="{% if lesson.is_active %}{% trans 'Bloklash' %}{% else %}{% trans 'Yoqish' %}{% endif %}">
+              {% if lesson.is_active %}🔓{% else %}🔒{% endif %}</button>
+          </form>
+          <a class="btn btn--ghost btn--sm" href="{% url 'panel:quiz_manage' course.pk lesson.pk %}"
+             title="{% trans 'Dars testi (Coin)' %}">🧩 {{ lesson.quiz.questions_count|default:0 }}</a>
+          <a class="btn btn--ghost btn--sm btn--icon" href="{% url 'panel:lesson_edit' course.pk lesson.pk %}">✏️</a>
+          <form method="post" action="{% url 'panel:lesson_delete' course.pk lesson.pk %}"
+                data-confirm="{% trans 'Dars o‘chirilsinmi?' %}">
+            {% csrf_token %}<button class="btn btn--danger btn--sm btn--icon" type="submit">🗑</button>
+          </form>
+        </div>
+      </div>
+    {% empty %}
+      <div class="lesson-row" style="color:var(--muted)">{% trans "Bu modulda hali dars yo'q" %}</div>
+    {% endfor %}
+  </div>
+{% empty %}
+  <div class="card"><div class="card__body">
+    {% include "panel/partials/_empty.html" with icon="🎬" text=_("Kurs hali bo'sh. Avval modul, keyin darslar qo'shing.") %}
+    <div style="text-align:center">
+      <a class="btn btn--primary" href="{% url 'panel:module_create' course.pk %}">➕ {% trans "Birinchi modulni qo'shish" %}</a>
+    </div>
+  </div></div>
+{% endfor %}
+{% endblock %}

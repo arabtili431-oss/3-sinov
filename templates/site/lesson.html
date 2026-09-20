@@ -1,0 +1,115 @@
+{% extends "site_base.html" %}
+{% block title %}Dars — VECTOR{% endblock %}
+{% block nav_courses %}is-active{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:26px;max-width:840px">
+  <a href="/kurslar/{{ slug }}/" style="font-size:13.5px;color:var(--muted)">← Kursga qaytish</a>
+  <div id="lessonArea" style="margin-top:16px">
+    <div class="skeleton" style="height:400px"></div>
+  </div>
+  <div id="quizArea" style="margin-top:22px"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var S = window.VectorSite;
+  var slug = "{{ slug }}";
+  var lessonId = "{{ lesson_id }}";
+  var area = document.getElementById("lessonArea");
+  var quizArea = document.getElementById("quizArea");
+
+  function renderLesson(l) {
+    document.title = l.title + " — VECTOR";
+    if (l.is_locked) {
+      area.innerHTML = '<div class="card" style="padding:40px;text-align:center">' +
+        '<div style="font-size:36px;margin-bottom:10px">🔒</div>' +
+        '<h3>Bu dars qulflangan</h3>' +
+        '<p style="color:var(--muted)">Ushbu darsni ko\'rish uchun Premium obuna kerak.</p>' +
+        '<a class="btn btn--primary" href="{% url "frontend:premium" %}">Premium sotib olish</a></div>';
+      return;
+    }
+
+    var videoHtml = "";
+    if (l.video && l.video.type === "stream") {
+      videoHtml = '<video controls preload="metadata" style="width:100%;border-radius:var(--radius);background:#000" src="' + l.video.url + '"></video>';
+    } else if (l.video && l.video.type === "url") {
+      videoHtml = '<div style="aspect-ratio:16/9"><iframe style="width:100%;height:100%;border:0;border-radius:var(--radius)" src="' + l.video.url + '" allowfullscreen></iframe></div>';
+    } else {
+      videoHtml = '<div class="card" style="padding:40px;text-align:center;color:var(--muted)">Bu darsda video mavjud emas</div>';
+    }
+
+    area.innerHTML = videoHtml +
+      '<h1 style="font-size:21px;margin:18px 0 8px">' + l.title + '</h1>' +
+      '<p style="color:var(--muted);font-size:14px;margin-bottom:16px">' + (l.description || "") + '</p>' +
+      (l.text ? '<div class="card" style="padding:20px;margin-bottom:16px;white-space:pre-line;font-size:14px;line-height:1.7">' + l.text + '</div>' : "") +
+      '<button class="btn btn--primary" id="completeBtn">✅ Darsni tugatdim</button>' +
+      '<span id="completeMsg" style="margin-left:10px;font-size:13px;color:var(--ok)"></span>';
+
+    document.getElementById("completeBtn").addEventListener("click", function () {
+      if (!S.isLoggedIn()) { window.location.href = "{% url 'frontend:login' %}"; return; }
+      S.apiFetch("/lessons/" + lessonId + "/complete/", { method: "POST", body: { completed: true } })
+        .then(function () { document.getElementById("completeMsg").textContent = "Saqlandi!"; })
+        .catch(function (err) { document.getElementById("completeMsg").textContent = err.message; });
+    });
+
+    if (l.has_quiz) loadQuiz();
+  }
+
+  function loadQuiz() {
+    quizArea.innerHTML = '<div class="card" style="padding:22px"><h3 style="margin-top:0">🧩 Bilimingizni tekshiring — Coin yutib oling!</h3><p style="color:var(--muted);font-size:13.5px">Testni yechish uchun tizimga kirishingiz kerak.</p>' +
+      (S.isLoggedIn() ? '' : '<a class="btn btn--primary" href="{% url "frontend:login" %}">Kirish</a>') + '</div>';
+    if (!S.isLoggedIn()) return;
+
+    S.apiFetch("/lessons/" + lessonId + "/quiz/").then(function (quiz) {
+      if (quiz.attempted) {
+        var r = quiz.result;
+        quizArea.innerHTML = '<div class="card" style="padding:22px">' +
+          '<h3 style="margin-top:0">🧩 Test natijangiz</h3>' +
+          '<p>To\'g\'ri javoblar: <b>' + r.correct_count + ' / ' + r.total_count + '</b> (' + r.score_percent + '%)</p>' +
+          '<p class="coin-chip" style="font-size:18px">+' + r.coins_earned + ' Coin olindi</p></div>';
+        return;
+      }
+
+      var qHtml = quiz.questions.map(function (q, qi) {
+        var choices = q.choices.map(function (c) {
+          return '<label style="display:flex;align-items:center;gap:8px;padding:8px 0;font-size:14px;cursor:pointer">' +
+            '<input type="radio" name="q_' + q.id + '" value="' + c.id + '" style="width:auto"> ' + c.text + '</label>';
+        }).join("");
+        return '<div style="margin-bottom:18px"><div style="font-weight:700;margin-bottom:6px">' + (qi + 1) + '. ' + q.text + '</div>' + choices + '</div>';
+      }).join("");
+
+      quizArea.innerHTML = '<div class="card" style="padding:22px">' +
+        '<h3 style="margin-top:0">🧩 Bilimingizni tekshiring — Coin yutib oling!</h3>' +
+        '<p style="color:var(--muted);font-size:13px;margin-bottom:16px">Maksimal mukofot: ' + quiz.coin_reward + ' Coin. Test faqat 1 marta yechiladi.</p>' +
+        '<form id="quizForm">' + qHtml + '<button class="btn btn--primary" type="submit">Javoblarni yuborish</button></form>' +
+        '<div id="quizResult" style="margin-top:14px"></div></div>';
+
+      document.getElementById("quizForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var answers = {};
+        quiz.questions.forEach(function (q) {
+          var checked = document.querySelector('input[name="q_' + q.id + '"]:checked');
+          if (checked) answers[q.id] = parseInt(checked.value, 10);
+        });
+        S.apiFetch("/lessons/" + lessonId + "/quiz/submit/", { method: "POST", body: { answers: answers } })
+          .then(function (res) {
+            document.getElementById("quizResult").innerHTML =
+              '<p>To\'g\'ri javoblar: <b>' + res.correct_count + ' / ' + res.total_count + '</b> (' + res.score_percent + '%)</p>' +
+              '<p class="coin-chip" style="font-size:18px">+' + res.coins_earned + ' Coin olindi 🎉</p>';
+            document.getElementById("quizForm").querySelector("button").disabled = true;
+          }).catch(function (err) {
+            document.getElementById("quizResult").innerHTML = '<p style="color:var(--danger)">' + err.message + '</p>';
+          });
+      });
+    }).catch(function () { quizArea.innerHTML = ""; });
+  }
+
+  S.apiFetch("/lessons/" + lessonId + "/").then(renderLesson).catch(function () {
+    area.innerHTML = '<p style="color:var(--muted)">Dars topilmadi.</p>';
+  });
+})();
+</script>
+{% endblock %}

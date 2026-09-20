@@ -1,0 +1,79 @@
+{% extends "site_base.html" %}
+{% block title %}Kurs — VECTOR{% endblock %}
+{% block nav_courses %}is-active{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:26px;max-width:840px">
+  <a href="{% url 'frontend:courses' %}" style="font-size:13.5px;color:var(--muted)">← Kurslarga qaytish</a>
+  <div id="courseArea" style="margin-top:16px">
+    <div class="skeleton" style="height:220px"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var S = window.VectorSite;
+  var slug = "{{ slug }}";
+  var area = document.getElementById("courseArea");
+
+  function render(c) {
+    document.title = c.title + " — VECTOR";
+    var modulesHtml = (c.modules || []).map(function (m, mi) {
+      var lessons = m.lessons.map(function (l, li) {
+        var lock = l.is_locked ? '<span class="badge badge--muted">🔒</span>' : '';
+        return '<a class="lesson-row" href="/kurslar/' + slug + '/dars/' + l.id + '/" ' +
+          'style="display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line);' + (l.is_locked ? 'opacity:.6' : '') + '">' +
+          '<span style="width:26px;height:26px;border-radius:50%;background:var(--accent-light);color:var(--accent);' +
+          'display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">' + (li + 1) + '</span>' +
+          '<span style="flex:1;font-size:14px;font-weight:600">' + l.title + '</span>' +
+          '<span style="font-size:12px;color:var(--muted)">' + (l.duration_display || "") + '</span>' + lock + '</a>';
+      }).join("");
+      return '<div class="card" style="padding:20px;margin-bottom:14px"><h3 style="margin:0 0 4px;font-size:15.5px">' +
+        (mi + 1) + '. ' + m.title + '</h3>' + lessons + '</div>';
+    }).join("");
+
+    var priceLabel = c.access === "free" ? "Bepul" : c.access === "premium" ? "Premium obuna bilan" : S.money(c.price) + " so'm";
+    var actionBtn = c.is_available
+      ? (c.modules[0] && c.modules[0].lessons[0]
+          ? '<a class="btn btn--primary btn--block" href="/kurslar/' + slug + '/dars/' + c.modules[0].lessons[0].id + '/">Davom ettirish</a>'
+          : '<span class="badge badge--ok">Kursga yozilgansiz</span>')
+      : '<button class="btn btn--primary btn--block" id="enrollBtn">Kursga yozilish</button>';
+
+    area.innerHTML =
+      '<div class="course-card__cover" style="border-radius:var(--radius);margin-bottom:20px">' + (c.cover ? '<img src="' + c.cover + '">' : '🎓') + '</div>' +
+      '<h1 style="font-size:24px;margin:0 0 8px">' + c.title + '</h1>' +
+      '<p style="color:var(--muted);font-size:14px;margin-bottom:18px">' + c.teacher + ' · ' + c.lessons_count + ' dars · ' + c.students_count + ' o\'quvchi</p>' +
+      '<div class="card" style="padding:22px;margin-bottom:22px">' +
+        '<p style="white-space:pre-line;font-size:14.5px;line-height:1.7;margin:0 0 16px">' + (c.description || c.short_description || "") + '</p>' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">' +
+          '<div style="font-weight:800;font-size:18px;color:var(--accent)">' + priceLabel + '</div>' +
+          '<div style="min-width:200px">' + actionBtn + '</div>' +
+        '</div>' +
+      '</div>' +
+      modulesHtml;
+
+    var enrollBtn = document.getElementById("enrollBtn");
+    if (enrollBtn) {
+      enrollBtn.addEventListener("click", function () {
+        if (!S.isLoggedIn()) { window.location.href = "{% url 'frontend:login' %}"; return; }
+        S.apiFetch("/courses/" + slug + "/enroll/", { method: "POST" })
+          .then(function () { window.location.reload(); })
+          .catch(function (err) {
+            if (err.data && err.data.code === "payment_required") {
+              window.location.href = "{% url 'frontend:premium' %}";
+              return;
+            }
+            alert(err.message);
+          });
+      });
+    }
+  }
+
+  S.apiFetch("/courses/" + slug + "/", { auth: false }).then(render).catch(function () {
+    area.innerHTML = '<p style="color:var(--muted)">Kurs topilmadi.</p>';
+  });
+})();
+</script>
+{% endblock %}

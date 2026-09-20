@@ -1,0 +1,97 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_extras %}
+{% block content %}
+<div class="page__head">
+  <div><h2>{% trans "Statistika" %}</h2></div>
+  <div class="page__actions">
+    <form method="get">
+      <select class="select" name="period" data-autosubmit>
+        <option value="7" {% if period == '7' %}selected{% endif %}>{% trans "7 kun" %}</option>
+        <option value="30" {% if period == '30' %}selected{% endif %}>{% trans "30 kun" %}</option>
+        <option value="90" {% if period == '90' %}selected{% endif %}>{% trans "3 oy" %}</option>
+        <option value="365" {% if period == '365' %}selected{% endif %}>{% trans "1 yil" %}</option>
+      </select>
+    </form>
+  </div>
+</div>
+
+<div class="grid grid--3" style="margin-bottom:18px">
+  <div class="stat"><div class="stat__icon">👥</div><div>
+    <div class="stat__label">{% trans "Foydalanuvchilar" %}</div><div class="stat__value">{{ totals.users }}</div></div></div>
+  <div class="stat"><div class="stat__icon stat__icon--accent">📚</div><div>
+    <div class="stat__label">{% trans "Kurslarga yozilganlar" %}</div><div class="stat__value">{{ totals.enrollments }}</div></div></div>
+  <div class="stat"><div class="stat__icon stat__icon--warn">💎</div><div>
+    <div class="stat__label">{% trans "Premium" %}</div><div class="stat__value">{{ totals.premium }}</div></div></div>
+  <div class="stat"><div class="stat__icon stat__icon--ok">💰</div><div>
+    <div class="stat__label">{% trans "Umumiy daromad" %}</div><div class="stat__value">{{ totals.revenue|money }}</div></div></div>
+  <div class="stat"><div class="stat__icon">📦</div><div>
+    <div class="stat__label">{% trans "Buyurtmalar" %}</div><div class="stat__value">{{ totals.orders }}</div></div></div>
+  <div class="stat"><div class="stat__icon">🎬</div><div>
+    <div class="stat__label">{% trans "Darslar" %}</div><div class="stat__value">{{ totals.lessons }}</div></div></div>
+</div>
+
+<div class="grid grid--2" style="margin-bottom:18px">
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Yangi foydalanuvchilar" %}</h3></div>
+    <div class="chart" data-chart="line" data-color="#1f6feb"
+         data-values="{{ user_values|jsonify }}" data-labels="{{ labels|jsonify }}"></div>
+  </div>
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Kursga yozilishlar" %}</h3></div>
+    <div class="chart" data-chart="line" data-color="#16a34a"
+         data-values="{{ enroll_values|jsonify }}" data-labels="{{ labels|jsonify }}"></div>
+  </div>
+</div>
+
+<div class="grid grid--2" style="margin-bottom:18px">
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Daromad" %}</h3></div>
+    <div class="chart" data-chart="line" data-color="#ff6a00"
+         data-values="{{ revenue_values|jsonify }}" data-labels="{{ labels|jsonify }}"></div>
+  </div>
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Do'kon buyurtmalari" %}</h3></div>
+    <div class="chart" data-chart="bar" data-color="#8b5cf6"
+         data-values="{{ order_values|jsonify }}" data-labels="{{ labels|jsonify }}"></div>
+  </div>
+</div>
+
+<div class="grid grid--3">
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Daromad manbalari" %}</h3></div>
+    <div class="chart" style="height:230px" data-chart="donut"
+         data-values="{{ revenue_sources_values|jsonify }}" data-labels="{{ revenue_sources_labels|jsonify }}"></div>
+    <div class="chart-legend">
+      {% for label in revenue_sources_labels %}
+        <span><i style="background:{% cycle '#1f6feb' '#ff6a00' '#16a34a' %}"></i>{{ label }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Premium tariflar" %}</h3></div>
+    <div class="chart" style="height:230px" data-chart="donut"
+         data-values="{{ plan_values|jsonify }}" data-labels="{{ plan_labels|jsonify }}"></div>
+    <div class="chart-legend">
+      {% for label in plan_labels %}
+        <span><i style="background:{% cycle '#8b5cf6' '#0ea5e9' '#ff6a00' '#16a34a' %}"></i>{{ label }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__head"><h3>{% trans "Eng ommabop kurslar" %}</h3></div>
+    <div class="table-wrap"><table class="table"><tbody>
+      {% for c in course_rows %}
+        <tr>
+          <td><div class="table__main">{{ c.title|truncatechars:32 }}</div>
+              <div class="table__sub">{{ c.category.name|default:"—" }}</div></td>
+          <td style="text-align:right"><span class="badge badge--brand">{{ c.students }}</span></td>
+        </tr>
+      {% empty %}
+        <tr><td>{% include "panel/partials/_empty.html" with icon="📚" %}</td></tr>
+      {% endfor %}
+    </tbody></table></div>
+  </div>
+</div>
+{% endblock %}
